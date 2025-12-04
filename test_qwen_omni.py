@@ -18,8 +18,13 @@ if not os.path.exists(video_path):
     with open(video_path, "wb") as f:
         f.write(resp.content)
 
-device = "cpu"
-dtype = torch.float32
+# automatically set device and dtype
+if torch.cuda.is_available():
+    device = torch.device("cuda")
+    dtype = torch.float16
+elif torch.backends.mps.is_available():
+    device = torch.device("cpu") 
+    dtype = torch.float16
 
 # Load model + tokenizer / processor
 model = Qwen2_5OmniForConditionalGeneration.from_pretrained(
