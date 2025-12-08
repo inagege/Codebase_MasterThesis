@@ -1,37 +1,21 @@
-import os
-import requests
-import torch
 import soundfile as sf
-
-# First: enable MPS fallback to CPU for unsupported ops
-os.environ["PYTORCH_ENABLE_MPS_FALLBACK"] = "1"
 
 from transformers import Qwen2_5OmniForConditionalGeneration, Qwen2_5OmniProcessor
 from qwen_omni_utils import process_mm_info
+import torch
 
-# Download video only once
-video_url = "https://qianwen-res.oss-cn-beijing.aliyuncs.com/Qwen2.5-Omni/draw.mp4"
-video_path = "draw.mp4"
-if not os.path.exists(video_path):
-    resp = requests.get(video_url)
-    resp.raise_for_status()
-    with open(video_path, "wb") as f:
-        f.write(resp.content)
+# default: Load the model on the available device(s)
+#model = Qwen2_5OmniForConditionalGeneration.from_pretrained("Qwen/Qwen2.5-Omni-3B", torch_dtype="auto", device_map="auto")
 
-# automatically set device and dtype
-if torch.cuda.is_available():
-    device = torch.device("cuda")
-    dtype = torch.float16
-elif torch.backends.mps.is_available():
-    device = torch.device("cpu") 
-    dtype = torch.float16
+print("Loading Qwen2.5-Omni-3B model...")
 
-# Load model + tokenizer / processor
+# We recommend enabling flash_attention_2 for better acceleration and memory saving.
 model = Qwen2_5OmniForConditionalGeneration.from_pretrained(
-    "Qwen/Qwen2.5-Omni-3B",
-    torch_dtype=dtype,
-)
-model = model.to(device)
+     "Qwen/Qwen2.5-Omni-3B",
+     torch_dtype=torch.bfloat16,
+     device_map="auto",
+     attn_implementation="flash_attention_2",
+ )
 
 processor = Qwen2_5OmniProcessor.from_pretrained("Qwen/Qwen2.5-Omni-3B")
 
@@ -39,40 +23,29 @@ conversation = [
     {
         "role": "system",
         "content": [
-            {"type": "text", "text": "You are Qwen, a virtual human developed by the Qwen Team …"}
+            {"type": "text", "text": "Please classify the emotion of the speaker. The dataset contains 24 professional actors (12 female, 12 male), vocalizing two lexically-matched statements in a neutral North American accent. Speech includes the following emotions: neutral, calm, happy, sad, angry, fearful, disgust, surprised."},
         ],
     },
     {
         "role": "user",
         "content": [
-            {"type": "video", "video": video_path},
+            {"type": "video", "video": "data/01-01-02-02-02-01-01.mp4"},
         ],
     },
 ]
 
+# set use audio in video
 USE_AUDIO_IN_VIDEO = True
 
-# Prepare inputs
+# Preparation for inference
 text = processor.apply_chat_template(conversation, add_generation_prompt=True, tokenize=False)
 audios, images, videos = process_mm_info(conversation, use_audio_in_video=USE_AUDIO_IN_VIDEO)
-inputs = processor(
-    text=text, audio=audios, images=images, videos=videos,
-    return_tensors="pt", padding=True, use_audio_in_video=USE_AUDIO_IN_VIDEO
-)
+inputs = processor(text=text, audio=audios, images=images, videos=videos, return_tensors="pt", padding=True, use_audio_in_video=USE_AUDIO_IN_VIDEO)
+inputs = inputs.to(model.device).to(model.dtype)
 
-# Move inputs to device
-inputs = {k: v.to(device) for k, v in inputs.items()}
-
-# Run inference
+# Inference: Generation of the output text and audio
 text_ids, audio = model.generate(**inputs, use_audio_in_video=USE_AUDIO_IN_VIDEO)
 
-text = processor.batch_decode(
-    text_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False
-)
+text = processor.batch_decode(text_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False)
 print(text)
 
-sf.write(
-    "output.wav",
-    audio.reshape(-1).detach().cpu().numpy(),
-    samplerate=24000,
-)
