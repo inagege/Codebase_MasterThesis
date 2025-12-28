@@ -4,102 +4,111 @@ from transformers import Qwen2_5OmniForConditionalGeneration, Qwen2_5OmniProcess
 from qwen_omni_utils import process_mm_info
 import torch
 from datetime import datetime
+import os
 import pandas as pd
-import time
+import csv
+import numpy as np
+from util import get_label_for_file, get_utterance_text_for_file, extract_assistant_reply, get_ids_for_file
 
+meta_data = pd.read_csv("data/MELD.Raw/train_sent_emo.csv")
 
-train_data = pd.read_csv("data/MELD.Raw/train_sent_emo.csv")
-sample = "dia0_utt0.mp4"
-utterance_id = sample[sample.find("_utt")+4:sample.find(".mp4", sample.find("_utt"))]
-utterance = train_data[train_data["Sr No."] == utterance_id]["Utterance"]
+# system prompt entry (reused for each conversation)
+system_entry = {
+    "role": "system",
+    "content": [
+        {"type": "text", "text": "The dataset contains utterances from Friends TV series. Each utterance in a dialog can be of positive, negative or neutral sentiment. Please classify the given sample by answering with exactly one word: neutral, negative or positive."},
+    ],
+}
 
-print("Loading Qwen2.5-Omni-7B model at: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 # measure model load time
-t_load_start = time.time()
 model = Qwen2_5OmniForConditionalGeneration.from_pretrained(
      "Qwen/Qwen2.5-Omni-7B",
      torch_dtype=torch.bfloat16,
      device_map="auto",
      attn_implementation="flash_attention_2",
- )
-t_load_end = time.time()
-print(f"Model loaded in {t_load_end - t_load_start:.2f}s")
+)
+model.disable_talker()
 
 processor = Qwen2_5OmniProcessor.from_pretrained("Qwen/Qwen2.5-Omni-7B")
-print("Processor loaded at: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-print("torch.cuda.is_available():", torch.cuda.is_available())
-print("model device:", next(model.parameters()).device)
-print("model dtype:", next(model.parameters()).dtype)
 
-# Warm-up short generation to trigger kernel compilation / allocations
-try:
-    warm_conv = [
-        {"role": "user", "content": [{"type": "text", "text": "hello"}]}
-    ]
-    warm_text = processor.apply_chat_template(warm_conv, add_generation_prompt=True, tokenize=False)
-    warm_inputs = processor(text=warm_text, return_tensors="pt", padding=True)
-    warm_device = next(model.parameters()).device
-    if torch.cuda.is_available():
-        torch.cuda.synchronize()
-    warm_inputs = warm_inputs.to(warm_device)
-    if torch.cuda.is_available():
-        torch.cuda.synchronize()
-    t_w0 = time.time()
-    # small generation for warm-up
-    _ = model.generate(**warm_inputs, max_new_tokens=8)
-    if torch.cuda.is_available():
-        torch.cuda.synchronize()
-    t_w1 = time.time()
-    print(f"Warm-up generation took {t_w1 - t_w0:.2f}s")
-except Exception as e:
-    print("Warm-up failed:", e)
-
-conversation = [
-    {
-        "role": "system",
-        "content": [
-            {"type": "text", "text": "The dataset contains utterances from Friends TV series. Each utterance in a dialog can be of positive, negative or neutral sentiment. Please classify the given sample as: neutral, negative or positive."},
-        ],
-    },
-    {
-        "role": "user",
-        "content": [
-            {"type": "video", "video": "data/MELD.Raw/train_splits/dia0_utt0.mp4"},
-            {"type": "text", "text": utterance}
-        ],
-    },
-]
-
-# set use audio in video
+TOTAL_SAMPLES = None
 USE_AUDIO_IN_VIDEO = True
 
-# Preparation for inference
-text = processor.apply_chat_template(conversation, add_generation_prompt=True, tokenize=False)
-audios, images, videos = process_mm_info(conversation, use_audio_in_video=USE_AUDIO_IN_VIDEO)
-inputs = processor(text=text, audio=audios, images=images, videos=videos, return_tensors="pt", padding=True, use_audio_in_video=USE_AUDIO_IN_VIDEO)
+# collect mp4 files in deterministic order
+files = sorted([f for f in os.listdir("data/MELD.Raw/train_splits") if f.endswith('.mp4')])
+if TOTAL_SAMPLES is not None:
+    files = files[:TOTAL_SAMPLES]
 
-# measure device transfer time for inputs
+predictions = []
+
+# path to save predictions and errors
+out_path = os.path.join("out", "predictions.csv")
+out_error_path = os.path.join("out", "error_prediction.csv")
+
 device = next(model.parameters()).device
 dtype = next(model.parameters()).dtype
-if torch.cuda.is_available():
-    torch.cuda.synchronize()
-t_transfer_start = time.time()
-inputs = inputs.to(device).to(dtype)
-if torch.cuda.is_available():
-    torch.cuda.synchronize()
-t_transfer_end = time.time()
-print(f"Inputs transfer to device took {t_transfer_end - t_transfer_start:.2f}s")
 
-# Inference: Generation of the output text and audio
-if torch.cuda.is_available():
-    torch.cuda.synchronize()
-t_gen_start = time.time()
-text_ids, audio = model.generate(**inputs, use_audio_in_video=USE_AUDIO_IN_VIDEO, temperature=0, top_p=1)
-if torch.cuda.is_available():
-    torch.cuda.synchronize()
-t_gen_end = time.time()
-print(f"Generation took {t_gen_end - t_gen_start:.2f}s")
+for f in files:
+    full_path = os.path.join("data/MELD.Raw/train_splits", f)
+    utt_text = get_utterance_text_for_file(f, meta_data)
 
-text = processor.batch_decode(text_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False)
-print(text)
+    # build single-sample conversation
+    conversation = [system_entry, {"role": "user", "content": [
+        {"type": "video", "video": full_path},
+        {"type": "text", "text": utt_text},
+    ]}]
+
+    # Preparation for inference (single sample)
+    try:
+        text = processor.apply_chat_template(conversation, add_generation_prompt=True, tokenize=False)
+        audios, images, videos = process_mm_info(conversation, use_audio_in_video=USE_AUDIO_IN_VIDEO)
+        inputs = processor(text=text, audio=audios, images=images, videos=videos, return_tensors="pt", padding=True, use_audio_in_video=USE_AUDIO_IN_VIDEO)
+        inputs = inputs.to(device).to(dtype)
+
+        gen_output = model.generate(
+            **inputs,
+            use_audio_in_video=USE_AUDIO_IN_VIDEO,
+            return_audio=False,
+            output_scores=True,
+            do_sample=False
+        )
+    except Exception as e:
+        # append entry to error CSV
+        dia_id, utt_id = get_ids_for_file(f)
+        err_row = {"dialog_id": dia_id, "utterance_id": utt_id, "file": f, "error": str(e)}
+        os.makedirs(os.path.dirname(out_error_path), exist_ok=True)
+        write_header = not os.path.exists(out_error_path)
+        with open(out_error_path, "a", newline='', encoding='utf-8') as errf:
+            err_writer = csv.DictWriter(errf, fieldnames=["dialog_id", "utterance_id", "file", "error"])
+            if write_header:
+                err_writer.writeheader()
+            err_writer.writerow(err_row)
+        continue
+
+    if hasattr(gen_output, "sequences"):
+        text_ids = gen_output.sequences
+    elif isinstance(gen_output, (list, tuple)):
+        text_ids = gen_output[0]
+    else:
+        text_ids = gen_output
+
+    # ensure tensor is on CPU / converted to numpy/list for the processor
+    if isinstance(text_ids, torch.Tensor):
+        text_ids = text_ids.cpu()
+
+    decoded = processor.batch_decode(text_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False)
+    out = decoded[0] if isinstance(decoded, (list, tuple)) else decoded
+    reply = extract_assistant_reply(out)
+    dia_id, utt_id = get_ids_for_file(f)
+    label = get_label_for_file(f, meta_data)
+    new_row = {"dialog_id": dia_id, "utterance_id": utt_id, "file": f, "prediction": reply, "label": label}
+    predictions.append(new_row)
+
+    # Append only the new prediction to CSV (create header if file doesn't exist)
+    write_header = not os.path.exists(out_path)
+    with open(out_path, "a", newline='', encoding='utf-8') as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames=["dialog_id", "utterance_id", "file", "prediction", "label"]) 
+        if write_header:
+            writer.writeheader()
+        writer.writerow(new_row)
 

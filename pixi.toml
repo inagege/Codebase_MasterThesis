@@ -23,6 +23,8 @@ torchvision = "*"
 torchaudio = "*"
 cuda-version = "12.9.*"
 pip = "*"
+pandas = "*"
+numpy = "*"
 
 [activation]
 env = { PYTORCH_CUDA_ALLOC_CONF = "expandable_segments:True" }
