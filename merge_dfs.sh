@@ -1,8 +1,8 @@
 #!/bin/bash
-#SBATCH --job-name=qwen_omni_test         # Job name
+#SBATCH --job-name=merge_dfs            # Job name
 #SBATCH --output=logs/%x_%j.out           # Stdout log
 #SBATCH --error=logs/%x_%j.err            # Stderr log
-#SBATCH --time=5:00:00                   # Max runtime (hh:mm:ss)
+#SBATCH --time=00:10:00                   # Max runtime (hh:mm:ss)
 #SBATCH --gres=gpu:full:1                 # Request 1 GPU
 #SBATCH --cpus-per-task=8                 # CPU cores
 #SBATCH --mem=100G                        # RAM
@@ -11,10 +11,10 @@
 module load devel/cuda/12.9
 
 # Go to your project directory
-cd /hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis || exit 1
+cd /hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/utils || exit 1
 
 # (Optional but recommended) create logs directory if it doesn't exist
 mkdir -p logs
 
 # Run your Python script
-pixi run python test_qwen_omni.py
+pixi run python merge_predictions.py

@@ -3,14 +3,13 @@ import soundfile as sf
 from transformers import Qwen2_5OmniForConditionalGeneration, Qwen2_5OmniProcessor
 from qwen_omni_utils import process_mm_info
 import torch
-from datetime import datetime
 import os
 import pandas as pd
 import csv
 import numpy as np
-from util import get_label_for_file, get_utterance_text_for_file, extract_assistant_reply, get_ids_for_file
+from parsing_util import get_label_for_file, get_utterance_text_for_file, extract_assistant_reply, get_ids_for_file
 
-meta_data = pd.read_csv("data/MELD.Raw/train_sent_emo.csv")
+meta_data = pd.read_csv("data/MELD.Raw/test_sent_emo.csv")
 
 # system prompt entry (reused for each conversation)
 system_entry = {
@@ -35,21 +34,21 @@ TOTAL_SAMPLES = None
 USE_AUDIO_IN_VIDEO = True
 
 # collect mp4 files in deterministic order
-files = sorted([f for f in os.listdir("data/MELD.Raw/train_splits") if f.endswith('.mp4')])
+files = sorted([f for f in os.listdir("data/MELD.Raw/output_repeated_splits_test") if f.endswith('.mp4')])
 if TOTAL_SAMPLES is not None:
     files = files[:TOTAL_SAMPLES]
 
 predictions = []
 
 # path to save predictions and errors
-out_path = os.path.join("out", "predictions.csv")
-out_error_path = os.path.join("out", "error_prediction.csv")
+out_path = os.path.join("out", "test_predictions.csv")
+out_error_path = os.path.join("out", "test_error_prediction.csv")
 
 device = next(model.parameters()).device
 dtype = next(model.parameters()).dtype
 
 for f in files:
-    full_path = os.path.join("data/MELD.Raw/train_splits", f)
+    full_path = os.path.join("data/MELD.Raw/output_repeated_splits_test", f)
     utt_text = get_utterance_text_for_file(f, meta_data)
 
     # build single-sample conversation
