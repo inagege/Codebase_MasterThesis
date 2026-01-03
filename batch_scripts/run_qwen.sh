@@ -17,4 +17,4 @@ cd /hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterT
 mkdir -p logs
 
 # Run your Python script
-pixi run python test_qwen_omni.py
+pixi run python benchmark_unmodified_data.py
