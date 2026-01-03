@@ -1,0 +1,21 @@
+
+============================= JOB FEEDBACK =============================
+
+Job ID: 1597290
+Cluster: haic
+User/Group: ulrat/stud
+Account: stud
+State: COMPLETED (exit code 0)
+Partition: normal
+Nodes: 1
+Cores per node: 8
+Nodelist: haicn1704
+CPU Utilized: 05:16:19
+CPU Efficiency: 16.09% of 1-08:45:36 core-walltime
+Job Wall-clock time: 04:05:42
+Starttime: Sat Jan  3 13:24:06 2026
+Endtime: Sat Jan  3 17:29:48 2026
+Memory Utilized: 4.47 GB
+Memory Efficiency: 4.47% of 100.00 GB (100.00 GB/node)
+Energy Consumed: 11436391 Joule / 3176.77527777778 Watthours
+Average node power draw: 775.769298602632 Watt

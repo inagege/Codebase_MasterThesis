@@ -1,3 +1,7 @@
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
 import soundfile as sf
 
 from transformers import Qwen2_5OmniForConditionalGeneration, Qwen2_5OmniProcessor
@@ -7,7 +11,7 @@ import os
 import pandas as pd
 import csv
 import numpy as np
-from parsing_util import get_label_for_file, get_utterance_text_for_file, extract_assistant_reply, get_ids_for_file
+from utils.parsing_util import get_label_for_file, get_utterance_text_for_file, extract_assistant_reply, get_ids_for_file
 
 # Load metadata per split and list of directories to process (only files directly in each dir)
 from pathlib import Path

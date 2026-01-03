@@ -1,0 +1,23 @@
+Processed 1110 files. Sample output:
+ [('data/MELD.Raw/dev_splits_complete/dia0_utt0.mp4', 'data/MELD.Raw/dev_splits_complete/audio/dia0_utt0.mp4', 'data/MELD.Raw/dev_splits_complete/visual/dia0_utt0.mp4'), ('data/MELD.Raw/dev_splits_complete/dia0_utt1.mp4', 'data/MELD.Raw/dev_splits_complete/audio/dia0_utt1.mp4', 'data/MELD.Raw/dev_splits_complete/visual/dia0_utt1.mp4'), ('data/MELD.Raw/dev_splits_complete/dia100_utt0.mp4', 'data/MELD.Raw/dev_splits_complete/audio/dia100_utt0.mp4', 'data/MELD.Raw/dev_splits_complete/visual/dia100_utt0.mp4'), ('data/MELD.Raw/dev_splits_complete/dia101_utt0.mp4', 'data/MELD.Raw/dev_splits_complete/audio/dia101_utt0.mp4', 'data/MELD.Raw/dev_splits_complete/visual/dia101_utt0.mp4'), ('data/MELD.Raw/dev_splits_complete/dia102_utt0.mp4', 'data/MELD.Raw/dev_splits_complete/audio/dia102_utt0.mp4', 'data/MELD.Raw/dev_splits_complete/visual/dia102_utt0.mp4')]
+
+============================= JOB FEEDBACK =============================
+
+Job ID: 1597291
+Cluster: haic
+User/Group: ulrat/stud
+Account: stud
+State: COMPLETED (exit code 0)
+Partition: normal
+Nodes: 1
+Cores per node: 8
+Nodelist: haicn1704
+CPU Utilized: 00:50:42
+CPU Efficiency: 34.26% of 02:28:00 core-walltime
+Job Wall-clock time: 00:18:30
+Starttime: Sat Jan  3 13:27:11 2026
+Endtime: Sat Jan  3 13:45:41 2026
+Memory Utilized: 571.87 MB
+Memory Efficiency: 0.56% of 100.00 GB (100.00 GB/node)
+Energy Consumed: 874806 Joule / 243.001666666667 Watthours
+Average node power draw: 788.113513513514 Watt
