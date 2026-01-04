@@ -2,7 +2,7 @@
 authors = ["Ina <ina.gege@web.de>"]
 channels = ["conda-forge"]
 name = "Codebase_MasterThesis"
-platforms = ["linux-64"]
+platforms = ["linux-64", "osx-64"]
 version = "0.1.0"
 
 # CONDA_OVERRIDE_CUDA="12.0" pixi install
@@ -18,7 +18,6 @@ accelerate = "*"
 ffmpeg = "*"
 ninja = "*"
 packaging = "*"
-pytorch-gpu = "*"
 torchvision = "*"
 torchaudio = "*"
 cuda-version = "12.9.*"
@@ -26,10 +25,18 @@ pip = "*"
 pandas = "*"
 numpy = "*"
 
-[activation]
-env = { PYTORCH_CUDA_ALLOC_CONF = "expandable_segments:True" }
+[target.linux-64]
+[target.linux-64.dependencies]
+pytorch-gpu = "*"
 
-[pypi-dependencies]
+[target.linux-64.pypi-dependencies]
 qwen-omni-utils = {version = "*", extras=["decord"]}
 transformers = { git = "https://github.com/huggingface/transformers", tag = "v4.51.3-Qwen2.5-Omni-preview"}
-soundfile = "*"      
+soundfile = "*"
+
+[target.osx-64]
+[target.osx-64.dependencies]
+jupyterlab = "*"
+
+[activation]
+env = { PYTORCH_CUDA_ALLOC_CONF = "expandable_segments:True" }
