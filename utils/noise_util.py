@@ -222,9 +222,9 @@ def process_train_splits(base_dir: str | Path = os.path.join('data', 'MELD.Raw',
 
     if not modify_both:
         audio_dir = base_dir / audio_dir_name
-        #visual_dir = base_dir / visual_dir_name
+        visual_dir = base_dir / visual_dir_name
         audio_dir.mkdir(parents=True, exist_ok=True)
-        #visual_dir.mkdir(parents=True, exist_ok=True)
+        visual_dir.mkdir(parents=True, exist_ok=True)
     else:
         audio_visual_dir = base_dir / "audio_visual"
         audio_visual_dir.mkdir(parents=True, exist_ok=True)
@@ -242,7 +242,7 @@ def process_train_splits(base_dir: str | Path = os.path.join('data', 'MELD.Raw',
         path = p
         if not modify_both:
             out_audio = audio_dir / path.name
-            #out_visual = visual_dir / path.name
+            out_visual = visual_dir / path.name
         else:
             out_audio_visual = audio_visual_dir / path.name
 
@@ -254,14 +254,14 @@ def process_train_splits(base_dir: str | Path = os.path.join('data', 'MELD.Raw',
                 print(f"Failed to add audio noise to {path}: {e}")
                 out_audio = None
 
-            #try:
+            try:
                 # use gaussian distribution for visual noise by default
-            #    add_noise_to_video(path, out_visual, strength=video_strength, distribution='u', overwrite=overwrite)
-            #except subprocess.CalledProcessError as e:
-            #    print(f"Failed to add visual noise to {path}: {e}")
-            #    out_visual = None
+                add_noise_to_video(path, out_visual, strength=video_strength, distribution='u', overwrite=overwrite)
+            except subprocess.CalledProcessError as e:
+                print(f"Failed to add visual noise to {path}: {e}")
+                out_visual = None
 
-            results.append((str(path), str(out_audio) if out_audio else None))# , str(out_visual) if out_visual else None))
+            results.append((str(path), str(out_audio) if out_audio else None, str(out_visual) if out_visual else None))
         else:
             try:
                 # add noise to both audio and visual streams
@@ -284,16 +284,17 @@ def process_train_splits(base_dir: str | Path = os.path.join('data', 'MELD.Raw',
 
 if __name__ == '__main__':
     # Hardcoded settings (no argument parser)
-    BASE_DIR = os.path.join('data', 'MELD.Raw', 'train_splits')
-    AUDIO_AMPLITUDE = 0.02
+    BASE_DIRS = [os.path.join('data', 'MELD.Raw', 'train_splits'), os.path.join('data', 'MELD.Raw', 'output_repeated_splits_test'), os.path.join('data', 'MELD.Raw', 'dev_splits_complete')]
+    AUDIO_AMPLITUDE = 0.5
     # Target audio SNR in dB when adding noise (signal_level - noise_level). Set to 10 dB by default.
-    AUDIO_SNR_DB = 5.0
-    VIDEO_STRENGTH = 60.0
+    AUDIO_SNR_DB = -20
+    VIDEO_STRENGTH = 100
     OVERWRITE = False
     MAX_SAMPLES = None
 
     #set current working directory
     os.chdir('/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/')
 
-    results = process_train_splits(BASE_DIR, audio_amplitude=AUDIO_AMPLITUDE, video_strength=VIDEO_STRENGTH, audio_snr_db=AUDIO_SNR_DB, overwrite=OVERWRITE, max_samples=MAX_SAMPLES, modify_both=True)
-    print(f"Processed {len(results)} files. Sample output:\n", results[:5])
+    for BASE_DIR in BASE_DIRS:
+        results = process_train_splits(BASE_DIR, audio_amplitude=AUDIO_AMPLITUDE, video_strength=VIDEO_STRENGTH, audio_snr_db=AUDIO_SNR_DB, overwrite=OVERWRITE, max_samples=MAX_SAMPLES, modify_both=True)
+        print(f"Processed {len(results)} files. Sample output:\n", results[:5])
