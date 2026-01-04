@@ -17,9 +17,9 @@ from utils.parsing_util import get_label_for_file, get_utterance_text_for_file, 
 from pathlib import Path
 
 SPLIT_CONFIGS = [
-    ("data/MELD.Raw/output_repeated_splits_test/audio", "data/MELD.Raw/test_sent_emo.csv", "output_repeated_splits_test/audio"),
-    ("data/MELD.Raw/dev_splits_complete/audio", "data/MELD.Raw/dev_sent_emo.csv", "dev_splits_complete/audio"),
-    ("data/MELD.Raw/train_splits/audio", "data/MELD.Raw/train_sent_emo.csv", "train_splits/audio"),
+    ("data/MELD.Raw/output_repeated_splits_test/audio_visual", "data/MELD.Raw/test_sent_emo.csv", "output_repeated_splits_test/audio_visual"),
+    ("data/MELD.Raw/dev_splits_complete/audio_visual", "data/MELD.Raw/dev_sent_emo.csv", "dev_splits_complete/audio_visual"),
+    ("data/MELD.Raw/train_splits/audio_visual", "data/MELD.Raw/train_sent_emo.csv", "train_splits/audio_visual"),
 ]
 
 # Load metadata DataFrames
@@ -66,8 +66,8 @@ processor = Qwen2_5OmniProcessor.from_pretrained("Qwen/Qwen2.5-Omni-7B")
 predictions = []
 
 # path to save predictions and errors
-out_path = os.path.join("out", "predictions_audio_noise.csv")
-out_error_path = os.path.join("out", "error_prediction_audio_noise.csv")
+out_path = os.path.join("out", "predictions_audio_visual_noise.csv")
+out_error_path = os.path.join("out", "error_prediction_audio_visual_noise.csv")
 
 device = next(model.parameters()).device
 dtype = next(model.parameters()).dtype
