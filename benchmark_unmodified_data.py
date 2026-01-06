@@ -49,7 +49,7 @@ for _dir, _meta_csv, split in SPLIT_CONFIGS:
         files.append((p.name, str(p), split))
 
 # Optionally limit total samples across all splits
-TOTAL_SAMPLES = None
+TOTAL_SAMPLES = 1
 USE_AUDIO_IN_VIDEO = True
 
 # measure model load time

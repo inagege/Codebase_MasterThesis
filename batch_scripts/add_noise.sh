@@ -2,7 +2,7 @@
 #SBATCH --job-name=add_noise            # Job name
 #SBATCH --output=logs/%x_%j.out           # Stdout log
 #SBATCH --error=logs/%x_%j.err            # Stderr log
-#SBATCH --time=05:00:00                   # Max runtime (hh:mm:ss)
+#SBATCH --time=7:00:00                   # Max runtime (hh:mm:ss)
 #SBATCH --gres=gpu:full:1                 # Request 1 GPU
 #SBATCH --cpus-per-task=8                 # CPU cores
 #SBATCH --mem=100G                        # RAM

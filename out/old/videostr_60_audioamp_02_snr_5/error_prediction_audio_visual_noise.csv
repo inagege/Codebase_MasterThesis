@@ -1,0 +1,25 @@
+dialog_id,utterance_id,file,error
+132,17,dia132_utt17.mp4,index 2 is out of bounds for dimension 0 with size 2
+155,4,dia155_utt4.mp4,index 2 is out of bounds for dimension 0 with size 2
+246,5,dia246_utt5.mp4,index 2 is out of bounds for dimension 0 with size 2
+93,7,dia93_utt7.mp4,index 2 is out of bounds for dimension 0 with size 2
+5,9,dia5_utt9.mp4,index 2 is out of bounds for dimension 0 with size 2
+254,3,dia254_utt3.mp4,index 2 is out of bounds for dimension 0 with size 2
+260,3,dia260_utt3.mp4,index 2 is out of bounds for dimension 0 with size 2
+28,2,dia28_utt2.mp4,index 2 is out of bounds for dimension 0 with size 2
+296,4,dia296_utt4.mp4,index 2 is out of bounds for dimension 0 with size 2
+32,5,dia32_utt5.mp4,index 2 is out of bounds for dimension 0 with size 2
+40,5,dia40_utt5.mp4,index 2 is out of bounds for dimension 0 with size 2
+414,2,dia414_utt2.mp4,index 2 is out of bounds for dimension 0 with size 2
+468,4,dia468_utt4.mp4,index 2 is out of bounds for dimension 0 with size 2
+478,3,dia478_utt3.mp4,index 2 is out of bounds for dimension 0 with size 2
+509,14,dia509_utt14.mp4,index 2 is out of bounds for dimension 0 with size 2
+523,2,dia523_utt2.mp4,index 2 is out of bounds for dimension 0 with size 2
+536,5,dia536_utt5.mp4,index 2 is out of bounds for dimension 0 with size 2
+695,4,dia695_utt4.mp4,index 2 is out of bounds for dimension 0 with size 2
+789,7,dia789_utt7.mp4,index 2 is out of bounds for dimension 0 with size 2
+81,7,dia81_utt7.mp4,index 2 is out of bounds for dimension 0 with size 2
+893,6,dia893_utt6.mp4,index 2 is out of bounds for dimension 0 with size 2
+8,6,dia8_utt6.mp4,index 2 is out of bounds for dimension 0 with size 2
+936,18,dia936_utt18.mp4,index 2 is out of bounds for dimension 0 with size 2
+996,15,dia996_utt15.mp4,index 2 is out of bounds for dimension 0 with size 2

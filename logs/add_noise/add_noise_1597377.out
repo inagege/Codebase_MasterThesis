@@ -1,0 +1,27 @@
+Processed 9976 files. Sample output:
+ [('data/MELD.Raw/train_splits/dia0_utt0.mp4', 'data/MELD.Raw/train_splits/audio/dia0_utt0.mp4', 'data/MELD.Raw/train_splits/visual/dia0_utt0.mp4'), ('data/MELD.Raw/train_splits/dia0_utt1.mp4', 'data/MELD.Raw/train_splits/audio/dia0_utt1.mp4', 'data/MELD.Raw/train_splits/visual/dia0_utt1.mp4'), ('data/MELD.Raw/train_splits/dia0_utt10.mp4', 'data/MELD.Raw/train_splits/audio/dia0_utt10.mp4', 'data/MELD.Raw/train_splits/visual/dia0_utt10.mp4'), ('data/MELD.Raw/train_splits/dia0_utt11.mp4', 'data/MELD.Raw/train_splits/audio/dia0_utt11.mp4', 'data/MELD.Raw/train_splits/visual/dia0_utt11.mp4'), ('data/MELD.Raw/train_splits/dia0_utt12.mp4', 'data/MELD.Raw/train_splits/audio/dia0_utt12.mp4', 'data/MELD.Raw/train_splits/visual/dia0_utt12.mp4')]
+Processed 2745 files. Sample output:
+ [('data/MELD.Raw/output_repeated_splits_test/dia0_utt0.mp4', 'data/MELD.Raw/output_repeated_splits_test/audio/dia0_utt0.mp4', 'data/MELD.Raw/output_repeated_splits_test/visual/dia0_utt0.mp4'), ('data/MELD.Raw/output_repeated_splits_test/dia0_utt1.mp4', 'data/MELD.Raw/output_repeated_splits_test/audio/dia0_utt1.mp4', 'data/MELD.Raw/output_repeated_splits_test/visual/dia0_utt1.mp4'), ('data/MELD.Raw/output_repeated_splits_test/dia0_utt2.mp4', 'data/MELD.Raw/output_repeated_splits_test/audio/dia0_utt2.mp4', 'data/MELD.Raw/output_repeated_splits_test/visual/dia0_utt2.mp4'), ('data/MELD.Raw/output_repeated_splits_test/dia100_utt0.mp4', 'data/MELD.Raw/output_repeated_splits_test/audio/dia100_utt0.mp4', 'data/MELD.Raw/output_repeated_splits_test/visual/dia100_utt0.mp4'), ('data/MELD.Raw/output_repeated_splits_test/dia100_utt1.mp4', 'data/MELD.Raw/output_repeated_splits_test/audio/dia100_utt1.mp4', 'data/MELD.Raw/output_repeated_splits_test/visual/dia100_utt1.mp4')]
+Processed 1110 files. Sample output:
+ [('data/MELD.Raw/dev_splits_complete/dia0_utt0.mp4', 'data/MELD.Raw/dev_splits_complete/audio/dia0_utt0.mp4', 'data/MELD.Raw/dev_splits_complete/visual/dia0_utt0.mp4'), ('data/MELD.Raw/dev_splits_complete/dia0_utt1.mp4', 'data/MELD.Raw/dev_splits_complete/audio/dia0_utt1.mp4', 'data/MELD.Raw/dev_splits_complete/visual/dia0_utt1.mp4'), ('data/MELD.Raw/dev_splits_complete/dia100_utt0.mp4', 'data/MELD.Raw/dev_splits_complete/audio/dia100_utt0.mp4', 'data/MELD.Raw/dev_splits_complete/visual/dia100_utt0.mp4'), ('data/MELD.Raw/dev_splits_complete/dia101_utt0.mp4', 'data/MELD.Raw/dev_splits_complete/audio/dia101_utt0.mp4', 'data/MELD.Raw/dev_splits_complete/visual/dia101_utt0.mp4'), ('data/MELD.Raw/dev_splits_complete/dia102_utt0.mp4', 'data/MELD.Raw/dev_splits_complete/audio/dia102_utt0.mp4', 'data/MELD.Raw/dev_splits_complete/visual/dia102_utt0.mp4')]
+
+============================= JOB FEEDBACK =============================
+
+Job ID: 1597377
+Cluster: haic
+User/Group: ulrat/stud
+Account: stud
+State: COMPLETED (exit code 0)
+Partition: normal
+Nodes: 1
+Cores per node: 8
+Nodelist: haicn1704
+CPU Utilized: 09:43:43
+CPU Efficiency: 37.37% of 1-02:02:00 core-walltime
+Job Wall-clock time: 03:15:15
+Starttime: Sun Jan  4 14:23:09 2026
+Endtime: Sun Jan  4 17:38:24 2026
+Memory Utilized: 579.38 MB
+Memory Efficiency: 0.57% of 100.00 GB (100.00 GB/node)
+Energy Consumed: 8124438 Joule / 2256.78833333333 Watthours
+Average node power draw: 693.507298335467 Watt
