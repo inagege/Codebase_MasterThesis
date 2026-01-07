@@ -1,0 +1,49 @@
+dialog_id,utterance_id,file,error,traceback
+108,1,dia108_utt1.mp4,"No sentiment label found for Dialogue_ID=108, Utterance_ID=1 (file=dia108_utt1.mp4)","Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/benchmark_modalities.py"", line 222, in main
+    label = get_label_for_file(f, meta_data)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/utils/parsing_util.py"", line 97, in get_label_for_file
+    raise LabelNotFoundError(f""No sentiment label found for Dialogue_ID={dia_id}, Utterance_ID={utt_id} (file={filename})"")
+utils.parsing_util.LabelNotFoundError: No sentiment label found for Dialogue_ID=108, Utterance_ID=1 (file=dia108_utt1.mp4)
+"
+108,2,dia108_utt2.mp4,"No sentiment label found for Dialogue_ID=108, Utterance_ID=2 (file=dia108_utt2.mp4)","Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/benchmark_modalities.py"", line 222, in main
+    label = get_label_for_file(f, meta_data)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/utils/parsing_util.py"", line 97, in get_label_for_file
+    raise LabelNotFoundError(f""No sentiment label found for Dialogue_ID={dia_id}, Utterance_ID={utt_id} (file={filename})"")
+utils.parsing_util.LabelNotFoundError: No sentiment label found for Dialogue_ID=108, Utterance_ID=2 (file=dia108_utt2.mp4)
+"
+93,5,dia93_utt5.mp4,"No sentiment label found for Dialogue_ID=93, Utterance_ID=5 (file=dia93_utt5.mp4)","Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/benchmark_modalities.py"", line 222, in main
+    label = get_label_for_file(f, meta_data)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/utils/parsing_util.py"", line 97, in get_label_for_file
+    raise LabelNotFoundError(f""No sentiment label found for Dialogue_ID={dia_id}, Utterance_ID={utt_id} (file={filename})"")
+utils.parsing_util.LabelNotFoundError: No sentiment label found for Dialogue_ID=93, Utterance_ID=5 (file=dia93_utt5.mp4)
+"
+93,6,dia93_utt6.mp4,"No sentiment label found for Dialogue_ID=93, Utterance_ID=6 (file=dia93_utt6.mp4)","Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/benchmark_modalities.py"", line 222, in main
+    label = get_label_for_file(f, meta_data)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/utils/parsing_util.py"", line 97, in get_label_for_file
+    raise LabelNotFoundError(f""No sentiment label found for Dialogue_ID={dia_id}, Utterance_ID={utt_id} (file={filename})"")
+utils.parsing_util.LabelNotFoundError: No sentiment label found for Dialogue_ID=93, Utterance_ID=6 (file=dia93_utt6.mp4)
+"
+93,7,dia93_utt7.mp4,"No sentiment label found for Dialogue_ID=93, Utterance_ID=7 (file=dia93_utt7.mp4)","Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/benchmark_modalities.py"", line 222, in main
+    label = get_label_for_file(f, meta_data)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/utils/parsing_util.py"", line 97, in get_label_for_file
+    raise LabelNotFoundError(f""No sentiment label found for Dialogue_ID={dia_id}, Utterance_ID={utt_id} (file={filename})"")
+utils.parsing_util.LabelNotFoundError: No sentiment label found for Dialogue_ID=93, Utterance_ID=7 (file=dia93_utt7.mp4)
+"
+-1,-1,final_videos_testdia93_utt6.mp4,"No sentiment label found for Dialogue_ID=93, Utterance_ID=6 (file=final_videos_testdia93_utt6.mp4)","Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/benchmark_modalities.py"", line 222, in main
+    label = get_label_for_file(f, meta_data)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/utils/parsing_util.py"", line 97, in get_label_for_file
+    raise LabelNotFoundError(f""No sentiment label found for Dialogue_ID={dia_id}, Utterance_ID={utt_id} (file={filename})"")
+utils.parsing_util.LabelNotFoundError: No sentiment label found for Dialogue_ID=93, Utterance_ID=6 (file=final_videos_testdia93_utt6.mp4)
+"

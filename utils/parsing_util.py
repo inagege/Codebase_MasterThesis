@@ -58,10 +58,6 @@ def extract_assistant_reply(full_text: str) -> str:
     return full_text.strip()
 
 
-class LabelNotFoundError(Exception):
-    """Raised when no sentiment label can be found for a given file's IDs."""
-    pass
-
 
 def get_label_for_file(filename: str, meta_data: pd.DataFrame) -> str:
     """Get the sentiment label for a given filename from the metadata DataFrame.
@@ -94,7 +90,7 @@ def get_label_for_file(filename: str, meta_data: pd.DataFrame) -> str:
 
     matches = meta_data.loc[mask, "Sentiment"]
     if matches.empty:
-        raise LabelNotFoundError(f"No sentiment label found for Dialogue_ID={dia_id}, Utterance_ID={utt_id} (file={filename})")
+        return "unknown"
 
     # normalize and return as string
     return str(matches.iloc[0])

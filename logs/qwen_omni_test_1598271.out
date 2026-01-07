@@ -1,0 +1,170 @@
+[INFO] CWD: /hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis
+[INFO] Modalities enabled: ['text']
+[INFO] out_path=out/prediction.csv
+[INFO] out_error_path=out/error_prediction.csv
+[INFO] Loaded meta: data/MELD.Raw/test_sent_emo.csv rows=2610
+[INFO] Scanning dir: data/MELD.Raw/output_repeated_splits_test/unmodified (exists=True)
+[INFO] Found 2745 mp4 files in data/MELD.Raw/output_repeated_splits_test/unmodified
+[INFO] Total files to process: 2745
+[INFO] Loading model...
+[INFO] Model loaded.
+[INFO] device=cuda:0 dtype=torch.bfloat16
+[INFO] Wrote prediction 1/2745 -> out/prediction.csv
+[INFO] Wrote prediction 20/2745 -> out/prediction.csv
+[INFO] Wrote prediction 40/2745 -> out/prediction.csv
+[INFO] Wrote prediction 60/2745 -> out/prediction.csv
+[INFO] Wrote prediction 80/2745 -> out/prediction.csv
+[INFO] Wrote prediction 100/2745 -> out/prediction.csv
+[INFO] Wrote prediction 120/2745 -> out/prediction.csv
+[INFO] Wrote prediction 140/2745 -> out/prediction.csv
+[INFO] Wrote prediction 160/2745 -> out/prediction.csv
+[INFO] Wrote prediction 180/2745 -> out/prediction.csv
+[INFO] Wrote prediction 200/2745 -> out/prediction.csv
+[INFO] Wrote prediction 220/2745 -> out/prediction.csv
+[INFO] Wrote prediction 240/2745 -> out/prediction.csv
+[INFO] Wrote prediction 260/2745 -> out/prediction.csv
+[INFO] Wrote prediction 280/2745 -> out/prediction.csv
+[INFO] Wrote prediction 300/2745 -> out/prediction.csv
+[INFO] Wrote prediction 320/2745 -> out/prediction.csv
+[INFO] Wrote prediction 340/2745 -> out/prediction.csv
+[INFO] Wrote prediction 360/2745 -> out/prediction.csv
+[INFO] Wrote prediction 380/2745 -> out/prediction.csv
+[INFO] Wrote prediction 400/2745 -> out/prediction.csv
+[INFO] Wrote prediction 420/2745 -> out/prediction.csv
+[INFO] Wrote prediction 440/2745 -> out/prediction.csv
+[INFO] Wrote prediction 460/2745 -> out/prediction.csv
+[INFO] Wrote prediction 480/2745 -> out/prediction.csv
+[INFO] Wrote prediction 500/2745 -> out/prediction.csv
+[INFO] Wrote prediction 520/2745 -> out/prediction.csv
+[INFO] Wrote prediction 540/2745 -> out/prediction.csv
+[INFO] Wrote prediction 560/2745 -> out/prediction.csv
+[INFO] Wrote prediction 580/2745 -> out/prediction.csv
+[INFO] Wrote prediction 600/2745 -> out/prediction.csv
+[INFO] Wrote prediction 620/2745 -> out/prediction.csv
+[INFO] Wrote prediction 640/2745 -> out/prediction.csv
+[INFO] Wrote prediction 660/2745 -> out/prediction.csv
+[INFO] Wrote prediction 680/2745 -> out/prediction.csv
+[INFO] Wrote prediction 700/2745 -> out/prediction.csv
+[INFO] Wrote prediction 720/2745 -> out/prediction.csv
+[INFO] Wrote prediction 740/2745 -> out/prediction.csv
+[INFO] Wrote prediction 760/2745 -> out/prediction.csv
+[INFO] Wrote prediction 780/2745 -> out/prediction.csv
+[INFO] Wrote prediction 800/2745 -> out/prediction.csv
+[INFO] Wrote prediction 820/2745 -> out/prediction.csv
+[INFO] Wrote prediction 840/2745 -> out/prediction.csv
+[INFO] Wrote prediction 860/2745 -> out/prediction.csv
+[INFO] Wrote prediction 880/2745 -> out/prediction.csv
+[INFO] Wrote prediction 900/2745 -> out/prediction.csv
+[INFO] Wrote prediction 920/2745 -> out/prediction.csv
+[INFO] Wrote prediction 940/2745 -> out/prediction.csv
+[INFO] Wrote prediction 960/2745 -> out/prediction.csv
+[INFO] Wrote prediction 980/2745 -> out/prediction.csv
+[INFO] Wrote prediction 1000/2745 -> out/prediction.csv
+[INFO] Wrote prediction 1020/2745 -> out/prediction.csv
+[INFO] Wrote prediction 1040/2745 -> out/prediction.csv
+[INFO] Wrote prediction 1060/2745 -> out/prediction.csv
+[INFO] Wrote prediction 1080/2745 -> out/prediction.csv
+[INFO] Wrote prediction 1100/2745 -> out/prediction.csv
+[INFO] Wrote prediction 1120/2745 -> out/prediction.csv
+[INFO] Wrote prediction 1140/2745 -> out/prediction.csv
+[INFO] Wrote prediction 1160/2745 -> out/prediction.csv
+[INFO] Wrote prediction 1180/2745 -> out/prediction.csv
+[INFO] Wrote prediction 1200/2745 -> out/prediction.csv
+[INFO] Wrote prediction 1220/2745 -> out/prediction.csv
+[INFO] Wrote prediction 1240/2745 -> out/prediction.csv
+[INFO] Wrote prediction 1260/2745 -> out/prediction.csv
+[INFO] Wrote prediction 1280/2745 -> out/prediction.csv
+[INFO] Wrote prediction 1300/2745 -> out/prediction.csv
+[INFO] Wrote prediction 1320/2745 -> out/prediction.csv
+[INFO] Wrote prediction 1340/2745 -> out/prediction.csv
+[INFO] Wrote prediction 1360/2745 -> out/prediction.csv
+[INFO] Wrote prediction 1380/2745 -> out/prediction.csv
+[INFO] Wrote prediction 1400/2745 -> out/prediction.csv
+[INFO] Wrote prediction 1420/2745 -> out/prediction.csv
+[INFO] Wrote prediction 1440/2745 -> out/prediction.csv
+[INFO] Wrote prediction 1460/2745 -> out/prediction.csv
+[INFO] Wrote prediction 1480/2745 -> out/prediction.csv
+[INFO] Wrote prediction 1500/2745 -> out/prediction.csv
+[INFO] Wrote prediction 1520/2745 -> out/prediction.csv
+[INFO] Wrote prediction 1540/2745 -> out/prediction.csv
+[INFO] Wrote prediction 1560/2745 -> out/prediction.csv
+[INFO] Wrote prediction 1580/2745 -> out/prediction.csv
+[INFO] Wrote prediction 1600/2745 -> out/prediction.csv
+[INFO] Wrote prediction 1620/2745 -> out/prediction.csv
+[INFO] Wrote prediction 1640/2745 -> out/prediction.csv
+[INFO] Wrote prediction 1660/2745 -> out/prediction.csv
+[INFO] Wrote prediction 1680/2745 -> out/prediction.csv
+[INFO] Wrote prediction 1700/2745 -> out/prediction.csv
+[INFO] Wrote prediction 1720/2745 -> out/prediction.csv
+[INFO] Wrote prediction 1740/2745 -> out/prediction.csv
+[INFO] Wrote prediction 1760/2745 -> out/prediction.csv
+[INFO] Wrote prediction 1780/2745 -> out/prediction.csv
+[INFO] Wrote prediction 1800/2745 -> out/prediction.csv
+[INFO] Wrote prediction 1820/2745 -> out/prediction.csv
+[INFO] Wrote prediction 1840/2745 -> out/prediction.csv
+[INFO] Wrote prediction 1860/2745 -> out/prediction.csv
+[INFO] Wrote prediction 1880/2745 -> out/prediction.csv
+[INFO] Wrote prediction 1900/2745 -> out/prediction.csv
+[INFO] Wrote prediction 1920/2745 -> out/prediction.csv
+[INFO] Wrote prediction 1940/2745 -> out/prediction.csv
+[INFO] Wrote prediction 1960/2745 -> out/prediction.csv
+[INFO] Wrote prediction 1980/2745 -> out/prediction.csv
+[INFO] Wrote prediction 2000/2745 -> out/prediction.csv
+[INFO] Wrote prediction 2020/2745 -> out/prediction.csv
+[INFO] Wrote prediction 2040/2745 -> out/prediction.csv
+[INFO] Wrote prediction 2060/2745 -> out/prediction.csv
+[INFO] Wrote prediction 2080/2745 -> out/prediction.csv
+[INFO] Wrote prediction 2100/2745 -> out/prediction.csv
+[INFO] Wrote prediction 2120/2745 -> out/prediction.csv
+[INFO] Wrote prediction 2140/2745 -> out/prediction.csv
+[INFO] Wrote prediction 2160/2745 -> out/prediction.csv
+[INFO] Wrote prediction 2180/2745 -> out/prediction.csv
+[INFO] Wrote prediction 2200/2745 -> out/prediction.csv
+[INFO] Wrote prediction 2220/2745 -> out/prediction.csv
+[INFO] Wrote prediction 2240/2745 -> out/prediction.csv
+[INFO] Wrote prediction 2260/2745 -> out/prediction.csv
+[INFO] Wrote prediction 2280/2745 -> out/prediction.csv
+[INFO] Wrote prediction 2300/2745 -> out/prediction.csv
+[INFO] Wrote prediction 2320/2745 -> out/prediction.csv
+[INFO] Wrote prediction 2340/2745 -> out/prediction.csv
+[INFO] Wrote prediction 2360/2745 -> out/prediction.csv
+[INFO] Wrote prediction 2380/2745 -> out/prediction.csv
+[INFO] Wrote prediction 2400/2745 -> out/prediction.csv
+[INFO] Wrote prediction 2420/2745 -> out/prediction.csv
+[INFO] Wrote prediction 2440/2745 -> out/prediction.csv
+[INFO] Wrote prediction 2460/2745 -> out/prediction.csv
+[INFO] Wrote prediction 2480/2745 -> out/prediction.csv
+[INFO] Wrote prediction 2500/2745 -> out/prediction.csv
+[INFO] Wrote prediction 2520/2745 -> out/prediction.csv
+[INFO] Wrote prediction 2540/2745 -> out/prediction.csv
+[INFO] Wrote prediction 2560/2745 -> out/prediction.csv
+[INFO] Wrote prediction 2580/2745 -> out/prediction.csv
+[INFO] Wrote prediction 2600/2745 -> out/prediction.csv
+[INFO] Wrote prediction 2620/2745 -> out/prediction.csv
+[INFO] Wrote prediction 2640/2745 -> out/prediction.csv
+[INFO] Wrote prediction 2660/2745 -> out/prediction.csv
+[INFO] Wrote prediction 2680/2745 -> out/prediction.csv
+[INFO] Wrote prediction 2700/2745 -> out/prediction.csv
+[INFO] Wrote prediction 2720/2745 -> out/prediction.csv
+[INFO] Wrote prediction 2740/2745 -> out/prediction.csv
+
+============================= JOB FEEDBACK =============================
+
+Job ID: 1598271
+Cluster: haic
+User/Group: ulrat/stud
+Account: stud
+State: COMPLETED (exit code 0)
+Partition: normal
+Nodes: 1
+Cores per node: 8
+Nodelist: haicn1704
+CPU Utilized: 00:02:37
+CPU Efficiency: 10.61% of 00:24:40 core-walltime
+Job Wall-clock time: 00:03:05
+Starttime: Tue Jan  6 21:07:09 2026
+Endtime: Tue Jan  6 21:10:14 2026
+Memory Utilized: 2.36 GB
+Memory Efficiency: 2.36% of 100.00 GB (100.00 GB/node)
+Energy Consumed: 207521 Joule / 57.6447222222222 Watthours
+Average node power draw: 1121.73513513514 Watt

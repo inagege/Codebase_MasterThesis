@@ -1,0 +1,37 @@
+[INFO] CWD: /hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis
+[INFO] Modalities enabled: ['video']
+[INFO] audio_subdir=audio_only
+[INFO] out_path=out/prediction.csv
+[INFO] out_error_path=out/error_prediction.csv
+[INFO] Loaded meta: data/MELD.Raw/test_sent_emo.csv rows=2610
+[INFO] Scanning dir: data/MELD.Raw/output_repeated_splits_test/unmodified (exists=True)
+[INFO] Found 2745 mp4 files in data/MELD.Raw/output_repeated_splits_test/unmodified
+[INFO] Total files to process: 2745
+[INFO] Loading model...
+[INFO] Model loaded.
+[INFO] device=cuda:0 dtype=torch.bfloat16
+[INFO] Wrote prediction 1/2745 -> out/prediction.csv
+[INFO] Wrote prediction 20/2745 -> out/prediction.csv
+[INFO] Wrote prediction 40/2745 -> out/prediction.csv
+[INFO] Wrote prediction 60/2745 -> out/prediction.csv
+
+============================= JOB FEEDBACK =============================
+
+Job ID: 1598314
+Cluster: haic
+User/Group: ulrat/stud
+Account: stud
+State: FAILED (exit code 1)
+Partition: normal
+Nodes: 1
+Cores per node: 8
+Nodelist: haicn1709
+CPU Utilized: 00:01:33
+CPU Efficiency: 12.77% of 00:12:08 core-walltime
+Job Wall-clock time: 00:01:31
+Starttime: Tue Jan  6 22:30:46 2026
+Endtime: Tue Jan  6 22:32:17 2026
+Memory Utilized: 2.54 GB
+Memory Efficiency: 2.54% of 100.00 GB (100.00 GB/node)
+Energy Consumed: 58997 Joule / 16.3880555555556 Watthours
+Average node power draw: 648.318681318681 Watt

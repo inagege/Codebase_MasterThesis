@@ -1,0 +1,30 @@
+[INFO] CWD: /hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis
+[INFO] Modalities enabled: ['audio']
+[INFO] out_path=out/prediction_audio.csv
+[INFO] out_error_path=out/error_prediction_audio.csv
+[INFO] Loaded meta: data/MELD.Raw/test_sent_emo.csv rows=2610
+[INFO] Scanning dir: data/MELD.Raw/output_repeated_splits_test/unmodified (exists=True)
+[INFO] Found 2745 mp4 files in data/MELD.Raw/output_repeated_splits_test/unmodified
+[INFO] Total files to process: 2745
+[INFO] Loading model...
+[INFO] Model loaded.
+[INFO] device=cuda:0 dtype=torch.bfloat16
+
+============================= JOB FEEDBACK =============================
+
+Job ID: 1598280
+Cluster: haic
+User/Group: ulrat/stud
+Account: stud
+State: COMPLETED (exit code 0)
+Partition: normal
+Nodes: 1
+Cores per node: 8
+Nodelist: haicn1706
+CPU Utilized: 00:27:30
+CPU Efficiency: 26.04% of 01:45:36 core-walltime
+Job Wall-clock time: 00:13:12
+Starttime: Tue Jan  6 21:15:56 2026
+Endtime: Tue Jan  6 21:29:08 2026
+Memory Utilized: 3.97 GB
+Memory Efficiency: 3.97% of 100.00 GB (100.00 GB/node)
