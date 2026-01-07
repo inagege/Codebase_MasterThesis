@@ -1,0 +1,793 @@
+dialog_id,utterance_id,file,error,traceback
+126,15,dia126_utt15.mp4,"nframes should in interval [2, 1], but got 0.","Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 402, in fetch_video
+    video, sample_fps = VIDEO_READER_BACKENDS[video_reader_backend](ele)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 316, in _read_video_decord
+    nframes = smart_nframes(ele, total_frames=total_frames, video_fps=video_fps)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 185, in smart_nframes
+    raise ValueError(f""nframes should in interval [{FRAME_FACTOR}, {total_frames}], but got {nframes}."")
+ValueError: nframes should in interval [2, 1], but got 0.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/benchmark_modalities.py"", line 216, in main
+    audios, images, videos = process_mm_info(conversation, use_audio_in_video=False)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/__init__.py"", line 13, in process_mm_info
+    vision = process_vision_info(conversations, return_video_kwargs=return_video_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 487, in process_vision_info
+    video_input, video_sample_fps = fetch_video(vision_info, return_video_sample_fps=True)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 405, in fetch_video
+    video, sample_fps = VIDEO_READER_BACKENDS[""torchvision""](ele)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 219, in _read_video_torchvision
+    nframes = smart_nframes(ele, total_frames=total_frames, video_fps=video_fps)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 185, in smart_nframes
+    raise ValueError(f""nframes should in interval [{FRAME_FACTOR}, {total_frames}], but got {nframes}."")
+ValueError: nframes should in interval [2, 1], but got 0.
+"
+139,5,dia139_utt5.mp4,"nframes should in interval [2, 1], but got 0.","Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 402, in fetch_video
+    video, sample_fps = VIDEO_READER_BACKENDS[video_reader_backend](ele)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 316, in _read_video_decord
+    nframes = smart_nframes(ele, total_frames=total_frames, video_fps=video_fps)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 185, in smart_nframes
+    raise ValueError(f""nframes should in interval [{FRAME_FACTOR}, {total_frames}], but got {nframes}."")
+ValueError: nframes should in interval [2, 1], but got 0.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/benchmark_modalities.py"", line 216, in main
+    audios, images, videos = process_mm_info(conversation, use_audio_in_video=False)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/__init__.py"", line 13, in process_mm_info
+    vision = process_vision_info(conversations, return_video_kwargs=return_video_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 487, in process_vision_info
+    video_input, video_sample_fps = fetch_video(vision_info, return_video_sample_fps=True)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 405, in fetch_video
+    video, sample_fps = VIDEO_READER_BACKENDS[""torchvision""](ele)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 219, in _read_video_torchvision
+    nframes = smart_nframes(ele, total_frames=total_frames, video_fps=video_fps)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 185, in smart_nframes
+    raise ValueError(f""nframes should in interval [{FRAME_FACTOR}, {total_frames}], but got {nframes}."")
+ValueError: nframes should in interval [2, 1], but got 0.
+"
+147,3,dia147_utt3.mp4,"nframes should in interval [2, 1], but got 0.","Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 402, in fetch_video
+    video, sample_fps = VIDEO_READER_BACKENDS[video_reader_backend](ele)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 316, in _read_video_decord
+    nframes = smart_nframes(ele, total_frames=total_frames, video_fps=video_fps)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 185, in smart_nframes
+    raise ValueError(f""nframes should in interval [{FRAME_FACTOR}, {total_frames}], but got {nframes}."")
+ValueError: nframes should in interval [2, 1], but got 0.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/benchmark_modalities.py"", line 216, in main
+    audios, images, videos = process_mm_info(conversation, use_audio_in_video=False)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/__init__.py"", line 13, in process_mm_info
+    vision = process_vision_info(conversations, return_video_kwargs=return_video_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 487, in process_vision_info
+    video_input, video_sample_fps = fetch_video(vision_info, return_video_sample_fps=True)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 405, in fetch_video
+    video, sample_fps = VIDEO_READER_BACKENDS[""torchvision""](ele)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 219, in _read_video_torchvision
+    nframes = smart_nframes(ele, total_frames=total_frames, video_fps=video_fps)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 185, in smart_nframes
+    raise ValueError(f""nframes should in interval [{FRAME_FACTOR}, {total_frames}], but got {nframes}."")
+ValueError: nframes should in interval [2, 1], but got 0.
+"
+151,3,dia151_utt3.mp4,"nframes should in interval [2, 1], but got 0.","Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 402, in fetch_video
+    video, sample_fps = VIDEO_READER_BACKENDS[video_reader_backend](ele)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 316, in _read_video_decord
+    nframes = smart_nframes(ele, total_frames=total_frames, video_fps=video_fps)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 185, in smart_nframes
+    raise ValueError(f""nframes should in interval [{FRAME_FACTOR}, {total_frames}], but got {nframes}."")
+ValueError: nframes should in interval [2, 1], but got 0.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/benchmark_modalities.py"", line 216, in main
+    audios, images, videos = process_mm_info(conversation, use_audio_in_video=False)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/__init__.py"", line 13, in process_mm_info
+    vision = process_vision_info(conversations, return_video_kwargs=return_video_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 487, in process_vision_info
+    video_input, video_sample_fps = fetch_video(vision_info, return_video_sample_fps=True)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 405, in fetch_video
+    video, sample_fps = VIDEO_READER_BACKENDS[""torchvision""](ele)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 219, in _read_video_torchvision
+    nframes = smart_nframes(ele, total_frames=total_frames, video_fps=video_fps)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 185, in smart_nframes
+    raise ValueError(f""nframes should in interval [{FRAME_FACTOR}, {total_frames}], but got {nframes}."")
+ValueError: nframes should in interval [2, 1], but got 0.
+"
+160,11,dia160_utt11.mp4,"nframes should in interval [2, 1], but got 0.","Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 402, in fetch_video
+    video, sample_fps = VIDEO_READER_BACKENDS[video_reader_backend](ele)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 316, in _read_video_decord
+    nframes = smart_nframes(ele, total_frames=total_frames, video_fps=video_fps)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 185, in smart_nframes
+    raise ValueError(f""nframes should in interval [{FRAME_FACTOR}, {total_frames}], but got {nframes}."")
+ValueError: nframes should in interval [2, 1], but got 0.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/benchmark_modalities.py"", line 216, in main
+    audios, images, videos = process_mm_info(conversation, use_audio_in_video=False)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/__init__.py"", line 13, in process_mm_info
+    vision = process_vision_info(conversations, return_video_kwargs=return_video_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 487, in process_vision_info
+    video_input, video_sample_fps = fetch_video(vision_info, return_video_sample_fps=True)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 405, in fetch_video
+    video, sample_fps = VIDEO_READER_BACKENDS[""torchvision""](ele)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 219, in _read_video_torchvision
+    nframes = smart_nframes(ele, total_frames=total_frames, video_fps=video_fps)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 185, in smart_nframes
+    raise ValueError(f""nframes should in interval [{FRAME_FACTOR}, {total_frames}], but got {nframes}."")
+ValueError: nframes should in interval [2, 1], but got 0.
+"
+173,2,dia173_utt2.mp4,"nframes should in interval [2, 1], but got 0.","Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 402, in fetch_video
+    video, sample_fps = VIDEO_READER_BACKENDS[video_reader_backend](ele)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 316, in _read_video_decord
+    nframes = smart_nframes(ele, total_frames=total_frames, video_fps=video_fps)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 185, in smart_nframes
+    raise ValueError(f""nframes should in interval [{FRAME_FACTOR}, {total_frames}], but got {nframes}."")
+ValueError: nframes should in interval [2, 1], but got 0.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/benchmark_modalities.py"", line 216, in main
+    audios, images, videos = process_mm_info(conversation, use_audio_in_video=False)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/__init__.py"", line 13, in process_mm_info
+    vision = process_vision_info(conversations, return_video_kwargs=return_video_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 487, in process_vision_info
+    video_input, video_sample_fps = fetch_video(vision_info, return_video_sample_fps=True)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 405, in fetch_video
+    video, sample_fps = VIDEO_READER_BACKENDS[""torchvision""](ele)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 219, in _read_video_torchvision
+    nframes = smart_nframes(ele, total_frames=total_frames, video_fps=video_fps)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 185, in smart_nframes
+    raise ValueError(f""nframes should in interval [{FRAME_FACTOR}, {total_frames}], but got {nframes}."")
+ValueError: nframes should in interval [2, 1], but got 0.
+"
+173,8,dia173_utt8.mp4,"nframes should in interval [2, 1], but got 0.","Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 402, in fetch_video
+    video, sample_fps = VIDEO_READER_BACKENDS[video_reader_backend](ele)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 316, in _read_video_decord
+    nframes = smart_nframes(ele, total_frames=total_frames, video_fps=video_fps)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 185, in smart_nframes
+    raise ValueError(f""nframes should in interval [{FRAME_FACTOR}, {total_frames}], but got {nframes}."")
+ValueError: nframes should in interval [2, 1], but got 0.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/benchmark_modalities.py"", line 216, in main
+    audios, images, videos = process_mm_info(conversation, use_audio_in_video=False)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/__init__.py"", line 13, in process_mm_info
+    vision = process_vision_info(conversations, return_video_kwargs=return_video_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 487, in process_vision_info
+    video_input, video_sample_fps = fetch_video(vision_info, return_video_sample_fps=True)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 405, in fetch_video
+    video, sample_fps = VIDEO_READER_BACKENDS[""torchvision""](ele)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 219, in _read_video_torchvision
+    nframes = smart_nframes(ele, total_frames=total_frames, video_fps=video_fps)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 185, in smart_nframes
+    raise ValueError(f""nframes should in interval [{FRAME_FACTOR}, {total_frames}], but got {nframes}."")
+ValueError: nframes should in interval [2, 1], but got 0.
+"
+175,9,dia175_utt9.mp4,"nframes should in interval [2, 1], but got 0.","Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 402, in fetch_video
+    video, sample_fps = VIDEO_READER_BACKENDS[video_reader_backend](ele)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 316, in _read_video_decord
+    nframes = smart_nframes(ele, total_frames=total_frames, video_fps=video_fps)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 185, in smart_nframes
+    raise ValueError(f""nframes should in interval [{FRAME_FACTOR}, {total_frames}], but got {nframes}."")
+ValueError: nframes should in interval [2, 1], but got 0.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/benchmark_modalities.py"", line 216, in main
+    audios, images, videos = process_mm_info(conversation, use_audio_in_video=False)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/__init__.py"", line 13, in process_mm_info
+    vision = process_vision_info(conversations, return_video_kwargs=return_video_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 487, in process_vision_info
+    video_input, video_sample_fps = fetch_video(vision_info, return_video_sample_fps=True)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 405, in fetch_video
+    video, sample_fps = VIDEO_READER_BACKENDS[""torchvision""](ele)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 219, in _read_video_torchvision
+    nframes = smart_nframes(ele, total_frames=total_frames, video_fps=video_fps)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 185, in smart_nframes
+    raise ValueError(f""nframes should in interval [{FRAME_FACTOR}, {total_frames}], but got {nframes}."")
+ValueError: nframes should in interval [2, 1], but got 0.
+"
+179,3,dia179_utt3.mp4,"nframes should in interval [2, 1], but got 0.","Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 402, in fetch_video
+    video, sample_fps = VIDEO_READER_BACKENDS[video_reader_backend](ele)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 316, in _read_video_decord
+    nframes = smart_nframes(ele, total_frames=total_frames, video_fps=video_fps)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 185, in smart_nframes
+    raise ValueError(f""nframes should in interval [{FRAME_FACTOR}, {total_frames}], but got {nframes}."")
+ValueError: nframes should in interval [2, 1], but got 0.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/benchmark_modalities.py"", line 216, in main
+    audios, images, videos = process_mm_info(conversation, use_audio_in_video=False)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/__init__.py"", line 13, in process_mm_info
+    vision = process_vision_info(conversations, return_video_kwargs=return_video_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 487, in process_vision_info
+    video_input, video_sample_fps = fetch_video(vision_info, return_video_sample_fps=True)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 405, in fetch_video
+    video, sample_fps = VIDEO_READER_BACKENDS[""torchvision""](ele)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 219, in _read_video_torchvision
+    nframes = smart_nframes(ele, total_frames=total_frames, video_fps=video_fps)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 185, in smart_nframes
+    raise ValueError(f""nframes should in interval [{FRAME_FACTOR}, {total_frames}], but got {nframes}."")
+ValueError: nframes should in interval [2, 1], but got 0.
+"
+241,14,dia241_utt14.mp4,"nframes should in interval [2, 1], but got 0.","Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 402, in fetch_video
+    video, sample_fps = VIDEO_READER_BACKENDS[video_reader_backend](ele)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 316, in _read_video_decord
+    nframes = smart_nframes(ele, total_frames=total_frames, video_fps=video_fps)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 185, in smart_nframes
+    raise ValueError(f""nframes should in interval [{FRAME_FACTOR}, {total_frames}], but got {nframes}."")
+ValueError: nframes should in interval [2, 1], but got 0.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/benchmark_modalities.py"", line 216, in main
+    audios, images, videos = process_mm_info(conversation, use_audio_in_video=False)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/__init__.py"", line 13, in process_mm_info
+    vision = process_vision_info(conversations, return_video_kwargs=return_video_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 487, in process_vision_info
+    video_input, video_sample_fps = fetch_video(vision_info, return_video_sample_fps=True)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 405, in fetch_video
+    video, sample_fps = VIDEO_READER_BACKENDS[""torchvision""](ele)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 219, in _read_video_torchvision
+    nframes = smart_nframes(ele, total_frames=total_frames, video_fps=video_fps)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 185, in smart_nframes
+    raise ValueError(f""nframes should in interval [{FRAME_FACTOR}, {total_frames}], but got {nframes}."")
+ValueError: nframes should in interval [2, 1], but got 0.
+"
+242,1,dia242_utt1.mp4,"nframes should in interval [2, 1], but got 0.","Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 402, in fetch_video
+    video, sample_fps = VIDEO_READER_BACKENDS[video_reader_backend](ele)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 316, in _read_video_decord
+    nframes = smart_nframes(ele, total_frames=total_frames, video_fps=video_fps)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 185, in smart_nframes
+    raise ValueError(f""nframes should in interval [{FRAME_FACTOR}, {total_frames}], but got {nframes}."")
+ValueError: nframes should in interval [2, 1], but got 0.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/benchmark_modalities.py"", line 216, in main
+    audios, images, videos = process_mm_info(conversation, use_audio_in_video=False)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/__init__.py"", line 13, in process_mm_info
+    vision = process_vision_info(conversations, return_video_kwargs=return_video_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 487, in process_vision_info
+    video_input, video_sample_fps = fetch_video(vision_info, return_video_sample_fps=True)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 405, in fetch_video
+    video, sample_fps = VIDEO_READER_BACKENDS[""torchvision""](ele)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 219, in _read_video_torchvision
+    nframes = smart_nframes(ele, total_frames=total_frames, video_fps=video_fps)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 185, in smart_nframes
+    raise ValueError(f""nframes should in interval [{FRAME_FACTOR}, {total_frames}], but got {nframes}."")
+ValueError: nframes should in interval [2, 1], but got 0.
+"
+252,2,dia252_utt2.mp4,"nframes should in interval [2, 1], but got 0.","Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 402, in fetch_video
+    video, sample_fps = VIDEO_READER_BACKENDS[video_reader_backend](ele)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 316, in _read_video_decord
+    nframes = smart_nframes(ele, total_frames=total_frames, video_fps=video_fps)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 185, in smart_nframes
+    raise ValueError(f""nframes should in interval [{FRAME_FACTOR}, {total_frames}], but got {nframes}."")
+ValueError: nframes should in interval [2, 1], but got 0.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/benchmark_modalities.py"", line 216, in main
+    audios, images, videos = process_mm_info(conversation, use_audio_in_video=False)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/__init__.py"", line 13, in process_mm_info
+    vision = process_vision_info(conversations, return_video_kwargs=return_video_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 487, in process_vision_info
+    video_input, video_sample_fps = fetch_video(vision_info, return_video_sample_fps=True)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 405, in fetch_video
+    video, sample_fps = VIDEO_READER_BACKENDS[""torchvision""](ele)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 219, in _read_video_torchvision
+    nframes = smart_nframes(ele, total_frames=total_frames, video_fps=video_fps)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 185, in smart_nframes
+    raise ValueError(f""nframes should in interval [{FRAME_FACTOR}, {total_frames}], but got {nframes}."")
+ValueError: nframes should in interval [2, 1], but got 0.
+"
+25,15,dia25_utt15.mp4,"nframes should in interval [2, 1], but got 0.","Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 402, in fetch_video
+    video, sample_fps = VIDEO_READER_BACKENDS[video_reader_backend](ele)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 316, in _read_video_decord
+    nframes = smart_nframes(ele, total_frames=total_frames, video_fps=video_fps)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 185, in smart_nframes
+    raise ValueError(f""nframes should in interval [{FRAME_FACTOR}, {total_frames}], but got {nframes}."")
+ValueError: nframes should in interval [2, 1], but got 0.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/benchmark_modalities.py"", line 216, in main
+    audios, images, videos = process_mm_info(conversation, use_audio_in_video=False)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/__init__.py"", line 13, in process_mm_info
+    vision = process_vision_info(conversations, return_video_kwargs=return_video_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 487, in process_vision_info
+    video_input, video_sample_fps = fetch_video(vision_info, return_video_sample_fps=True)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 405, in fetch_video
+    video, sample_fps = VIDEO_READER_BACKENDS[""torchvision""](ele)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 219, in _read_video_torchvision
+    nframes = smart_nframes(ele, total_frames=total_frames, video_fps=video_fps)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 185, in smart_nframes
+    raise ValueError(f""nframes should in interval [{FRAME_FACTOR}, {total_frames}], but got {nframes}."")
+ValueError: nframes should in interval [2, 1], but got 0.
+"
+263,3,dia263_utt3.mp4,"nframes should in interval [2, 1], but got 0.","Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 402, in fetch_video
+    video, sample_fps = VIDEO_READER_BACKENDS[video_reader_backend](ele)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 316, in _read_video_decord
+    nframes = smart_nframes(ele, total_frames=total_frames, video_fps=video_fps)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 185, in smart_nframes
+    raise ValueError(f""nframes should in interval [{FRAME_FACTOR}, {total_frames}], but got {nframes}."")
+ValueError: nframes should in interval [2, 1], but got 0.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/benchmark_modalities.py"", line 216, in main
+    audios, images, videos = process_mm_info(conversation, use_audio_in_video=False)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/__init__.py"", line 13, in process_mm_info
+    vision = process_vision_info(conversations, return_video_kwargs=return_video_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 487, in process_vision_info
+    video_input, video_sample_fps = fetch_video(vision_info, return_video_sample_fps=True)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 405, in fetch_video
+    video, sample_fps = VIDEO_READER_BACKENDS[""torchvision""](ele)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 219, in _read_video_torchvision
+    nframes = smart_nframes(ele, total_frames=total_frames, video_fps=video_fps)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 185, in smart_nframes
+    raise ValueError(f""nframes should in interval [{FRAME_FACTOR}, {total_frames}], but got {nframes}."")
+ValueError: nframes should in interval [2, 1], but got 0.
+"
+32,3,dia32_utt3.mp4,"nframes should in interval [2, 1], but got 0.","Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 402, in fetch_video
+    video, sample_fps = VIDEO_READER_BACKENDS[video_reader_backend](ele)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 316, in _read_video_decord
+    nframes = smart_nframes(ele, total_frames=total_frames, video_fps=video_fps)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 185, in smart_nframes
+    raise ValueError(f""nframes should in interval [{FRAME_FACTOR}, {total_frames}], but got {nframes}."")
+ValueError: nframes should in interval [2, 1], but got 0.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/benchmark_modalities.py"", line 216, in main
+    audios, images, videos = process_mm_info(conversation, use_audio_in_video=False)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/__init__.py"", line 13, in process_mm_info
+    vision = process_vision_info(conversations, return_video_kwargs=return_video_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 487, in process_vision_info
+    video_input, video_sample_fps = fetch_video(vision_info, return_video_sample_fps=True)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 405, in fetch_video
+    video, sample_fps = VIDEO_READER_BACKENDS[""torchvision""](ele)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 219, in _read_video_torchvision
+    nframes = smart_nframes(ele, total_frames=total_frames, video_fps=video_fps)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 185, in smart_nframes
+    raise ValueError(f""nframes should in interval [{FRAME_FACTOR}, {total_frames}], but got {nframes}."")
+ValueError: nframes should in interval [2, 1], but got 0.
+"
+35,1,dia35_utt1.mp4,"nframes should in interval [2, 1], but got 0.","Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 402, in fetch_video
+    video, sample_fps = VIDEO_READER_BACKENDS[video_reader_backend](ele)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 316, in _read_video_decord
+    nframes = smart_nframes(ele, total_frames=total_frames, video_fps=video_fps)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 185, in smart_nframes
+    raise ValueError(f""nframes should in interval [{FRAME_FACTOR}, {total_frames}], but got {nframes}."")
+ValueError: nframes should in interval [2, 1], but got 0.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/benchmark_modalities.py"", line 216, in main
+    audios, images, videos = process_mm_info(conversation, use_audio_in_video=False)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/__init__.py"", line 13, in process_mm_info
+    vision = process_vision_info(conversations, return_video_kwargs=return_video_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 487, in process_vision_info
+    video_input, video_sample_fps = fetch_video(vision_info, return_video_sample_fps=True)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 405, in fetch_video
+    video, sample_fps = VIDEO_READER_BACKENDS[""torchvision""](ele)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 219, in _read_video_torchvision
+    nframes = smart_nframes(ele, total_frames=total_frames, video_fps=video_fps)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 185, in smart_nframes
+    raise ValueError(f""nframes should in interval [{FRAME_FACTOR}, {total_frames}], but got {nframes}."")
+ValueError: nframes should in interval [2, 1], but got 0.
+"
+48,6,dia48_utt6.mp4,"nframes should in interval [2, 1], but got 0.","Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 402, in fetch_video
+    video, sample_fps = VIDEO_READER_BACKENDS[video_reader_backend](ele)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 316, in _read_video_decord
+    nframes = smart_nframes(ele, total_frames=total_frames, video_fps=video_fps)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 185, in smart_nframes
+    raise ValueError(f""nframes should in interval [{FRAME_FACTOR}, {total_frames}], but got {nframes}."")
+ValueError: nframes should in interval [2, 1], but got 0.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/benchmark_modalities.py"", line 216, in main
+    audios, images, videos = process_mm_info(conversation, use_audio_in_video=False)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/__init__.py"", line 13, in process_mm_info
+    vision = process_vision_info(conversations, return_video_kwargs=return_video_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 487, in process_vision_info
+    video_input, video_sample_fps = fetch_video(vision_info, return_video_sample_fps=True)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 405, in fetch_video
+    video, sample_fps = VIDEO_READER_BACKENDS[""torchvision""](ele)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 219, in _read_video_torchvision
+    nframes = smart_nframes(ele, total_frames=total_frames, video_fps=video_fps)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 185, in smart_nframes
+    raise ValueError(f""nframes should in interval [{FRAME_FACTOR}, {total_frames}], but got {nframes}."")
+ValueError: nframes should in interval [2, 1], but got 0.
+"
+51,1,dia51_utt1.mp4,"nframes should in interval [2, 1], but got 0.","Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 402, in fetch_video
+    video, sample_fps = VIDEO_READER_BACKENDS[video_reader_backend](ele)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 316, in _read_video_decord
+    nframes = smart_nframes(ele, total_frames=total_frames, video_fps=video_fps)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 185, in smart_nframes
+    raise ValueError(f""nframes should in interval [{FRAME_FACTOR}, {total_frames}], but got {nframes}."")
+ValueError: nframes should in interval [2, 1], but got 0.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/benchmark_modalities.py"", line 216, in main
+    audios, images, videos = process_mm_info(conversation, use_audio_in_video=False)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/__init__.py"", line 13, in process_mm_info
+    vision = process_vision_info(conversations, return_video_kwargs=return_video_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 487, in process_vision_info
+    video_input, video_sample_fps = fetch_video(vision_info, return_video_sample_fps=True)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 405, in fetch_video
+    video, sample_fps = VIDEO_READER_BACKENDS[""torchvision""](ele)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 219, in _read_video_torchvision
+    nframes = smart_nframes(ele, total_frames=total_frames, video_fps=video_fps)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 185, in smart_nframes
+    raise ValueError(f""nframes should in interval [{FRAME_FACTOR}, {total_frames}], but got {nframes}."")
+ValueError: nframes should in interval [2, 1], but got 0.
+"
+54,6,dia54_utt6.mp4,"nframes should in interval [2, 1], but got 0.","Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 402, in fetch_video
+    video, sample_fps = VIDEO_READER_BACKENDS[video_reader_backend](ele)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 316, in _read_video_decord
+    nframes = smart_nframes(ele, total_frames=total_frames, video_fps=video_fps)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 185, in smart_nframes
+    raise ValueError(f""nframes should in interval [{FRAME_FACTOR}, {total_frames}], but got {nframes}."")
+ValueError: nframes should in interval [2, 1], but got 0.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/benchmark_modalities.py"", line 216, in main
+    audios, images, videos = process_mm_info(conversation, use_audio_in_video=False)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/__init__.py"", line 13, in process_mm_info
+    vision = process_vision_info(conversations, return_video_kwargs=return_video_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 487, in process_vision_info
+    video_input, video_sample_fps = fetch_video(vision_info, return_video_sample_fps=True)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 405, in fetch_video
+    video, sample_fps = VIDEO_READER_BACKENDS[""torchvision""](ele)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 219, in _read_video_torchvision
+    nframes = smart_nframes(ele, total_frames=total_frames, video_fps=video_fps)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 185, in smart_nframes
+    raise ValueError(f""nframes should in interval [{FRAME_FACTOR}, {total_frames}], but got {nframes}."")
+ValueError: nframes should in interval [2, 1], but got 0.
+"
+80,1,dia80_utt1.mp4,"nframes should in interval [2, 1], but got 0.","Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 402, in fetch_video
+    video, sample_fps = VIDEO_READER_BACKENDS[video_reader_backend](ele)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 316, in _read_video_decord
+    nframes = smart_nframes(ele, total_frames=total_frames, video_fps=video_fps)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 185, in smart_nframes
+    raise ValueError(f""nframes should in interval [{FRAME_FACTOR}, {total_frames}], but got {nframes}."")
+ValueError: nframes should in interval [2, 1], but got 0.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/benchmark_modalities.py"", line 216, in main
+    audios, images, videos = process_mm_info(conversation, use_audio_in_video=False)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/__init__.py"", line 13, in process_mm_info
+    vision = process_vision_info(conversations, return_video_kwargs=return_video_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 487, in process_vision_info
+    video_input, video_sample_fps = fetch_video(vision_info, return_video_sample_fps=True)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 405, in fetch_video
+    video, sample_fps = VIDEO_READER_BACKENDS[""torchvision""](ele)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 219, in _read_video_torchvision
+    nframes = smart_nframes(ele, total_frames=total_frames, video_fps=video_fps)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 185, in smart_nframes
+    raise ValueError(f""nframes should in interval [{FRAME_FACTOR}, {total_frames}], but got {nframes}."")
+ValueError: nframes should in interval [2, 1], but got 0.
+"
+83,3,dia83_utt3.mp4,"nframes should in interval [2, 1], but got 0.","Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 402, in fetch_video
+    video, sample_fps = VIDEO_READER_BACKENDS[video_reader_backend](ele)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 316, in _read_video_decord
+    nframes = smart_nframes(ele, total_frames=total_frames, video_fps=video_fps)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 185, in smart_nframes
+    raise ValueError(f""nframes should in interval [{FRAME_FACTOR}, {total_frames}], but got {nframes}."")
+ValueError: nframes should in interval [2, 1], but got 0.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/benchmark_modalities.py"", line 216, in main
+    audios, images, videos = process_mm_info(conversation, use_audio_in_video=False)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/__init__.py"", line 13, in process_mm_info
+    vision = process_vision_info(conversations, return_video_kwargs=return_video_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 487, in process_vision_info
+    video_input, video_sample_fps = fetch_video(vision_info, return_video_sample_fps=True)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 405, in fetch_video
+    video, sample_fps = VIDEO_READER_BACKENDS[""torchvision""](ele)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 219, in _read_video_torchvision
+    nframes = smart_nframes(ele, total_frames=total_frames, video_fps=video_fps)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 185, in smart_nframes
+    raise ValueError(f""nframes should in interval [{FRAME_FACTOR}, {total_frames}], but got {nframes}."")
+ValueError: nframes should in interval [2, 1], but got 0.
+"
+95,2,dia95_utt2.mp4,"nframes should in interval [2, 1], but got 0.","Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 402, in fetch_video
+    video, sample_fps = VIDEO_READER_BACKENDS[video_reader_backend](ele)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 316, in _read_video_decord
+    nframes = smart_nframes(ele, total_frames=total_frames, video_fps=video_fps)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 185, in smart_nframes
+    raise ValueError(f""nframes should in interval [{FRAME_FACTOR}, {total_frames}], but got {nframes}."")
+ValueError: nframes should in interval [2, 1], but got 0.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/benchmark_modalities.py"", line 216, in main
+    audios, images, videos = process_mm_info(conversation, use_audio_in_video=False)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/__init__.py"", line 13, in process_mm_info
+    vision = process_vision_info(conversations, return_video_kwargs=return_video_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 487, in process_vision_info
+    video_input, video_sample_fps = fetch_video(vision_info, return_video_sample_fps=True)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 405, in fetch_video
+    video, sample_fps = VIDEO_READER_BACKENDS[""torchvision""](ele)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 219, in _read_video_torchvision
+    nframes = smart_nframes(ele, total_frames=total_frames, video_fps=video_fps)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 185, in smart_nframes
+    raise ValueError(f""nframes should in interval [{FRAME_FACTOR}, {total_frames}], but got {nframes}."")
+ValueError: nframes should in interval [2, 1], but got 0.
+"
+95,6,dia95_utt6.mp4,"nframes should in interval [2, 1], but got 0.","Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 402, in fetch_video
+    video, sample_fps = VIDEO_READER_BACKENDS[video_reader_backend](ele)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 316, in _read_video_decord
+    nframes = smart_nframes(ele, total_frames=total_frames, video_fps=video_fps)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 185, in smart_nframes
+    raise ValueError(f""nframes should in interval [{FRAME_FACTOR}, {total_frames}], but got {nframes}."")
+ValueError: nframes should in interval [2, 1], but got 0.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/benchmark_modalities.py"", line 216, in main
+    audios, images, videos = process_mm_info(conversation, use_audio_in_video=False)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/__init__.py"", line 13, in process_mm_info
+    vision = process_vision_info(conversations, return_video_kwargs=return_video_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 487, in process_vision_info
+    video_input, video_sample_fps = fetch_video(vision_info, return_video_sample_fps=True)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 405, in fetch_video
+    video, sample_fps = VIDEO_READER_BACKENDS[""torchvision""](ele)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 219, in _read_video_torchvision
+    nframes = smart_nframes(ele, total_frames=total_frames, video_fps=video_fps)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 185, in smart_nframes
+    raise ValueError(f""nframes should in interval [{FRAME_FACTOR}, {total_frames}], but got {nframes}."")
+ValueError: nframes should in interval [2, 1], but got 0.
+"
+96,6,dia96_utt6.mp4,"nframes should in interval [2, 1], but got 0.","Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 402, in fetch_video
+    video, sample_fps = VIDEO_READER_BACKENDS[video_reader_backend](ele)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 316, in _read_video_decord
+    nframes = smart_nframes(ele, total_frames=total_frames, video_fps=video_fps)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 185, in smart_nframes
+    raise ValueError(f""nframes should in interval [{FRAME_FACTOR}, {total_frames}], but got {nframes}."")
+ValueError: nframes should in interval [2, 1], but got 0.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/benchmark_modalities.py"", line 216, in main
+    audios, images, videos = process_mm_info(conversation, use_audio_in_video=False)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/__init__.py"", line 13, in process_mm_info
+    vision = process_vision_info(conversations, return_video_kwargs=return_video_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 487, in process_vision_info
+    video_input, video_sample_fps = fetch_video(vision_info, return_video_sample_fps=True)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 405, in fetch_video
+    video, sample_fps = VIDEO_READER_BACKENDS[""torchvision""](ele)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 219, in _read_video_torchvision
+    nframes = smart_nframes(ele, total_frames=total_frames, video_fps=video_fps)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/.pixi/envs/default/lib/python3.12/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 185, in smart_nframes
+    raise ValueError(f""nframes should in interval [{FRAME_FACTOR}, {total_frames}], but got {nframes}."")
+ValueError: nframes should in interval [2, 1], but got 0.
+"
