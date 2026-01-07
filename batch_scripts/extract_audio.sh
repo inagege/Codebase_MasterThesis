@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=add_noise            # Job name
+#SBATCH --job-name=extract_audio            # Job name
 #SBATCH --output=logs/%x_%j.out           # Stdout log
 #SBATCH --error=logs/%x_%j.err            # Stderr log
 #SBATCH --time=2:00:00                   # Max runtime (hh:mm:ss)
