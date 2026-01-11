@@ -42,8 +42,8 @@ def parse_args():
     )
     p.add_argument("--total-samples", type=int, default=None, help="Limit total files across all splits")
     p.add_argument("--audio-subdir", type=str, default="audio_only", help="Subdir under each split dir with WAVs")
-    p.add_argument("--out-path", type=str, default="out/prediction.csv")
-    p.add_argument("--out-error-path", type=str, default="out/error_prediction.csv")
+    p.add_argument("--out-path", type=str, default="out/prediction_text_noise.csv")
+    p.add_argument("--out-error-path", type=str, default="out/error_prediction_text_noise.csv")
     return p.parse_args()
 
 
@@ -62,10 +62,27 @@ def normalize_modalities(mod_str: str) -> set[str]:
 # Data config
 # -------------------------
 SPLIT_CONFIGS = [
-    ("data/MELD.Raw/output_repeated_splits_test/unmodified", "data/MELD.Raw/test_sent_emo.csv", "output_repeated_splits_test/unmodified"),
-    # ("data/MELD.Raw/dev_splits_complete/audio_visual", "data/MELD.Raw/dev_sent_emo.csv", "dev_splits_complete/audio_visual"),
-    # ("data/MELD.Raw/train_splits/audio_visual", "data/MELD.Raw/train_sent_emo.csv", "train_splits/audio_visual"),
-]
+    # Audio Modality Variations
+    #("data/MELD.Raw/output_repeated_splits_test/audio/A=bandlimit_S=5/videos", "data/MELD.Raw/test_sent_emo.csv", "A=bandlimit_S=5/videos"),
+    #("data/MELD.Raw/output_repeated_splits_test/audio/A=clipping_S=5/videos", "data/MELD.Raw/test_sent_emo.csv", "A=clipping_S=5/videos"),
+    #("data/MELD.Raw/output_repeated_splits_test/audio/A=mp3_S=5/videos", "data/MELD.Raw/test_sent_emo.csv", "A=mp3_S=5/videos"),
+    #("data/MELD.Raw/output_repeated_splits_test/audio/A=reverb_S=5/videos", "data/MELD.Raw/test_sent_emo.csv", "A=reverb_S=5/videos"),
+    #("data/MELD.Raw/output_repeated_splits_test/audio/A=snr_white_S=5/videos", "data/MELD.Raw/test_sent_emo.csv", "A=snr_white_S=5/videos"),
+
+    # Visual Modality Variations
+    #("data/MELD.Raw/output_repeated_splits_test/visual/V=gaussian_noise_S=5/videos", "data/MELD.Raw/test_sent_emo.csv", "V=gaussian_noise_S=5/videos"),
+    #("data/MELD.Raw/output_repeated_splits_test/visual/V=motion_blur_S=5/videos", "data/MELD.Raw/test_sent_emo.csv", "V=motion_blur_S=5/videos"),
+    #("data/MELD.Raw/output_repeated_splits_test/visual/V=pixelate_S=5/videos", "data/MELD.Raw/test_sent_emo.csv", "V=pixelate_S=5/videos"),
+    #("data/MELD.Raw/output_repeated_splits_test/visual/V=zoom_blur_S=5/videos", "data/MELD.Raw/test_sent_emo.csv", "V=zoom_blur_S=5/videos"),
+
+    # Text Modality Variations
+    ("data/MELD.Raw/output_repeated_splits_test/unmodified", "data/MELD.Raw/modified_meta/T=char_delete_S=5/metadata.csv", "T=char_delete_S=5"),
+    ("data/MELD.Raw/output_repeated_splits_test/unmodified", "data/MELD.Raw/modified_meta/T=char_replace_S=5/metadata.csv", "T=char_replace_S=5"),
+    ("data/MELD.Raw/output_repeated_splits_test/unmodified", "data/MELD.Raw/modified_meta/T=keyboard_S=5/metadata.csv", "T=keyboard_S=5"),
+    ("data/MELD.Raw/output_repeated_splits_test/unmodified", "data/MELD.Raw/modified_meta/T=ocr_S=5/metadata.csv", "T=ocr_S=5"),
+    ("data/MELD.Raw/output_repeated_splits_test/unmodified", "data/MELD.Raw/modified_meta/T=synonym_replace_S=5/metadata.csv", "T=synonym_replace_S=5"),
+    ("data/MELD.Raw/output_repeated_splits_test/unmodified", "data/MELD.Raw/modified_meta/T=top4_paper_S=5/metadata.csv", "T=top4_paper_S=5"),
+    ]
 
 
 def audio_path_for_mp4(mp4_path: Path, audio_subdir: str) -> Path:
@@ -102,12 +119,6 @@ def main():
     os.makedirs(os.path.dirname(args.out_path) or ".", exist_ok=True)
     os.makedirs(os.path.dirname(args.out_error_path) or ".", exist_ok=True)
     os.makedirs("out", exist_ok=True)
-
-    with open("out/_run_started.txt", "w", encoding="utf-8") as f:
-        f.write(f"started_at={time.strftime('%Y-%m-%d %H:%M:%S')}\n")
-        f.write(f"cwd={os.getcwd()}\n")
-        f.write(f"modalities={args.modalities}\n")
-        f.write(f"audio_subdir={args.audio_subdir}\n")
 
     # Load metadata
     meta_map = {}

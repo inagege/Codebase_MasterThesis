@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=unm_audio_qwen_omni_test         # Job name
+#SBATCH --job-name=text_qwen_omni_test         # Job name
 #SBATCH --output=logs/%x_%j.out           # Stdout log
 #SBATCH --error=logs/%x_%j.err            # Stderr log
 #SBATCH --time=03:00:00                   # Max runtime (hh:mm:ss)
@@ -17,4 +17,4 @@ cd /hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterT
 mkdir -p logs
 
 # Run your Python script
-pixi run python benchmark_modalities.py --modalities audio
+pixi run python benchmark_modalities.py --modalities text
