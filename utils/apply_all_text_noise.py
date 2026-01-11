@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pandas as pd
 
-TEXT_CORRUPTIONS = ["keyboard", "char_replace", "ocr", "char_delete", "synonym_replace", "top4_paper"]
+TEXT_CORRUPTIONS = ["keyboard", "char_replace", "ocr", "char_delete", "top4_paper"]
 
 QWERTY_NEIGHBORS = {
     "a": "qwsxz", "b": "vghn", "c": "xsdfv", "d": "serfcx", "e": "wsdr",
@@ -64,21 +64,6 @@ def char_delete(text: str, rate: float, rng: random.Random) -> str:
         chars.pop(i)
     return "".join(chars)
 
-def synonym_replace(text: str, rate: float, rng: random.Random) -> str:
-    words = text.split()
-    if not words:
-        return text
-    k = max(1, int(len(words) * rate))
-    idxs = rng.sample(range(len(words)), k=min(k, len(words)))
-    toy = {"good":"nice", "bad":"awful", "big":"large", "small":"tiny", "man":"person", "woman":"person"}
-    for i in idxs:
-        w = words[i]
-        core = w.strip(string.punctuation)
-        repl = toy.get(core.lower())
-        if repl:
-            words[i] = w.replace(core, repl)
-    return " ".join(words)
-
 def perturb(text: str, method: str, severity: int, rng: random.Random) -> str:
     if not isinstance(text, str):
         return text
@@ -91,8 +76,6 @@ def perturb(text: str, method: str, severity: int, rng: random.Random) -> str:
         return ocr(text, rate, rng)
     if method == "char_delete":
         return char_delete(text, rate, rng)
-    if method == "synonym_replace":
-        return synonym_replace(text, rate, rng)
     if method == "top4_paper":
         r = rate * 0.25
         t = keyboard(text, r, rng)
