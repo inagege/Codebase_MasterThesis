@@ -80,7 +80,6 @@ SPLIT_CONFIGS = [
     ("data/MELD.Raw/output_repeated_splits_test/unmodified", "data/MELD.Raw/modified_meta/T=char_replace_S=5/metadata.csv", "T=char_replace_S=5"),
     ("data/MELD.Raw/output_repeated_splits_test/unmodified", "data/MELD.Raw/modified_meta/T=keyboard_S=5/metadata.csv", "T=keyboard_S=5"),
     ("data/MELD.Raw/output_repeated_splits_test/unmodified", "data/MELD.Raw/modified_meta/T=ocr_S=5/metadata.csv", "T=ocr_S=5"),
-    ("data/MELD.Raw/output_repeated_splits_test/unmodified", "data/MELD.Raw/modified_meta/T=synonym_replace_S=5/metadata.csv", "T=synonym_replace_S=5"),
     ("data/MELD.Raw/output_repeated_splits_test/unmodified", "data/MELD.Raw/modified_meta/T=top4_paper_S=5/metadata.csv", "T=top4_paper_S=5"),
     ]
 
