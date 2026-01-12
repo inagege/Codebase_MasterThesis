@@ -161,7 +161,7 @@ def main():
 
     for corr in VISUAL_CORRUPTIONS:
         combo_root = out_dir / f"V={corr}_S={args.severity}"
-        videos_out = combo_root / "videos"
+        videos_out = combo_root
         videos_out.mkdir(parents=True, exist_ok=True)
 
         for vid in vids:
