@@ -9,7 +9,7 @@ import random
 
 VIDEO_EXTS = {".mp4", ".mkv", ".avi", ".mov", ".webm"}
 
-AUDIO_CORRUPTIONS = ["snr_white", "reverb", "clipping", "mp3", "bandlimit", "compress", "jitter"]
+AUDIO_CORRUPTIONS = ["jitter", "reverb", "clipping", "mp3", "snr_white", "compress", "bandlimit"]
 
 # Use lossless PCM audio inside an MKV container by default and make this the
 # non-optional project behavior. This ensures exact WAV extraction later.
@@ -246,8 +246,8 @@ def _af_bandlimit(severity: int) -> str:
     # Tuned cutoffs: severity 1=mild ... 5=severe
     # Updated mappings: keep severity 1 unchanged; severity 2 uses old severity-3;
     # severity 3 uses old severity-5; severities 4 and 5 made more aggressive.
-    low = {1: 100, 2: 300, 3: 500, 4: 700, 5: 1000}[severity]
-    high = {1: 6000, 2: 3000, 3: 1500, 4: 1200, 5: 800}[severity]
+    low = {1: 100, 2: 300, 3: 500, 4: 800, 5: 1000}[severity]
+    high = {1: 6000, 2: 3000, 3: 1500, 4: 1000, 5: 500}[severity]
 
     # Aggressive resampling to remove HF content (lower sample rate for higher severity)
     resample_map = {1: 16000, 2: 8000, 3: 4000, 4: 3000, 5: 2000}
@@ -301,7 +301,7 @@ def _apply_bandlimit(in_path: Path, out_video: Path, severity: int, overwrite: b
     af = _af_bandlimit(severity)
 
     # noise amplitude increases with severity
-    noise_amp_map = {1: 0.01, 2: 0.05, 3: 0.20, 4: 0.30, 5: 0.40}
+    noise_amp_map = {1: 0.01, 2: 0.05, 3: 0.20, 4: 0.30, 5: 0.60}
     noise_amp = noise_amp_map[severity]
 
     cmd = [
@@ -377,6 +377,7 @@ def _apply_mp3(in_path: Path, out_video: Path, severity: int, overwrite: bool):
             "-shortest",
             str(out_video),
         ])
+
 
 def _get_media_duration(path: Path) -> float | None:
     """Return the duration in seconds for the media file, or None on error."""
@@ -456,11 +457,128 @@ def _apply_compress_and_silence(in_path: Path, out_video: Path, severity: int, o
     _run(cmd)
 
 
+def _apply_temporal_jitter(in_path: Path, out_video: Path, severity: int, overwrite: bool):
+    """Apply temporal jitter by splitting audio into short segments and permuting them.
+
+    Strategy:
+    - Extract audio segments into a temporary directory using ffmpeg's segment muxer.
+    - Permute the list of segments according to severity (mild -> small local swaps, severe -> full shuffle).
+    - Concat the permuted segments back into a single WAV using the concat demuxer and re-mux with the original video.
+
+    This keeps the implementation dependency-free (uses ffmpeg) and is robust for different input lengths.
+    """
+    # severity -> target segment length (seconds): higher severity -> longer segments -> stronger temporal disruption
+    seg_len_map = {1: 0.05, 2: 0.10, 3: 0.20, 4: 0.40, 5: 0.80}
+    seg_len = seg_len_map.get(max(1, min(5, severity)), 0.2)
+
+    # create temp dir to hold segments and intermediate files
+    with tempfile.TemporaryDirectory() as td:
+        td_path = Path(td)
+        # 1) extract audio segments as WAV files
+        seg_pattern = str(td_path / "seg%05d.wav")
+        # Use a reasonable working sample rate and mono to make concat simple
+        extract_cmd = [
+            "ffmpeg", "-y",
+            "-i", str(in_path),
+            "-vn",
+            "-map", "0:a:0",
+            "-f", "segment",
+            "-segment_time", str(seg_len),
+            "-c:a", "pcm_s16le",
+            "-ar", "44100",
+            "-ac", "1",
+            seg_pattern,
+        ]
+        _run(extract_cmd)
+
+        # collect generated segments
+        segs = sorted(td_path.glob("seg*.wav"))
+        if not segs:
+            # fallback: no audio segments produced (e.g., no audio) -> simply copy original
+            _run([
+                "ffmpeg", "-y" if overwrite else "-n",
+                "-i", str(in_path),
+                "-map", "0:v:0", "-map", "0:a:0",
+                "-c:v", "copy",
+                "-c:a", AUDIO_CODEC, "-ac", "1",
+                "-shortest", str(out_video),
+            ])
+            return
+
+        n = len(segs)
+
+        # Determine permutation based on severity
+        perm = list(range(n))
+        if severity == 1:
+            # tiny local swaps: swap 1% of adjacent pairs (at least 1 if n>1)
+            swaps = max(1, n // 100) if n > 1 else 0
+            for _ in range(swaps):
+                i = random.randint(0, n - 2)
+                perm[i], perm[i + 1] = perm[i + 1], perm[i]
+        elif severity == 2:
+            # small local swaps: 5% of adjacent pairs
+            swaps = max(1, n * 5 // 100) if n > 1 else 0
+            for _ in range(swaps):
+                i = random.randint(0, n - 2)
+                perm[i], perm[i + 1] = perm[i + 1], perm[i]
+        elif severity == 3:
+            # moderate randomness: perform a number of random swaps (~20%)
+            swaps = max(1, n * 20 // 100)
+            for _ in range(swaps):
+                i = random.randint(0, n - 1)
+                j = random.randint(0, n - 1)
+                perm[i], perm[j] = perm[j], perm[i]
+        elif severity == 4:
+            # strong disruption: shuffle half of segments
+            half = n // 2
+            indices = list(range(n))
+            subset = indices[:half]
+            random.shuffle(subset)
+            for k, idx in enumerate(subset):
+                perm[k] = subset[k]
+        else:
+            # severity 5: full shuffle
+            random.shuffle(perm)
+
+        # build ordered list of segment file paths according to permutation
+        perm_segs = [str(segs[i]) for i in perm]
+
+        # write concat list file
+        concat_list = td_path / "concat_list.txt"
+        with concat_list.open("w") as f:
+            for p in perm_segs:
+                # paths must be escaped properly; use single quotes in ffmpeg concat list
+                f.write(f"file '{p}'\n")
+
+        # concat back into a single WAV
+        out_wav = td_path / "jittered.wav"
+        _run([
+            "ffmpeg", "-y",
+            "-f", "concat", "-safe", "0",
+            "-i", str(concat_list),
+            "-c", "copy",
+            str(out_wav),
+        ])
+
+        # 3) Mux jittered audio with original video
+        _run([
+            "ffmpeg", "-y" if overwrite else "-n",
+            "-i", str(in_path),
+            "-i", str(out_wav),
+            "-map", "0:v:0", "-map", "1:a:0",
+            "-c:v", "copy",
+            "-c:a", AUDIO_CODEC, "-ac", "1",
+            "-shortest",
+            str(out_video),
+        ])
+
+
 def apply_audio_corruption(in_path: Path, out_video: Path, corruption: str, severity: int, overwrite: bool) -> Path:
     """Apply the requested audio corruption by delegating to per-corruption helpers.
 
     Returns the actual path written (may have a different suffix when OUT_EXTENSION is set).
     """
+    severity = max(1, min(5, severity))
     out_video.parent.mkdir(parents=True, exist_ok=True)
 
     # If OUT_EXTENSION is set, ensure the output file uses that extension
@@ -482,10 +600,13 @@ def apply_audio_corruption(in_path: Path, out_video: Path, corruption: str, seve
         _apply_bandlimit(in_path, effective_out, severity, overwrite)
     elif corruption == "compress":
         _apply_compress_and_silence(in_path, effective_out, severity, overwrite)
+    elif corruption == "jitter":
+        _apply_temporal_jitter(in_path, effective_out, severity, overwrite)
     else:
         raise ValueError(f"Unknown corruption: {corruption}")
 
     return effective_out
+
 
 def _ensure_video_audio_mono(video: Path, logger: Optional[callable] = None):
     """Ensure the given video file has a single mono audio stream.
@@ -545,6 +666,7 @@ def _ensure_video_audio_mono(video: Path, logger: Optional[callable] = None):
         if logger:
             logger(f"[WARN] Failed to enforce mono for {video}: {e}")
         return
+
 
 def main():
     ap = argparse.ArgumentParser("Apply ALL audio perturbations to a video directory.")
@@ -621,6 +743,7 @@ def main():
         print(f"[OK] Finished audio corruption: {combo_root}")
 
     print("[DONE] All audio perturbations applied.")
+
 
 if __name__ == "__main__":
     main()
