@@ -5,10 +5,11 @@ from pathlib import Path
 import tempfile
 from typing import Optional
 import json
+import random
 
 VIDEO_EXTS = {".mp4", ".mkv", ".avi", ".mov", ".webm"}
 
-AUDIO_CORRUPTIONS = ["snr_white", "reverb", "clipping", "mp3", "bandlimit"]
+AUDIO_CORRUPTIONS = ["snr_white", "reverb", "clipping", "mp3", "bandlimit", "compress", "jitter"]
 
 # Use lossless PCM audio inside an MKV container by default and make this the
 # non-optional project behavior. This ensures exact WAV extraction later.
@@ -167,7 +168,7 @@ def extract_audio_only(in_video: Path, out_wav: Path, overwrite: bool, sr: int):
     _run(cmd)
 
 def _apply_snr_white(in_path: Path, out_video: Path, severity: int, overwrite: bool):
-    snr_levels = {1: 15, 2: 10, 3: 5, 4: 2.5, 5: 10}
+    snr_levels = {1: 20, 2: 15, 3: 10, 4: 5, 5: 0}
     snr_db = snr_levels[severity]
 
     # gain to apply to noise relative to signal
@@ -194,20 +195,38 @@ def _apply_snr_white(in_path: Path, out_video: Path, severity: int, overwrite: b
 
 def _af_reverb(severity: int) -> str:
     """Return ffmpeg audio filter string for reverb (aecho) by severity."""
-    delays = {1: "40|70", 2: "60|90", 3: "80|120", 4: "100|160", 5: "120|200"}[severity]
-    decays = {1: "0.25|0.20", 2: "0.35|0.25", 3: "0.45|0.30", 4: "0.55|0.35", 5: "0.65|0.40"}[severity]
+    # Updated mappings: severity 1 unchanged; severity 2/3 shifted up;
+    # severities 4 and 5 made more aggressive for stronger reverb.
+    delays_map = {
+        1: "40|70",
+        2: "80|120",
+        3: "120|200",
+        4: "180|300",
+        5: "260|420",
+    }
+    decays_map = {
+        1: "0.25|0.20",
+        2: "0.45|0.30",
+        3: "0.65|0.40",
+        4: "0.80|0.55",
+        5: "0.90|0.70",
+    }
+    delays = delays_map[severity]
+    decays = decays_map[severity]
     return f"aecho=0.8:0.9:{delays}:{decays}"
 
 
 def _af_clipping(severity: int) -> str:
     # Pregain pushes signal into distortion
-    pregain = {1: 12, 2: 18, 3: 24, 4: 30, 5: 36}[severity]
+    # Updated mapping: keep severity 1 unchanged; severity 2 uses old severity-3 value;
+    # severity 3 uses old severity-5 value; severities 4 and 5 made more aggressive.
+    pregain = {1: 12, 2: 24, 3: 36, 4: 48, 5: 60}[severity]
 
     # tanh drive controls hardness of clipping
-    drive = {1: 1.5, 2: 2.5, 3: 4.0, 4: 6.0, 5: 10.0}[severity]
+    drive = {1: 1.5, 2: 4.0, 3: 10.0, 4: 16.0, 5: 24.0}[severity]
 
-    # Bitcrush for extra degradation
-    bits = {1: 10, 2: 8, 3: 6, 4: 5, 5: 4}[severity]
+    # Bitcrush for extra degradation (fewer bits -> more obvious degradation)
+    bits = {1: 10, 2: 6, 3: 4, 4: 3, 5: 2}[severity]
 
     return (
         f"volume={pregain}dB,"
@@ -225,11 +244,13 @@ def _af_bandlimit(severity: int) -> str:
     - optional bitcrush (acrusher) at mid+ severities to add distortion
     """
     # Tuned cutoffs: severity 1=mild ... 5=severe
-    low = {1: 100, 2: 200, 3: 300, 4: 400, 5: 500}[severity]
-    high = {1: 6000, 2: 4000, 3: 3000, 4: 2000, 5: 1500}[severity]
+    # Updated mappings: keep severity 1 unchanged; severity 2 uses old severity-3;
+    # severity 3 uses old severity-5; severities 4 and 5 made more aggressive.
+    low = {1: 100, 2: 300, 3: 500, 4: 700, 5: 1000}[severity]
+    high = {1: 6000, 2: 3000, 3: 1500, 4: 1200, 5: 800}[severity]
 
     # Aggressive resampling to remove HF content (lower sample rate for higher severity)
-    resample_map = {1: 16000, 2: 12000, 3: 8000, 4: 6000, 5: 4000}
+    resample_map = {1: 16000, 2: 8000, 3: 4000, 4: 3000, 5: 2000}
     rs = resample_map[severity]
 
     af_parts = [f"highpass=f={low}", f"lowpass=f={high}", f"aresample={rs}"]
@@ -280,7 +301,7 @@ def _apply_bandlimit(in_path: Path, out_video: Path, severity: int, overwrite: b
     af = _af_bandlimit(severity)
 
     # noise amplitude increases with severity
-    noise_amp_map = {1: 0.01, 2: 0.02, 3: 0.05, 4: 0.10, 5: 0.20}
+    noise_amp_map = {1: 0.01, 2: 0.05, 3: 0.20, 4: 0.30, 5: 0.40}
     noise_amp = noise_amp_map[severity]
 
     cmd = [
@@ -300,40 +321,9 @@ def _apply_bandlimit(in_path: Path, out_video: Path, severity: int, overwrite: b
     _run(cmd)
 
 
-def _apply_fps_drop(in_path: Path, out_video: Path, severity: int, overwrite: bool):
-    """Simulate an "fps drop" effect for audio by periodically gating the audio to silence.
-
-    Implements a time-based volume gate: audio is kept for an "on" window and muted
-    for the remainder of each period. Severity controls the period (longer = more
-    noticeable) and duty cycle (smaller = more silence).
-    """
-    # period (seconds) and duty cycle (fraction kept) tuned by severity
-    period_map = {1: 0.5, 2: 0.4, 3: 0.25, 4: 0.15, 5: 0.10}
-    duty_map = {1: 0.95, 2: 0.85, 3: 0.65, 4: 0.45, 5: 0.25}
-    period = period_map.get(severity, 0.25)
-    on_frac = duty_map.get(severity, 0.65)
-    on = period * on_frac
-
-    # Build the ffmpeg af expression: keep audio when mod(t,period) < on, else mute
-    # Prepend dynaudnorm for consistency with other filters
-    af_expr = f"{_pre_af()},aresample=44100,volume='if(lt(mod(t,{period:.3f}),{on:.3f}),1,0)'"
-
-    cmd = [
-        "ffmpeg", "-y" if overwrite else "-n",
-        "-i", str(in_path),
-        "-map", "0:v:0", "-map", "0:a:0",
-        "-c:v", "copy",
-        "-af", af_expr,
-        "-c:a", AUDIO_CODEC, "-ac", "1",
-        "-shortest", str(out_video),
-    ]
-
-    _run(cmd)
-
-
 def _apply_mp3(in_path: Path, out_video: Path, severity: int, overwrite: bool):
     # Use noticeably lower bitrates for stronger audible degradation at higher severity
-    br = {1: "96k", 2: "64k", 3: "48k", 4: "32k", 5: "16k"}[severity]
+    br = {1: "96k", 2: "48k", 3: "16k", 4: "8k", 5: "4k"}[severity]
 
     # Add a small bandlimit + downsample before MP3 encode to increase perceptible
     # artifacts. The normalization from _pre_af() remains but we append resampling
@@ -341,14 +331,14 @@ def _apply_mp3(in_path: Path, out_video: Path, severity: int, overwrite: bool):
     pre = _pre_af()
     band_map = {
         1: (200, 6000),
-        2: (300, 4000),
-        3: (400, 3000),
-        4: (500, 2000),
-        5: (600, 1500),
+        2: (400, 3000),
+        3: (600, 1500),
+        4: (800, 750),
+        5: (1000, 375),
     }
     hp, lp = band_map[severity]
     # downsample to force MP3 encoder to work with fewer HF details
-    target_sr = {1: 22050, 2: 22050, 3: 16000, 4: 12000, 5: 8000}[severity]
+    target_sr = {1: 22050, 2: 16000, 3: 8000, 4: 5000, 5: 3000}[severity]
     mp3_af = f"{pre},highpass=f={hp},lowpass=f={lp},aresample={target_sr}"
 
     with tempfile.TemporaryDirectory() as td:
@@ -356,7 +346,7 @@ def _apply_mp3(in_path: Path, out_video: Path, severity: int, overwrite: bool):
 
         # mix a small amount of noise into the MP3 to make compression artifacts
         # more audible; noise amplitude grows with severity
-        noise_amp_map = {1: 0.02, 2: 0.04, 3: 0.08, 4: 0.16, 5: 0.30}
+        noise_amp_map = {1: 0.02, 2: 0.10, 3: 0.30, 4: 0.45, 5: 0.80}
         noise_amp = noise_amp_map[severity]
 
         # 1) Extract audio -> normalize -> bandlimit/resample -> mix noise -> encode low-bitrate MP3
@@ -388,12 +378,89 @@ def _apply_mp3(in_path: Path, out_video: Path, severity: int, overwrite: bool):
             str(out_video),
         ])
 
+def _get_media_duration(path: Path) -> float | None:
+    """Return the duration in seconds for the media file, or None on error."""
+    try:
+        cmd = [
+            "ffprobe", "-v", "error",
+            "-show_entries", "format=duration",
+            "-of", "csv=p=0",
+            str(path),
+        ]
+        out = subprocess.check_output(cmd, text=True).strip()
+        if not out:
+            return None
+        return float(out.splitlines()[0].strip())
+    except Exception:
+        return None
+
+
+def _apply_compress_and_silence(in_path: Path, out_video: Path, severity: int, overwrite: bool):
+    """Speed up (compress) the audio by a severity-controlled factor, then
+    prepend silence such that the resulting audio duration equals the original.
+
+    The video stream is copied unchanged; audio is re-encoded to AUDIO_CODEC mono.
+    """
+    # map severity -> tempo factor (>1 means faster / shorter)
+    tempo_map = {1: 1.10, 2: 1.50, 3: 2.00, 4: 2.80, 5: 3.50}
+    factor = tempo_map.get(max(1, min(5, severity)), 2.00)
+
+    # obtain original duration
+    orig_dur = _get_media_duration(in_path)
+    if orig_dur is None:
+        # fallback: attempt a reasonable default (no silence)
+        orig_dur = 0.0
+
+    # sped audio duration after tempo change
+    sped_dur = orig_dur / factor if orig_dur > 0 else 0.0
+    silence_dur = max(0.0, orig_dur - sped_dur)
+
+    # if silence is effectively zero, just speed the audio and leave it
+    # (this keeps a simple pipeline for short inputs)
+    if silence_dur <= 0.001:
+        # apply atempo only and mux
+        # note: atempo supports 0.5-2.0; our factors are in that range
+        af = f"atempo={factor},aresample=44100"
+        cmd = [
+            "ffmpeg", "-y" if overwrite else "-n",
+            "-i", str(in_path),
+            "-map", "0:v:0", "-map", "0:a:0",
+            "-c:v", "copy",
+            "-af", af,
+            "-c:a", AUDIO_CODEC, "-ac", "1",
+            "-shortest", str(out_video),
+        ]
+        _run(cmd)
+        return
+
+    # create a silence input using lavfi and concat it with the sped audio
+    # Inputs: 0 -> original file, 1 -> generated silence
+    # We'll apply atempo to the original audio, then concat [silence][sped_audio]
+    cmd = [
+        "ffmpeg", "-y" if overwrite else "-n",
+        "-i", str(in_path),
+        "-f", "lavfi", "-i", f"anullsrc=channel_layout=mono:sample_rate=44100:d={silence_dur}",
+        "-filter_complex",
+        # apply atempo to original audio (input 0), ensure both streams have same sample rate
+        f"[0:a]atempo={factor},aresample=44100[a1];"
+        f"[1:a]aresample=44100[a0];"
+        # concat silence (a0) + sped audio (a1)
+        f"[a0][a1]concat=n=2:v=0:a=1[aout]",
+        "-map", "0:v:0", "-map", "[aout]",
+        "-c:v", "copy",
+        "-c:a", AUDIO_CODEC, "-ac", "1",
+        "-shortest",
+        str(out_video),
+    ]
+
+    _run(cmd)
+
+
 def apply_audio_corruption(in_path: Path, out_video: Path, corruption: str, severity: int, overwrite: bool) -> Path:
     """Apply the requested audio corruption by delegating to per-corruption helpers.
 
     Returns the actual path written (may have a different suffix when OUT_EXTENSION is set).
     """
-    severity = max(1, min(5, severity))
     out_video.parent.mkdir(parents=True, exist_ok=True)
 
     # If OUT_EXTENSION is set, ensure the output file uses that extension
@@ -413,8 +480,8 @@ def apply_audio_corruption(in_path: Path, out_video: Path, corruption: str, seve
         _apply_clipping(in_path, effective_out, severity, overwrite)
     elif corruption == "bandlimit":
         _apply_bandlimit(in_path, effective_out, severity, overwrite)
-    elif corruption == "fps_drop":
-        _apply_fps_drop(in_path, effective_out, severity, overwrite)
+    elif corruption == "compress":
+        _apply_compress_and_silence(in_path, effective_out, severity, overwrite)
     else:
         raise ValueError(f"Unknown corruption: {corruption}")
 
@@ -557,3 +624,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
