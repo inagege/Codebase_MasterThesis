@@ -8,8 +8,7 @@ from typing import Tuple
 
 VIDEO_EXTS = {".mp4", ".mkv", ".avi", ".mov", ".webm"}
 
-VISUAL_CORRUPTIONS = ["moving_occlusion"]
-    #"motion_blur", "zoom_blur", "gaussian_noise", "pixelate", "motion_blur", "fps_drop", "scale_down", "occlusion"]
+VISUAL_CORRUPTIONS = ["moving_occlusion", "motion_blur", "zoom_blur", "gaussian_noise", "pixelate", "motion_blur", "fps_drop", "scale_down", "occlusion"]
 
 
 def _ffmpeg():
