@@ -4,3 +4,4 @@ idea/# pixi environments
 !.pixi/config.toml
 data/
 logs/
+analysis/out/
