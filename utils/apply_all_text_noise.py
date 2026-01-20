@@ -6,21 +6,54 @@ from pathlib import Path
 
 import pandas as pd
 
-TEXT_CORRUPTIONS = ["keyboard", "char_replace", "ocr", "char_delete", "top4_paper"]
+TEXT_CORRUPTIONS = ["keyboard", "char_replace", "ocr", "char_delete"]
 
 QWERTY_NEIGHBORS = {
-    "a": "qwsxz", "b": "vghn", "c": "xsdfv", "d": "serfcx", "e": "wsdr",
+    "a": "qwsyxz", "b": "vghn", "c": "xsdfv", "d": "serfcx", "e": "wsdr",
     "f": "drtgvc", "g": "ftyhbv", "h": "gyujnb", "i": "ujko", "j": "huikmn",
     "k": "jiolm", "l": "kop", "m": "njk", "n": "bhjm", "o": "iklp",
     "p": "ol", "q": "wa", "r": "edft", "s": "awedxz", "t": "rfgy",
     "u": "yhji", "v": "cfgb", "w": "qase", "x": "zsdc", "y": "tghu", "z": "asx",
 }
 
-OCR_CONFUSIONS = {"o": "0", "O": "0", "i": "1", "I": "1", "l": "1", "e": "3", "a": "@", "s": "5", "S": "5", "b": "6", "g": "9"}
+OCR_CONFUSIONS = {
+    # your originals
+    "o": "0", "O": "0",
+    "i": "1", "I": "1", "l": "1",
+    "e": "3",
+    "a": "@",
+    "s": "5", "S": "5",
+    "b": "6",
+    "g": "9",
+    "q": "9",
+    "z": "2", "Z": "2",
+    "B": "8",
+    "G": "6",
+    "T": "7",
+    "Y": "7",
+    "D": "0",
+    "C": "0",
+    "u": "v", "v": "u",
+    "U": "V", "V": "U",
+    "m": "rn",
+    "rn": "m",
+    "h": "li",
+    "k": "lc",
+    "w": "vv",
+    "W": "VV",
+    "x": "*",
+    "X": "*",
+    "p": "q",
+    "n": "m",
+    "E": "3",
+    "A": "4",
+    "t": "+",
+    "f": "t",
+}
 
 def severity_to_rate(sev: int) -> float:
     sev = max(1, min(5, sev))
-    return {1: 0.03, 2: 0.06, 3: 0.10, 4: 0.15, 5: 0.20}[sev]
+    return {1: 0.03, 2: 0.10, 3: 0.2, 4: 0.4, 5: 0.5}[sev]
 
 def _pick_indices(chars, predicate, k, rng):
     idxs = [i for i, ch in enumerate(chars) if predicate(ch)]
@@ -76,13 +109,6 @@ def perturb(text: str, method: str, severity: int, rng: random.Random) -> str:
         return ocr(text, rate, rng)
     if method == "char_delete":
         return char_delete(text, rate, rng)
-    if method == "top4_paper":
-        r = rate * 0.25
-        t = keyboard(text, r, rng)
-        t = char_replace(t, r, rng)
-        t = ocr(t, r, rng)
-        t = char_delete(t, r, rng)
-        return t
     raise ValueError(method)
 
 def main():
@@ -91,7 +117,6 @@ def main():
     ap.add_argument("--out_dir", required=True, help="Base output directory.")
     ap.add_argument("--severity", type=int, default=3)
     ap.add_argument("--seed", type=int, default=123)
-    ap.add_argument("--output_column", default="Utterance_noisy")
     args = ap.parse_args()
 
     inp = Path(args.input_csv)
@@ -108,7 +133,7 @@ def main():
 
         rng = random.Random(args.seed)  # reset per corruption for reproducibility
         df_out = df.copy()
-        df_out[args.output_column] = df_out["Utterance"].apply(lambda t: perturb(t, corr, args.severity, rng))
+        df_out["Utterance"] = df_out["Utterance"].apply(lambda t: perturb(t, corr, args.severity, rng))
 
         out_csv = combo_root / "metadata.csv"
         df_out.to_csv(out_csv, index=False)
