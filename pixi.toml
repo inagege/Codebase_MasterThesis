@@ -26,6 +26,7 @@ pandas = "*"
 numpy = "*"
 pytest = ">=9.0.2,<10"
 scikit-learn = ">=1.8.0,<2"
+seaborn = ">=0.13.2,<0.14"
 
 [target.linux-64]
 [target.linux-64.dependencies]
@@ -42,6 +43,7 @@ pixi-kernel = "*"
 ipykernel = "*"
 pixi-pycharm = "*"
 matplotlib = "*"
+jupyterlab = "*"
 
 [activation]
 env = { PYTORCH_CUDA_ALLOC_CONF = "expandable_segments:True" }

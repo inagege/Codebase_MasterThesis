@@ -5,3 +5,4 @@ idea/# pixi environments
 data/
 logs/
 analysis/out/
+pixi.lock
