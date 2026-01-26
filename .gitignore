@@ -6,3 +6,6 @@ data/
 logs/
 analysis/out/
 pixi.lock
+.idea/
+.pynb_checkpoints/
+.DS_Store
