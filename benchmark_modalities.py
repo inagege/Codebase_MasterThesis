@@ -33,21 +33,33 @@ def parse_args():
         default="text,video,audio",
         help="Comma-separated list: any of text,audio,video. Example: text or text,audio or text,video",
     )
-
-    # Kept for backward compat; NOT used once audio is pre-extracted.
+    p.add_argument(
+        "--noisy-modalities",
+        type=str,
+        default=None,
+        help="State which of the input modalities should use noisy input."
+    )
+    p.add_argument(
+        "--split",
+        type=str,
+        default="test",
+        help="The split to process (train, val, test)."
+    )
     p.add_argument(
         "--use-audio-in-video",
         action="store_true",
         help="(Ignored) Audio is expected as WAV under audio_only/. Kept for compatibility.",
-    )
+    )    
     p.add_argument("--total-samples", type=int, default=None, help="Limit total files across all splits")
     p.add_argument("--audio-subdir", type=str, default="audio_only", help="Subdir under each split dir with WAVs")
-    p.add_argument("--out-path", type=str, default="out/prediction_text_noise.csv")
-    p.add_argument("--out-error-path", type=str, default="out/error_prediction_text_noise.csv")
+    p.add_argument("--out-path", type=str, default="out/prediction_noise.csv")
+    p.add_argument("--out-error-path", type=str, default="out/error_prediction_noise.csv")
     return p.parse_args()
 
 
 def normalize_modalities(mod_str: str) -> set[str]:
+    if mod_str is None:
+        return mod_str
     mods = {m.strip().lower() for m in mod_str.split(",") if m.strip()}
     valid = {"text", "audio", "video"}
     bad = mods - valid
@@ -57,31 +69,65 @@ def normalize_modalities(mod_str: str) -> set[str]:
         raise ValueError("No modalities selected. Use --modalities text,audio,video (any subset).")
     return mods
 
+def normalize_splits(split_str: str) -> set[str]:
+    splits = {s.strip().lower() for s in split_str.split(",") if s.strip()}
+    valid = {"test", "train", "val"}
+    bad = splits - valid
+    if bad:
+        raise ValueError(f"Unknown modalities: {bad}. Valid: {sorted(valid)}")
+    if not splits:
+        raise ValueError("No split selected. Use --split test,train,val (any subset).")
+    return splits
 
-# -------------------------
-# Data config
-# -------------------------
-SPLIT_CONFIGS = [
-    # Audio Modality Variations
-    #("data/MELD.Raw/output_repeated_splits_test/audio/A=bandlimit_S=5/videos", "data/MELD.Raw/test_sent_emo.csv", "A=bandlimit_S=5/videos"),
-    #("data/MELD.Raw/output_repeated_splits_test/audio/A=clipping_S=5/videos", "data/MELD.Raw/test_sent_emo.csv", "A=clipping_S=5/videos"),
-    #("data/MELD.Raw/output_repeated_splits_test/audio/A=mp3_S=5/videos", "data/MELD.Raw/test_sent_emo.csv", "A=mp3_S=5/videos"),
-    #("data/MELD.Raw/output_repeated_splits_test/audio/A=reverb_S=5/videos", "data/MELD.Raw/test_sent_emo.csv", "A=reverb_S=5/videos"),
-    #("data/MELD.Raw/output_repeated_splits_test/audio/A=snr_white_S=5/videos", "data/MELD.Raw/test_sent_emo.csv", "A=snr_white_S=5/videos"),
+def get_root(split: str) -> str:
+    match split:
+        case 'train':
+            return 'data/MELD.Raw/train_splits'
+        case 'test':
+            return 'data/MELD.Raw/output_repeated_splits_test'
+        case 'val':
+            return 'data/MELD.Raw/dev_splits_complete'
+        case _:
+            raise ValueError("No split selected. Use --split test,train,val (any subset).")
+        
+def get_meta_csv(split: str) -> str:
+    match split:
+        case 'train':
+            return 'train_sent_emo.csv'
+        case 'test':
+            return 'test_sent_emo.csv'
+        case 'val':
+            return 'dev_sent_emo.csv'
+        case _:
+            raise ValueError("No split selected. Use --split test,train,val (any subset).")
+		    
 
-    # Visual Modality Variations
-    #("data/MELD.Raw/output_repeated_splits_test/visual/V=gaussian_noise_S=5/videos", "data/MELD.Raw/test_sent_emo.csv", "V=gaussian_noise_S=5/videos"),
-    #("data/MELD.Raw/output_repeated_splits_test/visual/V=motion_blur_S=5/videos", "data/MELD.Raw/test_sent_emo.csv", "V=motion_blur_S=5/videos"),
-    #("data/MELD.Raw/output_repeated_splits_test/visual/V=pixelate_S=5/videos", "data/MELD.Raw/test_sent_emo.csv", "V=pixelate_S=5/videos"),
-    #("data/MELD.Raw/output_repeated_splits_test/visual/V=zoom_blur_S=5/videos", "data/MELD.Raw/test_sent_emo.csv", "V=zoom_blur_S=5/videos"),
+def get_split_configs(noisy_modalities: set[str], split: str) -> list[tuple[str, str, str]]:
+    SPLIT_CONFIGS = []
+    root = get_root(split=split)
 
-    # Text Modality Variations
-    ("data/MELD.Raw/output_repeated_splits_test/unmodified", "data/MELD.Raw/modified_meta/T=char_delete_S=5/metadata.csv", "T=char_delete_S=5"),
-    ("data/MELD.Raw/output_repeated_splits_test/unmodified", "data/MELD.Raw/modified_meta/T=char_replace_S=5/metadata.csv", "T=char_replace_S=5"),
-    ("data/MELD.Raw/output_repeated_splits_test/unmodified", "data/MELD.Raw/modified_meta/T=keyboard_S=5/metadata.csv", "T=keyboard_S=5"),
-    ("data/MELD.Raw/output_repeated_splits_test/unmodified", "data/MELD.Raw/modified_meta/T=ocr_S=5/metadata.csv", "T=ocr_S=5"),
-    ("data/MELD.Raw/output_repeated_splits_test/unmodified", "data/MELD.Raw/modified_meta/T=top4_paper_S=5/metadata.csv", "T=top4_paper_S=5"),
-    ]
+    if noisy_modalities is None:
+        path = (os.path.join(root,'unmodified'))
+        meta_data = os.path.join(root, get_meta_csv(split))
+        ref_split = 'unmodified'
+        SPLIT_CONFIGS.append((path, meta_data, ref_split))
+    else:
+        meta = get_meta_csv(split=split)
+
+        for mod in noisy_modalities - {'text'}:
+            path = os.path.join(root, mod)
+            for name in os.listdir(path):
+                if os.path.isdir(os.path.join(path, name)):
+                    SPLIT_CONFIGS.append((os.path.join(path, name), meta, name))
+        if 'text' in noisy_modalities:
+            path = os.path.join(root, mod)
+            for name in os.listdir(path):
+                if os.path.isdir(os.path.join(path, name)):
+                    SPLIT_CONFIGS.append((os.path.join(root,'‘unmodified'), os.path.join(path, name, 'metadata.csv'), name))
+                
+    return SPLIT_CONFIGS
+
+
 
 
 def audio_path_for_mp4(mp4_path: Path, audio_subdir: str) -> Path:
@@ -93,6 +139,9 @@ def audio_path_for_mp4(mp4_path: Path, audio_subdir: str) -> Path:
 def main():
     args = parse_args()
     enabled = normalize_modalities(args.modalities)
+    noisy = normalize_modalities(args.noisy_modalities)
+    SPLIT_CONFIGS = get_split_configs(noisy_modalities=noisy, split=args.split)
+    print(SPLIT_CONFIGS)
 
     system_entry = {
         "role": "system",
@@ -111,6 +160,8 @@ def main():
 
     print(f"[INFO] CWD: {os.getcwd()}", flush=True)
     print(f"[INFO] Modalities enabled: {sorted(enabled)}", flush=True)
+    print(f"[INFO] Noisy modalities: {args.noisy_modalities}", flush=True)
+    print(f"[INFO] Split: {args.split}", flush=True)
     print(f"[INFO] audio_subdir={args.audio_subdir}", flush=True)
     print(f"[INFO] out_path={args.out_path}", flush=True)
     print(f"[INFO] out_error_path={args.out_error_path}", flush=True)
