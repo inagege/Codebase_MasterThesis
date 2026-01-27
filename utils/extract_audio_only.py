@@ -9,17 +9,11 @@ def parse_args():
     p = argparse.ArgumentParser()
     p.add_argument("--input-dir", type=str, required=True, help="Directory containing .mp4 files")
     p.add_argument(
-        "--recursive",
-        action="store_true",
-        help="Search for mp4 files recursively with rglob (default: only top-level)",
-    )
-    p.add_argument(
         "--audio-subdir",
         type=str,
         default="audio_only",
         help="Subdirectory name (created under input-dir) to store wav files",
     )
-    p.add_argument("--sr", type=int, default=16000, help="Output sample rate")
     p.add_argument("--channels", type=int, default=1, help="Number of audio channels (1=mono, 2=stereo)")
     p.add_argument(
         "--overwrite",
@@ -35,7 +29,7 @@ def parse_args():
     return p.parse_args()
 
 
-def ffmpeg_extract_wav(mp4_path: Path, wav_path: Path, sr: int, channels: int, overwrite: bool):
+def ffmpeg_extract_wav(mp4_path: Path, wav_path: Path, channels: int, overwrite: bool):
     wav_path.parent.mkdir(parents=True, exist_ok=True)
 
     cmd = [
@@ -56,8 +50,7 @@ def ffmpeg_extract_wav(mp4_path: Path, wav_path: Path, sr: int, channels: int, o
     cmd += [
         "-vn",                  # no video
         "-ac", str(channels),   # channels
-        "-ar", str(sr),         # sample rate
-        "-acodec", "pcm_s16le", # WAV codec
+        "-acodec", "pcm_s32le", # WAV codec
         str(wav_path),
     ]
 
@@ -75,8 +68,8 @@ def main():
 
     errors_csv = Path(args.errors_csv) if args.errors_csv else (audio_dir / "_errors.csv")
 
-    mp4s = sorted(input_dir.rglob("*.mp4")) if args.recursive else sorted(input_dir.glob("*.mp4"))
-    print(f"[INFO] Scanning: {input_dir} (recursive={args.recursive})")
+    mp4s = sorted(input_dir.glob("*.mp4"))
+    print(f"[INFO] Scanning: {input_dir}")
     print(f"[INFO] Found {len(mp4s)} mp4 files")
     print(f"[INFO] Writing wav to: {audio_dir}")
 
@@ -102,7 +95,7 @@ def main():
             continue
 
         try:
-            ffmpeg_extract_wav(mp4_path, wav_path, sr=args.sr, channels=args.channels, overwrite=args.overwrite)
+            ffmpeg_extract_wav(mp4_path, wav_path, channels=args.channels, overwrite=args.overwrite)
             ok += 1
             if i == 1 or i % 100 == 0:
                 print(f"[INFO] {i}/{len(mp4s)} extracted: {wav_path.name}")
