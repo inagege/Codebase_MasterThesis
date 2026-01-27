@@ -9,7 +9,7 @@ import random
 
 VIDEO_EXTS = {".mp4", ".mkv", ".avi", ".mov", ".webm"}
 
-AUDIO_CORRUPTIONS = ["reverb"] #"compress", "jitter", "mp3", "snr_white", "bitcrushing", "bandlimit"
+AUDIO_CORRUPTIONS = ["reverb", "compress", "jitter", "mp3", "snr_white", "bitcrushing", "bandlimit"]
 
 # Use lossless PCM audio inside an MKV container by default and make this the
 # non-optional project behavior. This ensures exact WAV extraction later.
