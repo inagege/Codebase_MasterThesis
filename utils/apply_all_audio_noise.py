@@ -9,11 +9,11 @@ import random
 
 VIDEO_EXTS = {".mp4", ".mkv", ".avi", ".mov", ".webm"}
 
-AUDIO_CORRUPTIONS = ["jitter", "reverb", "clipping", "mp3", "snr_white", "compress", "bandlimit"]
+AUDIO_CORRUPTIONS = ["reverb"] #"compress", "jitter", "mp3", "snr_white", "bitcrushing", "bandlimit"
 
 # Use lossless PCM audio inside an MKV container by default and make this the
 # non-optional project behavior. This ensures exact WAV extraction later.
-AUDIO_CODEC = "pcm_s16le"
+AUDIO_CODEC = "pcm_s32le"
 OUT_EXTENSION = ".mkv"  # enforce MKV output so WAV extraction can use exact PCM bytes
 
 def _ffmpeg():
@@ -198,8 +198,8 @@ def _af_reverb(severity: int) -> str:
     # Updated mappings: severity 1 unchanged; severity 2/3 shifted up;
     # severities 4 and 5 made more aggressive for stronger reverb.
     delays_map = {
-        1: "40|70",
-        2: "80|120",
+        1: "80|120",
+        2: "100|150",
         3: "120|200",
         4: "180|300",
         5: "260|420",
@@ -216,23 +216,30 @@ def _af_reverb(severity: int) -> str:
     return f"aecho=0.8:0.9:{delays}:{decays}"
 
 
-def _af_clipping(severity: int) -> str:
+def _af_bitcrushing(severity: int) -> str:
     # Pregain pushes signal into distortion
-    # Updated mapping: keep severity 1 unchanged; severity 2 uses old severity-3 value;
-    # severity 3 uses old severity-5 value; severities 4 and 5 made more aggressive.
-    pregain = {1: 12, 2: 24, 3: 36, 4: 48, 5: 60}[severity]
+    pregain = {1: 26, 2: 30, 3: 36, 4: 48, 5: 60}[severity]
 
-    # tanh drive controls hardness of clipping
-    drive = {1: 1.5, 2: 4.0, 3: 10.0, 4: 16.0, 5: 24.0}[severity]
+    # tanh drive controls hardness of bitcrushing
+    drive = {1: 5, 2: 8.0, 3: 10.0, 4: 16.0, 5: 32.0}[severity]
 
     # Bitcrush for extra degradation (fewer bits -> more obvious degradation)
-    bits = {1: 10, 2: 6, 3: 4, 4: 3, 5: 2}[severity]
+    bits = {1: 7, 2: 6, 3: 4, 4: 1, 5: 1}[severity]
 
-    return (
-        f"volume={pregain}dB,"
-        f"aeval=0.5*tanh({drive}*val(0)),"
-        f"acrusher=bits={bits}:mix=1"
-    )
+    if severity < 4:
+        return (
+            f"volume={pregain}dB,"
+            f"aeval=0.5*tanh({drive}*val(0)),"
+            f"acrusher=bits={bits}:mix=1,"
+        )
+    else:
+        samples = 20 if severity == 5 else 8
+        return (
+            f"volume={pregain}dB,"
+            f"aeval=0.5*tanh({drive}*val(0)),"
+            f"acrusher=bits={bits}:samples={samples}:mix=1,"
+        )
+
 
 
 def _af_bandlimit(severity: int) -> str:
@@ -250,7 +257,7 @@ def _af_bandlimit(severity: int) -> str:
     high = {1: 6000, 2: 3000, 3: 1500, 4: 1000, 5: 500}[severity]
 
     # Aggressive resampling to remove HF content (lower sample rate for higher severity)
-    resample_map = {1: 16000, 2: 8000, 3: 4000, 4: 3000, 5: 2000}
+    resample_map = {1: 16000, 2: 8000, 3: 4000, 4: 2000, 5: 1000}
     rs = resample_map[severity]
 
     af_parts = [f"highpass=f={low}", f"lowpass=f={high}", f"aresample={rs}"]
@@ -287,8 +294,8 @@ def _apply_reverb(in_path: Path, out_video: Path, severity: int, overwrite: bool
     return _apply_af_filter(in_path, out_video, af, overwrite)
 
 
-def _apply_clipping(in_path: Path, out_video: Path, severity: int, overwrite: bool):
-    af = _af_clipping(severity)
+def _apply_bitcrushing(in_path: Path, out_video: Path, severity: int, overwrite: bool):
+    af = _af_bitcrushing(severity)
     return _apply_af_filter(in_path, out_video, af, overwrite)
 
 
@@ -403,7 +410,7 @@ def _apply_compress_and_silence(in_path: Path, out_video: Path, severity: int, o
     The video stream is copied unchanged; audio is re-encoded to AUDIO_CODEC mono.
     """
     # map severity -> tempo factor (>1 means faster / shorter)
-    tempo_map = {1: 1.10, 2: 1.50, 3: 2.00, 4: 2.80, 5: 3.50}
+    tempo_map = {1: 1.3, 2: 1.6, 3: 2.00, 4: 3.0, 5: 4.0}
     factor = tempo_map.get(max(1, min(5, severity)), 2.00)
 
     # obtain original duration
@@ -468,7 +475,7 @@ def _apply_temporal_jitter(in_path: Path, out_video: Path, severity: int, overwr
     This keeps the implementation dependency-free (uses ffmpeg) and is robust for different input lengths.
     """
     # severity -> target segment length (seconds): higher severity -> longer segments -> stronger temporal disruption
-    seg_len_map = {1: 0.05, 2: 0.10, 3: 0.20, 4: 0.40, 5: 0.80}
+    seg_len_map = {1: 0.1, 2: 0.15, 3: 0.20, 4: 0.40, 5: 0.80}
     seg_len = seg_len_map.get(max(1, min(5, severity)), 0.2)
 
     # create temp dir to hold segments and intermediate files
@@ -594,8 +601,8 @@ def apply_audio_corruption(in_path: Path, out_video: Path, corruption: str, seve
         _apply_mp3(in_path, effective_out, severity, overwrite)
     elif corruption == "reverb":
         _apply_reverb(in_path, effective_out, severity, overwrite)
-    elif corruption == "clipping":
-        _apply_clipping(in_path, effective_out, severity, overwrite)
+    elif corruption == "bitcrushing":
+        _apply_bitcrushing(in_path, effective_out, severity, overwrite)
     elif corruption == "bandlimit":
         _apply_bandlimit(in_path, effective_out, severity, overwrite)
     elif corruption == "compress":
