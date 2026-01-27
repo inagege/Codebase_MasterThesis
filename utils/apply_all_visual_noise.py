@@ -5,6 +5,13 @@ import tempfile
 import math
 from pathlib import Path
 from typing import Tuple
+import sys
+
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
+from utils.extract_audio_only import ffmpeg_extract_wav
 
 VIDEO_EXTS = {".mp4", ".mkv", ".avi", ".mov", ".webm"}
 
@@ -235,7 +242,10 @@ def _vf_occlusion(severity: int) -> str:
 
 def _vf_scale_down(severity: int) -> str:
     r = {1: 0.85, 2: 0.55, 3: 0.30, 4: 0.20, 5: 0.10}[severity]
-    return f"scale=trunc(iw*{r}/2)*2:trunc(ih*{r}/2)*2,scale=iw:ih"
+    return (
+        f"scale=trunc(iw*{r}/2)*2:trunc(ih*{r}/2)*2,"
+        "scale=iw:ih"
+    )
 
 
 def _vf_fps_drop(severity: int) -> str:
@@ -400,7 +410,6 @@ def apply_visual_corruption(in_path: Path, out_path: Path, corruption: str, seve
     except Exception:
         pass
 
-
 def main():
     ap = argparse.ArgumentParser("Apply ALL visual perturbations to a video directory.")
     ap.add_argument("--videos_dir", required=True)
@@ -433,6 +442,12 @@ def main():
                 continue
 
             apply_visual_corruption(vid, out_video, corr, args.severity, args.overwrite)
+
+            audio_dir = combo_root / "audio_only"
+            audio_dir.mkdir(parents=True, exist_ok=True)
+            wav_path = audio_dir / (out_video.stem + ".wav")
+            print(out_video)
+            ffmpeg_extract_wav(out_video, wav_path, 1, False)
 
         print(f"[OK] Finished visual corruption: {combo_root}")
 
