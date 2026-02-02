@@ -59,13 +59,15 @@ def extract_assistant_reply(full_text: str) -> str:
 
 
 
-def get_label_for_file(filename: str, meta_data: pd.DataFrame) -> str:
+def get_label_for_file(filename: str, meta_data: pd.DataFrame, task: str) -> str:
     """Get the sentiment label for a given filename from the metadata DataFrame.
 
     Raises:
         ValueError: if filename format is unexpected or meta_data is invalid.
         LabelNotFoundError: if no matching sentiment is found for the extracted IDs.
     """
+    task = task[0].upper()+task[1:].lower()
+
     if meta_data is None or not isinstance(meta_data, pd.DataFrame):
         raise ValueError("meta_data must be a pandas DataFrame")
 
@@ -88,7 +90,7 @@ def get_label_for_file(filename: str, meta_data: pd.DataFrame) -> str:
     else:
         raise ValueError("meta_data must contain 'Dialogue_ID' and 'Utterance_ID' columns")
 
-    matches = meta_data.loc[mask, "Sentiment"]
+    matches = meta_data.loc[mask, task]
     if matches.empty:
         return "unknown"
 

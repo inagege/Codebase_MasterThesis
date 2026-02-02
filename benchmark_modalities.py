@@ -49,6 +49,12 @@ def parse_args():
         "--use-audio-in-video",
         action="store_true",
         help="(Ignored) Audio is expected as WAV under audio_only/. Kept for compatibility.",
+    )
+    p.add_argument(
+        "--classification-task",
+        type=str,
+        default="sentiment",
+        help="Choose task for classification: sentimet or emotion"
     )    
     p.add_argument("--total-samples", type=int, default=None, help="Limit total files across all splits")
     p.add_argument("--audio-subdir", type=str, default="audio_only", help="Subdir under each split dir with WAVs")
@@ -68,6 +74,18 @@ def normalize_modalities(mod_str: str) -> set[str]:
     if not mods:
         raise ValueError("No modalities selected. Use --modalities text,audio,video (any subset).")
     return mods
+
+def get_prompt_for_classification(task: str) -> str:
+    if task.lower() not in ["sentiment", "emotion"]:
+        raise ValueError("Unknown task. Use --classification-task semtiment (/emotion)")
+    if task.lower() == "sentiment":
+        return "The dataset contains utterances from Friends TV series. " \
+        "Each utterance in a dialog can be of positive, negative or neutral sentiment. " \
+        "Please classify the given sample by answering with exactly one word: neutral, negative or positive."
+    else:
+        return "The dataset contains utterances from Friends TV series. " \
+        "Each utterance in a dialog can have one of the follwing emotions: anger, disgust, sadness, joy, neutral, suprise or fear" \
+        "Please classify the given sample by answering with exactly one word: anger, disgust, sadness, joy, neutral, suprise or fear."
 
 def normalize_splits(split_str: str) -> set[str]:
     splits = {s.strip().lower() for s in split_str.split(",") if s.strip()}
@@ -105,25 +123,23 @@ def get_meta_csv(split: str) -> str:
 def get_split_configs(noisy_modalities: set[str], split: str) -> list[tuple[str, str, str]]:
     SPLIT_CONFIGS = []
     root = get_root(split=split)
+    meta_root = os.path.join(root, get_meta_csv(split))
 
     if noisy_modalities is None:
         path = (os.path.join(root,'unmodified'))
-        meta_data = os.path.join(root, get_meta_csv(split))
         ref_split = 'unmodified'
-        SPLIT_CONFIGS.append((path, meta_data, ref_split))
+        SPLIT_CONFIGS.append((path, meta_root, ref_split))
     else:
-        meta = get_meta_csv(split=split)
-
         for mod in noisy_modalities - {'text'}:
             path = os.path.join(root, mod)
             for name in os.listdir(path):
                 if os.path.isdir(os.path.join(path, name)):
-                    SPLIT_CONFIGS.append((os.path.join(path, name), meta, name))
+                    SPLIT_CONFIGS.append((os.path.join(path, name), meta_root, name))
         if 'text' in noisy_modalities:
-            path = os.path.join(root, mod)
+            path = os.path.join(root, 'text')
             for name in os.listdir(path):
                 if os.path.isdir(os.path.join(path, name)):
-                    SPLIT_CONFIGS.append((os.path.join(root,'‘unmodified'), os.path.join(path, name, 'metadata.csv'), name))
+                    SPLIT_CONFIGS.append((os.path.join(root,'unmodified'), os.path.join(path, name, 'metadata.csv'), name))
                 
     return SPLIT_CONFIGS
 
@@ -140,6 +156,7 @@ def main():
     args = parse_args()
     enabled = normalize_modalities(args.modalities)
     noisy = normalize_modalities(args.noisy_modalities)
+    prompt = get_prompt_for_classification(args.classification_task)
     SPLIT_CONFIGS = get_split_configs(noisy_modalities=noisy, split=args.split)
     print(SPLIT_CONFIGS)
 
@@ -149,10 +166,7 @@ def main():
             {
                 "type": "text",
                 "text": (
-                    "The dataset contains utterances from Friends TV series. "
-                    "Each utterance in a dialog can be of positive, negative or neutral sentiment. "
-                    "Please classify the given sample by answering with exactly one word: "
-                    "neutral, negative or positive."
+                    prompt
                 ),
             },
         ],
@@ -225,7 +239,7 @@ def main():
         utt_text = get_utterance_text_for_file(fname, meta_data)
 
         dia_id, utt_id = get_ids_for_file(fname)
-        label = get_label_for_file(fname, meta_data)
+        label = get_label_for_file(fname, meta_data, args.classification_task.lower())
 
         # Build user content based on enabled modalities
         user_content = []
