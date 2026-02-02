@@ -20,17 +20,19 @@ ninja = "*"
 packaging = "*"
 torchvision = "*"
 torchaudio = "*"
-cuda-version = "12.9.*"
+torchmetrics = "*"
 pip = ">=25.3,<26"
 pandas = "*"
 numpy = "*"
 pytest = ">=9.0.2,<10"
 scikit-learn = ">=1.8.0,<2"
 seaborn = ">=0.13.2,<0.14"
+librosa = "*"
 
 [target.linux-64]
 [target.linux-64.dependencies]
 pytorch-gpu = "*"
+cuda-version = "12.9.*"
 
 [target.linux-64.pypi-dependencies]
 qwen-omni-utils = {version = "*", extras=["decord"]}
@@ -44,6 +46,7 @@ ipykernel = "*"
 pixi-pycharm = "*"
 matplotlib = "*"
 jupyterlab = "*"
+pytorch = "*"
 
 [activation]
 env = { PYTORCH_CUDA_ALLOC_CONF = "expandable_segments:True" }
