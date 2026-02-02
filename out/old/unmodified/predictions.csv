@@ -66,8 +66,6 @@ dialog_id,utterance_id,file,prediction,label,split
 107,8,dia107_utt8.mp4,neutral,neutral,output_repeated_splits_test
 107,9,dia107_utt9.mp4,neutral,neutral,output_repeated_splits_test
 108,0,dia108_utt0.mp4,negative,negative,output_repeated_splits_test
-108,1,dia108_utt1.mp4,neutral,unknown,output_repeated_splits_test
-108,2,dia108_utt2.mp4,neutral,unknown,output_repeated_splits_test
 108,3,dia108_utt3.mp4,negative,negative,output_repeated_splits_test
 108,4,dia108_utt4.mp4,neutral,negative,output_repeated_splits_test
 108,5,dia108_utt5.mp4,neutral,positive,output_repeated_splits_test
@@ -2511,9 +2509,6 @@ dialog_id,utterance_id,file,prediction,label,split
 93,2,dia93_utt2.mp4,neutral,neutral,output_repeated_splits_test
 93,3,dia93_utt3.mp4,neutral,neutral,output_repeated_splits_test
 93,4,dia93_utt4.mp4,negative,neutral,output_repeated_splits_test
-93,5,dia93_utt5.mp4,negative,unknown,output_repeated_splits_test
-93,6,dia93_utt6.mp4,negative,unknown,output_repeated_splits_test
-93,7,dia93_utt7.mp4,neutral,unknown,output_repeated_splits_test
 93,8,dia93_utt8.mp4,neutral,neutral,output_repeated_splits_test
 93,9,dia93_utt9.mp4,neutral,neutral,output_repeated_splits_test
 94,0,dia94_utt0.mp4,neutral,negative,output_repeated_splits_test
@@ -2728,7 +2723,6 @@ dialog_id,utterance_id,file,prediction,label,split
 8,2,final_videos_testdia8_utt2.mp4,negative,neutral,output_repeated_splits_test
 93,13,final_videos_testdia93_utt13.mp4,neutral,neutral,output_repeated_splits_test
 93,4,final_videos_testdia93_utt4.mp4,negative,neutral,output_repeated_splits_test
-93,6,final_videos_testdia93_utt6.mp4,neutral,unknown,output_repeated_splits_test
 93,8,final_videos_testdia93_utt8.mp4,neutral,neutral,output_repeated_splits_test
 93,9,final_videos_testdia93_utt9.mp4,neutral,neutral,output_repeated_splits_test
 95,1,final_videos_testdia95_utt1.mp4,positive,positive,output_repeated_splits_test
@@ -3278,8 +3272,6 @@ dialog_id,utterance_id,file,prediction,label,split
 49,14,dia49_utt14.mp4,neutral,neutral,dev_splits_complete
 49,2,dia49_utt2.mp4,neutral,negative,dev_splits_complete
 49,3,dia49_utt3.mp4,positive,negative,dev_splits_complete
-49,4,dia49_utt4.mp4,negative,unknown,dev_splits_complete
-49,5,dia49_utt5.mp4,negative,unknown,dev_splits_complete
 49,6,dia49_utt6.mp4,positive,negative,dev_splits_complete
 49,7,dia49_utt7.mp4,neutral,negative,dev_splits_complete
 49,8,dia49_utt8.mp4,neutral,neutral,dev_splits_complete
@@ -3454,7 +3446,6 @@ dialog_id,utterance_id,file,prediction,label,split
 65,9,dia65_utt9.mp4,neutral,negative,dev_splits_complete
 66,0,dia66_utt0.mp4,negative,negative,dev_splits_complete
 66,1,dia66_utt1.mp4,neutral,neutral,dev_splits_complete
-66,10,dia66_utt10.mp4,neutral,unknown,dev_splits_complete
 66,11,dia66_utt11.mp4,neutral,neutral,dev_splits_complete
 66,2,dia66_utt2.mp4,neutral,neutral,dev_splits_complete
 66,3,dia66_utt3.mp4,negative,negative,dev_splits_complete
@@ -3463,7 +3454,6 @@ dialog_id,utterance_id,file,prediction,label,split
 66,6,dia66_utt6.mp4,neutral,neutral,dev_splits_complete
 66,7,dia66_utt7.mp4,neutral,neutral,dev_splits_complete
 66,8,dia66_utt8.mp4,neutral,neutral,dev_splits_complete
-66,9,dia66_utt9.mp4,neutral,unknown,dev_splits_complete
 67,0,dia67_utt0.mp4,neutral,positive,dev_splits_complete
 67,1,dia67_utt1.mp4,neutral,positive,dev_splits_complete
 67,10,dia67_utt10.mp4,neutral,neutral,dev_splits_complete
