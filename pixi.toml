@@ -28,6 +28,8 @@ pytest = ">=9.0.2,<10"
 scikit-learn = ">=1.8.0,<2"
 seaborn = ">=0.13.2,<0.14"
 librosa = "*"
+pyarrow = ">=23.0.0,<24"
+fastparquet = ">=2025.12.0,<2026"
 
 [target.linux-64]
 [target.linux-64.dependencies]
