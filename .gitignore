@@ -9,3 +9,4 @@ pixi.lock
 .idea/
 .pynb_checkpoints/
 .DS_Store
+pixi.lock
