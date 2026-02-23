@@ -29,9 +29,9 @@ class ModalityPlotting(Enum):
     def from_string(s: str):
         s = s.lower()
 
-        has_audio = bool(re.search(r"audio", s))
-        has_video = bool(re.search(r"video", s))
-        has_text  = bool(re.search(r"text",  s))
+        has_audio = bool(re.search(r"audio", s)) or bool(re.search(r"a", s))
+        has_video = bool(re.search(r"video", s)) or bool(re.search(r"v", s))
+        has_text  = bool(re.search(r"text",  s)) or bool(re.search(r"t", s))
 
         key = (has_audio, has_video, has_text)
 
@@ -121,7 +121,7 @@ def calculate_mcc(tp: int, tn: int, fp: int, fn: int) -> float:
 
 
 # python
-def plot_metric_per_class(modalities: List[str], noise: List[str], metric: str) -> None:
+def plot_metric_per_class(modalities: List[str], noise: List[str], metric: str, task: str) -> None:
     """
     Plot the specified metric for each class across different data splits.
     """
@@ -129,16 +129,19 @@ def plot_metric_per_class(modalities: List[str], noise: List[str], metric: str) 
     noise_str = "".join(sorted(noise)) if noise else ""
 
     try:
-        prepared_data = pd.read_csv(os.path.join("out", "prepared_data", f"prepared_{mod_str}_noise_{noise_str}.csv"))
+        prepared_data = pd.read_csv(os.path.join("out", task, "prepared_data", f"prepared_{mod_str}_noise_{noise_str}.csv"))
     except FileNotFoundError as e:
         print(f"Prepared data file not found: {e}")
         return
 
     class_data = extract_classes(prepared_data)
 
-    fig, axs = plt.subplots(1, 3, sharey=True, figsize=(10, 5))
+    fig, axs = plt.subplots(1, len(class_data.keys()), sharey=True, figsize=(4*len(class_data.keys()), 5))
     axs = axs.ravel()  # ensure indexing works even if returned as 1d array
-    axs[0].set_ylim(0, 1)
+    if metric == 'mcc':
+        axs[0].set_ylim(-1, 1)
+    else:
+        axs[0].set_ylim(0, 1)
     axs[0].set_ylabel(metric)
 
     # prepare legend handles for unmodified lines
@@ -171,10 +174,9 @@ def plot_metric_per_class(modalities: List[str], noise: List[str], metric: str) 
 
     # place a single shared legend for the unmodified lines
     if line_handles:
-        fig.subplots_adjust(right=0.78)  # make room on the right for the legend
+        fig.subplots_adjust(right=0.85)  # make room on the right for the legend
         fig.legend(handles=line_handles, labels=line_labels, loc='upper right', bbox_to_anchor=(0.98, 0.95), title="Unmodified Input")
 
-    out_path = os.path.join("out", metric, f"{metric}_{mod_str}_noise_{noise_str}")
-    os.makedirs(out_path, exist_ok=True)
+    out_path = os.path.join("out", task, metric, f"{metric}_{mod_str}_noise_{noise_str}")
     plt.savefig(os.path.join(f"{out_path}.svg"), bbox_inches='tight')
     plt.show()
