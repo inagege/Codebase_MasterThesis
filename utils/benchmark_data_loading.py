@@ -106,7 +106,7 @@ def get_prompt_for_classification(dataset: str, meld_task: str | None):
         )
     if dataset == "homeprice":
         return (
-            "The dataset contains information on homes on Austin. "
+            "The dataset contains information on homes in Austin. "
             "Predict the price bin and answer with exactly the number (0, 1, 2, 3 or 4) of the price bin you think the given sample is on."
             "The options are 0: 5500$-205000$, 1: 205001$-325000$, 2: 325000$-525000$, 3: 525001$-1100000$, 4: 1100001$-13500000$"
         )
@@ -138,7 +138,7 @@ def get_prompt_for_classification(dataset: str, meld_task: str | None):
     if dataset == "nejm":
         return (
             "The dataset contains medical questions and images. "
-            "Answer with exactly the diagnosis text (without an option letter prefix)."
+            "Answer with exactly one of the following options (text without the option letter prefix)."
         )
     if dataset == "marine":
         return (
@@ -428,6 +428,7 @@ def _load_nejm_samples():
                 "sample_id": image_id,
                 "file": image_path.name,
                 "text": question,
+                "relevant_context": _sanitize_value(row.get("relevant_context")),
                 "audio": None,
                 "video": None,
                 "image": image_path,

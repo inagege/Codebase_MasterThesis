@@ -172,11 +172,6 @@ def main():
     if not samples:
         raise RuntimeError("No samples found for the selected dataset/modality configuration.")
 
-    system_entry = {
-        "role": "system",
-        "content": [{"type": "text", "text": prompt}],
-    }
-
     print("[INFO] Loading model...", flush=True)
     model = Qwen2_5OmniForConditionalGeneration.from_pretrained(
         "Qwen/Qwen2.5-Omni-7B",
@@ -210,6 +205,17 @@ def main():
     ]
 
     for idx, sample in enumerate(samples, start=1):
+        sample_prompt = prompt
+        if dataset == "nejm":
+            relevant_context = (sample.get("relevant_context") or "").strip()
+            if relevant_context:
+                sample_prompt = f"{prompt} The options are: {relevant_context}"
+
+        system_entry = {
+            "role": "system",
+            "content": [{"type": "text", "text": sample_prompt}],
+        }
+
         user_content, skip_sample = build_user_content(
             enabled_modalities=enabled_modalities,
             sample=sample,
