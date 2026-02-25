@@ -178,5 +178,6 @@ def plot_metric_per_class(modalities: List[str], noise: List[str], metric: str, 
         fig.legend(handles=line_handles, labels=line_labels, loc='upper right', bbox_to_anchor=(0.98, 0.95), title="Unmodified Input")
 
     out_path = os.path.join("out", task, metric, f"{metric}_{mod_str}_noise_{noise_str}")
+    os.makedirs(os.path.join("out", task, metric), exist_ok=True)
     plt.savefig(os.path.join(f"{out_path}.svg"), bbox_inches='tight')
     plt.show()

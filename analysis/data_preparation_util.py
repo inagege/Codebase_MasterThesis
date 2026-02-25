@@ -66,5 +66,6 @@ def prepare_data_for_analysis(modalities: List[str], noise: List[str], task: str
 
     metrics = calculate_cm_metrics(split_data, classes=predictions['label'].unique())
 
+    os.makedirs(os.path.join("out", task, "prepared_data"), exist_ok=True)
     out_path = os.path.join("out", task, "prepared_data", f"prepared_{mod_str}_noise_{noise_str}.csv")
     metrics.to_csv(out_path, index=False)
