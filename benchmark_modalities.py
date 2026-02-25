@@ -1,182 +1,162 @@
-import sys
-import time
+import argparse
+import csv
+import os
 import traceback
 from pathlib import Path
-sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-import argparse
-import os
-import csv
-from pathlib import Path
-
-import pandas as pd
 import torch
-
-from transformers import Qwen2_5OmniForConditionalGeneration, Qwen2_5OmniProcessor
 from qwen_omni_utils import process_mm_info
+from transformers import Qwen2_5OmniForConditionalGeneration, Qwen2_5OmniProcessor
 
-from utils.parsing_util import (
-    get_label_for_file,
-    get_utterance_text_for_file,
-    extract_assistant_reply,
-    get_ids_for_file,
+from utils.benchmark_data_loading import (
+    default_modalities_for_dataset,
+    get_prompt_for_classification,
+    load_samples,
+    normalize_dataset_name,
+    normalize_meld_task,
+    normalize_modalities,
+    validate_modalities,
 )
+from utils.parsing_util import extract_assistant_reply
 
-# -------------------------
-# CLI: modality parameters
-# -------------------------
+
 def parse_args():
-    p = argparse.ArgumentParser()
-    p.add_argument(
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--dataset",
+        type=str,
+        default="meld",
+        help="Dataset to benchmark: meld, homeprice, imdb, voxceleb, nejm, marine.",
+    )
+    parser.add_argument(
         "--modalities",
         type=str,
-        default="text,video,audio",
-        help="Comma-separated list: any of text,audio,video. Example: text or text,audio or text,video",
+        default=None,
+        help="Comma-separated list from text,audio,video,image. If omitted, all modalities available in the selected dataset are used.",
     )
-    p.add_argument(
+    parser.add_argument(
         "--noisy-modalities",
         type=str,
         default=None,
-        help="State which of the input modalities should use noisy input."
+        help="Comma-separated modalities that should use noisy input variants (MELD only).",
     )
-    p.add_argument(
+    parser.add_argument(
         "--split",
         type=str,
         default="test",
-        help="The split to process (train, val, test)."
+        help="Split(s) to process. For MELD: train,val,test (comma-separated). Others: ignored and treated as all/dev.",
     )
-    p.add_argument(
-        "--use-audio-in-video",
-        action="store_true",
-        help="(Ignored) Audio is expected as WAV under audio_only/. Kept for compatibility.",
-    )
-    p.add_argument(
+    parser.add_argument(
         "--classification-task",
         type=str,
-        default="sentiment",
-        help="Choose task for classification: sentimet or emotion"
-    )    
-    p.add_argument("--total-samples", type=int, default=None, help="Limit total files across all splits")
-    p.add_argument("--audio-subdir", type=str, default="audio_only", help="Subdir under each split dir with WAVs")
-    p.add_argument("--out-path", type=str, default="out/prediction_noise.csv")
-    p.add_argument("--out-error-path", type=str, default="out/error_prediction_noise.csv")
-    return p.parse_args()
+        default=None,
+        help="MELD only: sentiment|emotion.",
+    )
+    parser.add_argument("--total-samples", type=int, default=None, help="Limit total files across all splits")
+    parser.add_argument("--audio-subdir", type=str, default="audio_only", help="Subdir for WAV files")
+    parser.add_argument("--out-path", type=str, default="out/prediction_noise.csv")
+    parser.add_argument("--out-error-path", type=str, default="out/error_prediction_noise.csv")
+    return parser.parse_args()
 
 
-def normalize_modalities(mod_str: str) -> set[str]:
-    if mod_str is None:
-        return mod_str
-    mods = {m.strip().lower() for m in mod_str.split(",") if m.strip()}
-    valid = {"text", "audio", "video"}
-    bad = mods - valid
-    if bad:
-        raise ValueError(f"Unknown modalities: {bad}. Valid: {sorted(valid)}")
-    if not mods:
-        raise ValueError("No modalities selected. Use --modalities text,audio,video (any subset).")
-    return mods
-
-def get_prompt_for_classification(task: str) -> str:
-    if task.lower() not in ["sentiment", "emotion"]:
-        raise ValueError("Unknown task. Use --classification-task semtiment (/emotion)")
-    if task.lower() == "sentiment":
-        return "The dataset contains utterances from Friends TV series. " \
-        "Each utterance in a dialog can be of positive, negative or neutral sentiment. " \
-        "Please classify the given sample by answering with exactly one word: neutral, negative or positive."
-    else:
-        return "The dataset contains utterances from Friends TV series. " \
-        "Each utterance in a dialog can have one of the follwing emotions: anger, disgust, sadness, joy, neutral, suprise or fear" \
-        "Please classify the given sample by answering with exactly one word: anger, disgust, sadness, joy, neutral, suprise or fear."
-
-def normalize_splits(split_str: str) -> set[str]:
-    splits = {s.strip().lower() for s in split_str.split(",") if s.strip()}
-    valid = {"test", "train", "val"}
-    bad = splits - valid
-    if bad:
-        raise ValueError(f"Unknown modalities: {bad}. Valid: {sorted(valid)}")
-    if not splits:
-        raise ValueError("No split selected. Use --split test,train,val (any subset).")
-    return splits
-
-def get_root(split: str) -> str:
-    match split:
-        case 'train':
-            return 'data/MELD.Raw/train_splits'
-        case 'test':
-            return 'data/MELD.Raw/output_repeated_splits_test'
-        case 'val':
-            return 'data/MELD.Raw/dev_splits_complete'
-        case _:
-            raise ValueError("No split selected. Use --split test,train,val (any subset).")
-        
-def get_meta_csv(split: str) -> str:
-    match split:
-        case 'train':
-            return 'train_sent_emo.csv'
-        case 'test':
-            return 'test_sent_emo.csv'
-        case 'val':
-            return 'dev_sent_emo.csv'
-        case _:
-            raise ValueError("No split selected. Use --split test,train,val (any subset).")
-		    
-
-def get_split_configs(noisy_modalities: set[str], split: str) -> list[tuple[str, str, str]]:
-    SPLIT_CONFIGS = []
-    root = get_root(split=split)
-    meta_root = os.path.join(root, get_meta_csv(split))
-
-    if noisy_modalities is None:
-        path = (os.path.join(root,'unmodified'))
-        ref_split = 'unmodified'
-        SPLIT_CONFIGS.append((path, meta_root, ref_split))
-    else:
-        for mod in noisy_modalities - {'text'}:
-            path = os.path.join(root, mod)
-            for name in os.listdir(path):
-                if os.path.isdir(os.path.join(path, name)):
-                    SPLIT_CONFIGS.append((os.path.join(path, name), meta_root, name))
-        if 'text' in noisy_modalities:
-            path = os.path.join(root, 'text')
-            for name in os.listdir(path):
-                if os.path.isdir(os.path.join(path, name)):
-                    SPLIT_CONFIGS.append((os.path.join(root,'unmodified'), os.path.join(path, name, 'metadata.csv'), name))
-                
-    return SPLIT_CONFIGS
+def append_csv_row(path: str, fieldnames: list[str], row: dict):
+    write_header = not os.path.exists(path)
+    with open(path, "a", newline="", encoding="utf-8") as handle:
+        writer = csv.DictWriter(handle, fieldnames=fieldnames)
+        if write_header:
+            writer.writeheader()
+        writer.writerow(row)
 
 
+def cast_floats_to_dtype(batch, dtype: torch.dtype):
+    for key, value in batch.items():
+        if isinstance(value, torch.Tensor) and torch.is_floating_point(value):
+            batch[key] = value.to(dtype)
+    return batch
 
 
-def audio_path_for_mp4(mp4_path: Path, audio_subdir: str) -> Path:
-    # mp4_path is .../<split_dir>/<file>.mp4
-    # audio is  .../<split_dir>/<audio_subdir>/<file>.wav
-    return mp4_path.parent / audio_subdir / (mp4_path.stem + ".wav")
+def log_error_row(args, err_fieldnames, dataset, sample, error_text, traceback_text=""):
+    append_csv_row(
+        args.out_error_path,
+        err_fieldnames,
+        {
+            "dataset": dataset,
+            "split": sample["split"],
+            "sample_id": sample["sample_id"],
+            "file": sample["file"],
+            "error": error_text,
+            "traceback": traceback_text,
+        },
+    )
+
+
+def build_user_content(enabled_modalities, sample, args, err_fieldnames, dataset):
+    user_content = []
+    skip_sample = False
+
+    if "video" in enabled_modalities:
+        video_path = sample.get("video")
+        if video_path is None or not Path(video_path).exists():
+            log_error_row(args, err_fieldnames, dataset, sample, f"Missing video file: {video_path}")
+            skip_sample = True
+        else:
+            user_content.append({"type": "video", "video": str(video_path)})
+
+    if "audio" in enabled_modalities:
+        audio_path = sample.get("audio")
+        if audio_path is None or not Path(audio_path).exists():
+            log_error_row(args, err_fieldnames, dataset, sample, f"Missing audio file: {audio_path}")
+            skip_sample = True
+        else:
+            user_content.append({"type": "audio", "audio": str(audio_path)})
+
+    if "image" in enabled_modalities:
+        image_path = sample.get("image")
+        if image_path is None or not Path(image_path).exists():
+            log_error_row(args, err_fieldnames, dataset, sample, f"Missing image file: {image_path}")
+            skip_sample = True
+        else:
+            user_content.append({"type": "image", "image": str(image_path)})
+
+    if "text" in enabled_modalities:
+        text_value = sample.get("text", "").strip()
+        if not text_value:
+            log_error_row(args, err_fieldnames, dataset, sample, "Missing text input.")
+            skip_sample = True
+        else:
+            user_content.append({"type": "text", "text": text_value})
+
+    return user_content, skip_sample
 
 
 def main():
     args = parse_args()
-    enabled = normalize_modalities(args.modalities)
-    noisy = normalize_modalities(args.noisy_modalities)
-    prompt = get_prompt_for_classification(args.classification_task)
-    SPLIT_CONFIGS = get_split_configs(noisy_modalities=noisy, split=args.split)
-    print(SPLIT_CONFIGS)
 
-    system_entry = {
-        "role": "system",
-        "content": [
-            {
-                "type": "text",
-                "text": (
-                    prompt
-                ),
-            },
-        ],
-    }
+    dataset = normalize_dataset_name(args.dataset)
+    enabled_modalities = normalize_modalities(args.modalities)
+    if enabled_modalities is None:
+        enabled_modalities = default_modalities_for_dataset(dataset)
+
+    noisy_modalities = normalize_modalities(args.noisy_modalities)
+    validate_modalities(dataset, enabled_modalities, noisy_modalities)
+
+    meld_task = None
+    label_column = None
+    if dataset == "meld":
+        meld_task, label_column = normalize_meld_task(args.classification_task)
+    elif dataset == "voxceleb":
+        label_column = "nationality_wiki"
+
+    prompt = get_prompt_for_classification(dataset, meld_task)
 
     print(f"[INFO] CWD: {os.getcwd()}", flush=True)
-    print(f"[INFO] Modalities enabled: {sorted(enabled)}", flush=True)
+    print(f"[INFO] Dataset: {dataset}", flush=True)
+    print(f"[INFO] Modalities enabled: {sorted(enabled_modalities)}", flush=True)
     print(f"[INFO] Noisy modalities: {args.noisy_modalities}", flush=True)
     print(f"[INFO] Split: {args.split}", flush=True)
     print(f"[INFO] audio_subdir={args.audio_subdir}", flush=True)
+    if label_column is not None:
+        print(f"[INFO] Label column: {label_column}", flush=True)
     print(f"[INFO] out_path={args.out_path}", flush=True)
     print(f"[INFO] out_error_path={args.out_error_path}", flush=True)
 
@@ -184,38 +164,19 @@ def main():
     os.makedirs(os.path.dirname(args.out_error_path) or ".", exist_ok=True)
     os.makedirs("out", exist_ok=True)
 
-    # Load metadata
-    meta_map = {}
-    for _dir, meta_csv, split in SPLIT_CONFIGS:
-        try:
-            meta_map[split] = pd.read_csv(meta_csv)
-            print(f"[INFO] Loaded meta: {meta_csv} rows={len(meta_map[split])}", flush=True)
-        except Exception as e:
-            meta_map[split] = None
-            print(f"[WARN] Could not load meta: {meta_csv} error={e}", flush=True)
-
-    # Collect MP4s (top-level only; change to rglob if needed)
-    files = []
-    for _dir, _meta_csv, split in SPLIT_CONFIGS:
-        d = Path(_dir)
-        print(f"[INFO] Scanning dir: {_dir} (exists={d.exists()})", flush=True)
-        if not d.exists():
-            continue
-
-        mp4s = sorted([p for p in d.iterdir() if p.is_file() and p.suffix.lower() == ".mp4"])
-        print(f"[INFO] Found {len(mp4s)} mp4 files in {_dir}", flush=True)
-
-        for p in mp4s:
-            files.append((p.name, p, split))  # keep Path object
-
+    samples = load_samples(dataset, args, enabled_modalities, noisy_modalities, label_column)
     if args.total_samples is not None:
-        files = files[: args.total_samples]
+        samples = samples[: args.total_samples]
 
-    print(f"[INFO] Total files to process: {len(files)}", flush=True)
-    if len(files) == 0:
-        raise RuntimeError("No MP4 files found (top-level). If nested, use rglob('*.mp4').")
+    print(f"[INFO] Total samples to process: {len(samples)}", flush=True)
+    if not samples:
+        raise RuntimeError("No samples found for the selected dataset/modality configuration.")
 
-    # Load model
+    system_entry = {
+        "role": "system",
+        "content": [{"type": "text", "text": prompt}],
+    }
+
     print("[INFO] Loading model...", flush=True)
     model = Qwen2_5OmniForConditionalGeneration.from_pretrained(
         "Qwen/Qwen2.5-Omni-7B",
@@ -231,70 +192,55 @@ def main():
     dtype = next(model.parameters()).dtype
     print(f"[INFO] device={device} dtype={dtype}", flush=True)
 
-    fieldnames = ["dialog_id", "utterance_id", "file", "prediction", "label", "split"]
-    err_fieldnames = ["dialog_id", "utterance_id", "file", "error", "traceback"]
+    fieldnames = [
+        "dataset",
+        "split",
+        "sample_id",
+        "file",
+        "prediction",
+        "label",
+    ]
+    err_fieldnames = [
+        "dataset",
+        "split",
+        "sample_id",
+        "file",
+        "error",
+        "traceback",
+    ]
 
-    for i, (fname, mp4_path, split) in enumerate(files, start=1):
-        meta_data = meta_map.get(split)
-        utt_text = get_utterance_text_for_file(fname, meta_data)
-
-        dia_id, utt_id = get_ids_for_file(fname)
-        label = get_label_for_file(fname, meta_data, args.classification_task.lower())
-
-        # Build user content based on enabled modalities
-        user_content = []
-        if "video" in enabled:
-            user_content.append({"type": "video", "video": str(mp4_path)})
-
-        if "audio" in enabled:
-            wav_path = audio_path_for_mp4(mp4_path, args.audio_subdir)
-            if not wav_path.exists():
-                # Log missing audio and continue
-                err_row = {
-                    "dialog_id": dia_id,
-                    "utterance_id": utt_id,
-                    "file": fname,
-                    "error": f"Missing audio wav: {wav_path}",
-                    "traceback": "",
-                }
-                write_header = not os.path.exists(args.out_error_path)
-                with open(args.out_error_path, "a", newline="", encoding="utf-8") as errf:
-                    err_writer = csv.DictWriter(errf, fieldnames=err_fieldnames)
-                    if write_header:
-                        err_writer.writeheader()
-                    err_writer.writerow(err_row)
-                continue
-
-            # IMPORTANT: add AUDIO to the conversation (not video)
-            user_content.append({"type": "audio", "audio": str(wav_path)})
-
-        if "text" in enabled:
-            user_content.append({"type": "text", "text": utt_text})
+    for idx, sample in enumerate(samples, start=1):
+        user_content, skip_sample = build_user_content(
+            enabled_modalities=enabled_modalities,
+            sample=sample,
+            args=args,
+            err_fieldnames=err_fieldnames,
+            dataset=dataset,
+        )
+        if skip_sample:
+            continue
 
         conversation = [system_entry, {"role": "user", "content": user_content}]
 
         try:
             text_prompt = processor.apply_chat_template(conversation, add_generation_prompt=True, tokenize=False)
-
-            # Since audio is pre-extracted wav, do NOT use audio-in-video
             audios, images, videos = process_mm_info(conversation, use_audio_in_video=False)
 
-            proc_kwargs = dict(
-                text=text_prompt,
-                return_tensors="pt",
-                padding=True,
-                use_audio_in_video=False,
-                images=None,
-            )
-
-            if "audio" in enabled:
+            proc_kwargs = {
+                "text": text_prompt,
+                "return_tensors": "pt",
+                "padding": True,
+                "use_audio_in_video": False,
+            }
+            if "audio" in enabled_modalities:
                 proc_kwargs["audio"] = audios
-            if "video" in enabled:
+            if "video" in enabled_modalities:
                 proc_kwargs["videos"] = videos
-            else:
-                proc_kwargs["videos"] = None
+            if "image" in enabled_modalities:
+                proc_kwargs["images"] = images
 
-            inputs = processor(**proc_kwargs).to(device).to(dtype)
+            inputs = processor(**proc_kwargs).to(device)
+            inputs = cast_floats_to_dtype(inputs, dtype)
 
             gen_output = model.generate(
                 **inputs,
@@ -315,42 +261,34 @@ def main():
                 text_ids = text_ids.cpu()
 
             decoded = processor.batch_decode(text_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False)
-            out = decoded[0] if isinstance(decoded, (list, tuple)) else decoded
-            reply = extract_assistant_reply(out)
+            out_text = decoded[0] if isinstance(decoded, (list, tuple)) else decoded
+            reply = extract_assistant_reply(out_text)
 
-            new_row = {
-                "dialog_id": dia_id,
-                "utterance_id": utt_id,
-                "file": fname,
-                "prediction": reply,
-                "label": label,
-                "split": split,
-            }
+            append_csv_row(
+                args.out_path,
+                fieldnames,
+                {
+                    "dataset": dataset,
+                    "split": sample["split"],
+                    "sample_id": sample["sample_id"],
+                    "file": sample["file"],
+                    "prediction": reply,
+                    "label": sample.get("label", "unknown"),
+                },
+            )
 
-            write_header = not os.path.exists(args.out_path)
-            with open(args.out_path, "a", newline="", encoding="utf-8") as csvfile:
-                writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-                if write_header:
-                    writer.writeheader()
-                writer.writerow(new_row)
+            if idx % 20 == 0 or idx == 1:
+                print(f"[INFO] Wrote prediction {idx}/{len(samples)} -> {args.out_path}", flush=True)
 
-            if i % 20 == 0 or i == 1:
-                print(f"[INFO] Wrote prediction {i}/{len(files)} -> {args.out_path}", flush=True)
-
-        except Exception as e:
-            err_row = {
-                "dialog_id": dia_id,
-                "utterance_id": utt_id,
-                "file": fname,
-                "error": str(e),
-                "traceback": traceback.format_exc(),
-            }
-            write_header = not os.path.exists(args.out_error_path)
-            with open(args.out_error_path, "a", newline="", encoding="utf-8") as errf:
-                err_writer = csv.DictWriter(errf, fieldnames=err_fieldnames)
-                if write_header:
-                    err_writer.writeheader()
-                err_writer.writerow(err_row)
+        except Exception as exc:
+            log_error_row(
+                args=args,
+                err_fieldnames=err_fieldnames,
+                dataset=dataset,
+                sample=sample,
+                error_text=str(exc),
+                traceback_text=traceback.format_exc(),
+            )
 
 
 if __name__ == "__main__":
