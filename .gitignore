@@ -10,3 +10,5 @@ pixi.lock
 .pynb_checkpoints/
 .DS_Store
 pixi.lock
+__pycache__/
+*.pyc
