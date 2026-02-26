@@ -112,11 +112,29 @@ def perturb(text: str, method: str, severity: int, rng: random.Random) -> str:
     raise ValueError(method)
 
 def main():
-    ap = argparse.ArgumentParser("Apply ALL text perturbations to a CSV 'Utterance' column.")
+    ap = argparse.ArgumentParser("Apply ALL text perturbations to a CSV text column.")
     ap.add_argument("--input_csv", required=True)
     ap.add_argument("--out_dir", required=True, help="Base output directory.")
     ap.add_argument("--severity", type=int, default=3)
     ap.add_argument("--seed", type=int, default=123)
+    ap.add_argument(
+        "--text-column",
+        type=str,
+        default="Utterance",
+        help="Name of the text column to perturb (e.g., Utterance, description, question).",
+    )
+    ap.add_argument(
+        "--output-text-column",
+        type=str,
+        default=None,
+        help="Optional output column name for perturbed text. Defaults to --text-column.",
+    )
+    ap.add_argument(
+        "--output-filename",
+        type=str,
+        default="metadata.csv",
+        help="Filename used inside each corruption output folder.",
+    )
     args = ap.parse_args()
 
     inp = Path(args.input_csv)
@@ -124,8 +142,12 @@ def main():
     out_dir.mkdir(parents=True, exist_ok=True)
 
     df = pd.read_csv(inp)
-    if "Utterance" not in df.columns:
-        raise ValueError("CSV must contain a column named 'Utterance'")
+    if args.text_column not in df.columns:
+        raise ValueError(
+            f"CSV must contain a column named {args.text_column!r}. "
+            f"Found columns: {list(df.columns)}"
+        )
+    out_text_column = args.output_text_column or args.text_column
 
     for corr in TEXT_CORRUPTIONS:
         combo_root = out_dir / f"T={corr}_S={args.severity}"
@@ -133,9 +155,11 @@ def main():
 
         rng = random.Random(args.seed)  # reset per corruption for reproducibility
         df_out = df.copy()
-        df_out["Utterance"] = df_out["Utterance"].apply(lambda t: perturb(t, corr, args.severity, rng))
+        df_out[out_text_column] = df_out[args.text_column].apply(
+            lambda t: perturb(t, corr, args.severity, rng)
+        )
 
-        out_csv = combo_root / "metadata.csv"
+        out_csv = combo_root / args.output_filename
         df_out.to_csv(out_csv, index=False)
         print(f"[OK] Wrote {out_csv}")
 

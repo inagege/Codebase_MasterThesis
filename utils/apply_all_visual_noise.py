@@ -15,7 +15,7 @@ from utils.extract_audio_only import ffmpeg_extract_wav
 
 VIDEO_EXTS = {".mp4", ".mkv", ".avi", ".mov", ".webm"}
 
-VISUAL_CORRUPTIONS = ["moving_occlusion", "motion_blur", "zoom_blur", "gaussian_noise", "pixelate", "motion_blur", "fps_drop", "scale_down", "occlusion"]
+VISUAL_CORRUPTIONS = ["moving_occlusion", "motion_blur", "zoom_blur", "gaussian_noise", "pixelate", "fps_drop", "scale_down", "occlusion"]
 
 
 def _ffmpeg():
