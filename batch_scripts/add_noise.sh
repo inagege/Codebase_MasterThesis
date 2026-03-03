@@ -1,8 +1,8 @@
 #!/bin/bash
-#SBATCH --job-name=add_noise            # Job name
+#SBATCH --job-name=add_noise                 # Job name
 #SBATCH --output=logs/%x_%j.out           # Stdout log
 #SBATCH --error=logs/%x_%j.err            # Stderr log
-#SBATCH --time=2:00:00                   # Max runtime (hh:mm:ss)
+#SBATCH --time=4:00:00                   # Max runtime (hh:mm:ss)
 #SBATCH --gres=gpu:full:1                 # Request 1 GPU
 #SBATCH --cpus-per-task=8                 # CPU cores
 #SBATCH --mem=100G                        # RAM
@@ -14,9 +14,29 @@ cd /hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterT
 # (Optional but recommended) create logs directory if it doesn't exist
 mkdir -p logs
 
-# Run your Python script
-pixi run python utils/apply_all_visual_noise.py \
-  --videos_dir data/MELD.Raw/output_repeated_splits_test/unmodified \
-  --out_dir data/MELD.Raw/output_repeated_splits_test/visual \
-  --severity 5 \
-  --recursive
+# Usage examples:
+# sbatch batch_scripts/add_noise.sh meld test 5 text,audio,video
+# sbatch batch_scripts/add_noise.sh homeprice all 5 text,image
+# sbatch batch_scripts/add_noise.sh imdb all 5 text,image
+# sbatch batch_scripts/add_noise.sh voxceleb all 5 audio,video
+# sbatch batch_scripts/add_noise.sh nejm all 5 text,image
+# sbatch batch_scripts/add_noise.sh marine all 5 audio,image
+
+DATASET="${1:-meld}"
+SPLIT="${2:-test}"        # only used for MELD
+SEVERITY="${3:-3}"
+MODALITIES="${4:-}"       # optional comma list
+
+CMD=(
+  pixi run python utils/apply_dataset_noise.py
+  --dataset "${DATASET}"
+  --split "${SPLIT}"
+  --severity "${SEVERITY}"
+  --overwrite
+)
+
+if [[ -n "${MODALITIES}" ]]; then
+  CMD+=(--modalities "${MODALITIES}")
+fi
+
+"${CMD[@]}"
