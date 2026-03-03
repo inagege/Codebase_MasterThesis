@@ -45,27 +45,26 @@ def _apply_gaussian_noise(img: Image.Image, severity: int) -> Image.Image:
 
 
 def _apply_motion_blur(img: Image.Image, severity: int) -> Image.Image:
-    # Stronger radii so high severities are closer to video tmix blur strength.
-    radius = {1: 1.0, 2: 2.2, 3: 4.0, 4: 9.0, 5: 12.0}[severity]
+    radius = {1: 1.0, 2: 2.0, 3: 3.5, 4: 5.0, 5: 7.0}[severity]
     return img.filter(ImageFilter.BoxBlur(radius=radius))
 
 
 def _apply_zoom_blur(img: Image.Image, severity: int) -> Image.Image:
-    # Single zoomed-and-blurred branch blended into base, similar in spirit to
-    # the ffmpeg implementation in apply_all_visual_noise.py.
-    max_zoom = {1: 1.10, 2: 1.25, 3: 1.55, 4: 2.50, 5: 3.50}[severity]
-    blur_sigma = {1: 2.0, 2: 4.0, 3: 7.0, 4: 14.0, 5: 18.0}[severity]
-    blend_alpha = {1: 0.25, 2: 0.32, 3: 0.45, 4: 0.75, 5: 0.85}[severity]
+    steps = {1: 6, 2: 10, 3: 14, 4: 20, 5: 28}[severity]
+    max_zoom = {1: 1.04, 2: 1.08, 3: 1.14, 4: 1.22, 5: 1.32}[severity]
     w, h = img.size
 
-    zw = max(1, int(round(w * max_zoom)))
-    zh = max(1, int(round(h * max_zoom)))
-    scaled = img.resize((zw, zh), Image.Resampling.BILINEAR)
-    x0 = (zw - w) // 2
-    y0 = (zh - h) // 2
-    zoomed = scaled.crop((x0, y0, x0 + w, y0 + h))
-    zoomed = zoomed.filter(ImageFilter.GaussianBlur(radius=blur_sigma))
-    return Image.blend(img, zoomed, alpha=blend_alpha)
+    acc = img.copy().convert("RGB")
+    for i in range(1, steps + 1):
+        z = 1.0 + (max_zoom - 1.0) * (i / steps)
+        zw = max(1, int(round(w * z)))
+        zh = max(1, int(round(h * z)))
+        scaled = img.resize((zw, zh), Image.Resampling.BILINEAR)
+        x0 = (zw - w) // 2
+        y0 = (zh - h) // 2
+        cropped = scaled.crop((x0, y0, x0 + w, y0 + h))
+        acc = Image.blend(acc, cropped, alpha=1.0 / (i + 1))
+    return acc
 
 
 def _apply_pixelate(img: Image.Image, severity: int) -> Image.Image:
