@@ -38,7 +38,7 @@ def parse_args():
         "--noisy-modalities",
         type=str,
         default=None,
-        help="Comma-separated modalities that should use noisy input variants (MELD only).",
+        help="Comma-separated modalities that should use noisy input variants.",
     )
     parser.add_argument(
         "--split",
