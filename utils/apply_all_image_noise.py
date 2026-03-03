@@ -34,8 +34,10 @@ def _iter_images(inp: Path, recursive: bool):
 
 
 def _apply_gaussian_noise(img: Image.Image, severity: int) -> Image.Image:
-    sigma_map = {1: 8.0, 2: 16.0, 3: 28.0, 4: 40.0, 5: 56.0}
-    alpha_map = {1: 0.08, 2: 0.16, 3: 0.24, 4: 0.32, 5: 0.40}
+    # Tuned to match the visual-noise severity progression used for video.
+    sigma_map = {1: 8.0, 2: 28.0, 3: 60.0, 4: 80.0, 5: 100.0}
+    # Mid severities are intentionally softer for better perceptual spacing.
+    alpha_map = {1: 0.18, 2: 0.25, 3: 0.40, 4: 0.70, 5: 0.85}
     sigma = sigma_map[severity]
     alpha = alpha_map[severity]
     noise = Image.effect_noise(img.size, sigma).convert("L").convert("RGB")
@@ -43,30 +45,31 @@ def _apply_gaussian_noise(img: Image.Image, severity: int) -> Image.Image:
 
 
 def _apply_motion_blur(img: Image.Image, severity: int) -> Image.Image:
-    radius = {1: 1.0, 2: 2.0, 3: 3.5, 4: 5.0, 5: 7.0}[severity]
+    # Stronger radii so high severities are closer to video tmix blur strength.
+    radius = {1: 1.0, 2: 2.2, 3: 4.0, 4: 9.0, 5: 12.0}[severity]
     return img.filter(ImageFilter.BoxBlur(radius=radius))
 
 
 def _apply_zoom_blur(img: Image.Image, severity: int) -> Image.Image:
-    steps = {1: 6, 2: 10, 3: 14, 4: 20, 5: 28}[severity]
-    max_zoom = {1: 1.04, 2: 1.08, 3: 1.14, 4: 1.22, 5: 1.32}[severity]
+    # Single zoomed-and-blurred branch blended into base, similar in spirit to
+    # the ffmpeg implementation in apply_all_visual_noise.py.
+    max_zoom = {1: 1.10, 2: 1.25, 3: 1.55, 4: 2.50, 5: 3.50}[severity]
+    blur_sigma = {1: 2.0, 2: 4.0, 3: 7.0, 4: 14.0, 5: 18.0}[severity]
+    blend_alpha = {1: 0.25, 2: 0.32, 3: 0.45, 4: 0.75, 5: 0.85}[severity]
     w, h = img.size
 
-    acc = img.copy().convert("RGB")
-    for i in range(1, steps + 1):
-        z = 1.0 + (max_zoom - 1.0) * (i / steps)
-        zw = max(1, int(round(w * z)))
-        zh = max(1, int(round(h * z)))
-        scaled = img.resize((zw, zh), Image.Resampling.BILINEAR)
-        x0 = (zw - w) // 2
-        y0 = (zh - h) // 2
-        cropped = scaled.crop((x0, y0, x0 + w, y0 + h))
-        acc = Image.blend(acc, cropped, alpha=1.0 / (i + 1))
-    return acc
+    zw = max(1, int(round(w * max_zoom)))
+    zh = max(1, int(round(h * max_zoom)))
+    scaled = img.resize((zw, zh), Image.Resampling.BILINEAR)
+    x0 = (zw - w) // 2
+    y0 = (zh - h) // 2
+    zoomed = scaled.crop((x0, y0, x0 + w, y0 + h))
+    zoomed = zoomed.filter(ImageFilter.GaussianBlur(radius=blur_sigma))
+    return Image.blend(img, zoomed, alpha=blend_alpha)
 
 
 def _apply_pixelate(img: Image.Image, severity: int) -> Image.Image:
-    f = {1: 0.75, 2: 0.50, 3: 0.30, 4: 0.18, 5: 0.10}[severity]
+    f = {1: 0.65, 2: 0.40, 3: 0.20, 4: 0.10, 5: 0.05}[severity]
     w, h = img.size
     down = img.resize((max(1, int(w * f)), max(1, int(h * f))), Image.Resampling.NEAREST)
     return down.resize((w, h), Image.Resampling.NEAREST)
@@ -83,14 +86,14 @@ def _apply_jpeg(img: Image.Image, severity: int) -> Image.Image:
 
 
 def _apply_scale_down(img: Image.Image, severity: int) -> Image.Image:
-    r = {1: 0.85, 2: 0.60, 3: 0.40, 4: 0.25, 5: 0.15}[severity]
+    r = {1: 0.85, 2: 0.55, 3: 0.30, 4: 0.20, 5: 0.10}[severity]
     w, h = img.size
     down = img.resize((max(1, int(w * r)), max(1, int(h * r))), Image.Resampling.BILINEAR)
     return down.resize((w, h), Image.Resampling.BILINEAR)
 
 
 def _apply_occlusion(img: Image.Image, severity: int) -> Image.Image:
-    frac = {1: 0.10, 2: 0.22, 3: 0.35, 4: 0.50, 5: 0.65}[severity]
+    frac = {1: 0.10, 2: 0.26, 3: 0.45, 4: 0.66, 5: 0.85}[severity]
     w, h = img.size
     box_w = int(round(w * frac))
     box_h = int(round(h * frac))
