@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import argparse
+import csv
 import subprocess
 import sys
 from pathlib import Path
@@ -26,9 +27,25 @@ DATASET_MODALITIES = {
 }
 
 
-def _run(cmd: list[str]):
+def _append_error_row(path: Path, file_name: str, error: str):
+    write_header = not path.exists()
+    with open(path, "a", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=["file", "error"])
+        if write_header:
+            writer.writeheader()
+        writer.writerow({"file": file_name, "error": error})
+
+
+def _run(cmd: list[str], error_csv: Path | None = None):
     print("[RUN]", " ".join(cmd), flush=True)
-    subprocess.run(cmd, check=True)
+    try:
+        subprocess.run(cmd, check=True)
+    except Exception as exc:
+        print(f"[WARN] Failed command: {' '.join(cmd)}: {exc}", flush=True)
+        if error_csv is not None:
+            _append_error_row(error_csv, cmd[-1] if cmd else "<unknown>", str(exc))
+        return False
+    return True
 
 
 def _parse_modalities(modalities: str | None, dataset: str) -> set[str]:
@@ -76,6 +93,7 @@ def _add_common_flags(cmd: list[str], recursive: bool, overwrite: bool):
 
 
 def _run_meld(args, modalities: set[str]):
+    error_csv = Path(args.error_csv)
     splits = _normalize_meld_splits(args.split)
     for split in splits:
         root = MELD_SPLIT_ROOT[split]
@@ -94,7 +112,7 @@ def _run_meld(args, modalities: set[str]):
                 str(args.severity),
             ]
             _add_common_flags(cmd, recursive=args.recursive, overwrite=args.overwrite)
-            _run(cmd)
+            _run(cmd, error_csv=error_csv)
 
         if "audio" in modalities:
             cmd = [
@@ -108,7 +126,7 @@ def _run_meld(args, modalities: set[str]):
                 str(args.severity),
             ]
             _add_common_flags(cmd, recursive=args.recursive, overwrite=args.overwrite)
-            _run(cmd)
+            _run(cmd, error_csv=error_csv)
 
         if "text" in modalities:
             cmd = [
@@ -127,10 +145,11 @@ def _run_meld(args, modalities: set[str]):
                 "--output-filename",
                 "metadata.csv",
             ]
-            _run(cmd)
+            _run(cmd, error_csv=error_csv)
 
 
 def _run_homeprice(args, modalities: set[str]):
+    error_csv = Path(args.error_csv)
     csv_candidates = [
         Path("data/HomePrice/data_price_binned.csv"),
         Path("data/HomePrice/data_prive_binned.csv"),
@@ -152,7 +171,7 @@ def _run_homeprice(args, modalities: set[str]):
             str(args.severity),
         ]
         _add_common_flags(cmd, recursive=args.recursive, overwrite=args.overwrite)
-        _run(cmd)
+        _run(cmd, error_csv=error_csv)
 
     if "text" in modalities:
         cmd = [
@@ -171,10 +190,11 @@ def _run_homeprice(args, modalities: set[str]):
             "--output-filename",
             csv_path.name,
         ]
-        _run(cmd)
+        _run(cmd, error_csv=error_csv)
 
 
 def _run_imdb(args, modalities: set[str]):
+    error_csv = Path(args.error_csv)
     out_root = Path("data/IMDB/noise")
     if "image" in modalities:
         cmd = [
@@ -188,7 +208,7 @@ def _run_imdb(args, modalities: set[str]):
             str(args.severity),
         ]
         _add_common_flags(cmd, recursive=args.recursive, overwrite=args.overwrite)
-        _run(cmd)
+        _run(cmd, error_csv=error_csv)
 
     if "text" in modalities:
         cmd = [
@@ -207,10 +227,11 @@ def _run_imdb(args, modalities: set[str]):
             "--output-filename",
             "IMDB_four_genre_larger_plot_description.csv",
         ]
-        _run(cmd)
+        _run(cmd, error_csv=error_csv)
 
 
 def _run_voxceleb(args, modalities: set[str]):
+    error_csv = Path(args.error_csv)
     videos_dir = Path("data/VoxCeleb2/dev/mp4")
     out_root = Path("data/VoxCeleb2/dev/noise")
 
@@ -228,7 +249,7 @@ def _run_voxceleb(args, modalities: set[str]):
         ]
         if args.overwrite:
             cmd.append("--overwrite")
-        _run(cmd)
+        _run(cmd, error_csv=error_csv)
 
     if "audio" in modalities:
         cmd = [
@@ -244,10 +265,11 @@ def _run_voxceleb(args, modalities: set[str]):
         ]
         if args.overwrite:
             cmd.append("--overwrite")
-        _run(cmd)
+        _run(cmd, error_csv=error_csv)
 
 
 def _run_nejm(args, modalities: set[str]):
+    error_csv = Path(args.error_csv)
     out_root = Path("data/NEJM/noise")
     if "image" in modalities:
         cmd = [
@@ -261,7 +283,7 @@ def _run_nejm(args, modalities: set[str]):
             str(args.severity),
         ]
         _add_common_flags(cmd, recursive=args.recursive, overwrite=args.overwrite)
-        _run(cmd)
+        _run(cmd, error_csv=error_csv)
 
     if "text" in modalities:
         cmd = [
@@ -280,10 +302,11 @@ def _run_nejm(args, modalities: set[str]):
             "--output-filename",
             "metadata.csv",
         ]
-        _run(cmd)
+        _run(cmd, error_csv=error_csv)
 
 
 def _run_marine(args, modalities: set[str]):
+    error_csv = Path(args.error_csv)
     out_root = Path("data/Marine/noise")
     if "image" in modalities:
         cmd = [
@@ -297,7 +320,7 @@ def _run_marine(args, modalities: set[str]):
             str(args.severity),
         ]
         _add_common_flags(cmd, recursive=args.recursive, overwrite=args.overwrite)
-        _run(cmd)
+        _run(cmd, error_csv=error_csv)
 
     if "audio" in modalities:
         # Marine provides standalone audio, so audio perturbation is applied by
@@ -314,7 +337,7 @@ def _run_marine(args, modalities: set[str]):
         ]
         if args.overwrite:
             cmd.append("--overwrite")
-        _run(cmd)
+        _run(cmd, error_csv=error_csv)
 
 
 def main():
@@ -330,6 +353,7 @@ def main():
     ap.add_argument("--seed", type=int, default=123)
     ap.add_argument("--recursive", action="store_true")
     ap.add_argument("--overwrite", action="store_true")
+    ap.add_argument("--error-csv", default="error.csv", help="Path to append errors as file,error.")
     args = ap.parse_args()
 
     modalities = _parse_modalities(args.modalities, args.dataset)

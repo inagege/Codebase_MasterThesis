@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import argparse
+import csv
 import shutil
 import subprocess
 import tempfile
@@ -26,6 +27,15 @@ def _ffmpeg():
 
 def _run(cmd: list[str]):
     subprocess.run(cmd, check=True)
+
+
+def _append_error_row(path: Path, file_name: str, error: str):
+    write_header = not path.exists()
+    with open(path, "a", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=["file", "error"])
+        if write_header:
+            writer.writeheader()
+        writer.writerow({"file": file_name, "error": error})
 
 
 def _iter_wavs(inp: Path, recursive: bool):
@@ -97,6 +107,7 @@ def main():
     for corr in AUDIO_CORRUPTIONS:
         combo_root = out_dir / f"A={corr}_S={args.severity}"
         combo_root.mkdir(parents=True, exist_ok=True)
+        error_csv = combo_root / "error.csv"
 
         for wav in wavs:
             rel = wav.relative_to(audio_dir) if audio_dir.is_dir() else Path(wav.name)
@@ -106,15 +117,20 @@ def main():
             if out_wav.exists() and not args.overwrite:
                 continue
 
-            with tempfile.TemporaryDirectory() as td:
-                td_path = Path(td)
-                src_video = td_path / "src.mp4"
-                out_video = td_path / "corrupted.mp4"
-                _wav_to_tmp_video(wav, src_video)
-                processed_video = apply_audio_corruption(
-                    src_video, out_video, corr, args.severity, overwrite=True
-                )
-                extract_audio_only(processed_video, out_wav, overwrite=True, sr=args.audio_sr)
+            try:
+                with tempfile.TemporaryDirectory() as td:
+                    td_path = Path(td)
+                    src_video = td_path / "src.mp4"
+                    out_video = td_path / "corrupted.mp4"
+                    _wav_to_tmp_video(wav, src_video)
+                    processed_video = apply_audio_corruption(
+                        src_video, out_video, corr, args.severity, overwrite=True
+                    )
+                    extract_audio_only(processed_video, out_wav, overwrite=True, sr=args.audio_sr)
+            except Exception as exc:
+                _append_error_row(error_csv, str(wav), str(exc))
+                print(f"[WARN] Failed {wav}: {exc}")
+                continue
 
         print(f"[OK] Finished audio corruption: {combo_root}")
 

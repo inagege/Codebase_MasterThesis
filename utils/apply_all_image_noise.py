@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import argparse
+import csv
 import io
 from pathlib import Path
 
@@ -15,6 +16,15 @@ IMAGE_CORRUPTIONS = [
     "scale_down",
     "occlusion",
 ]
+
+
+def _append_error_row(path: Path, file_name: str, error: str):
+    write_header = not path.exists()
+    with open(path, "a", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=["file", "error"])
+        if write_header:
+            writer.writeheader()
+        writer.writerow({"file": file_name, "error": error})
 
 
 def _iter_images(inp: Path, recursive: bool):
@@ -156,13 +166,19 @@ def main():
     for corr in IMAGE_CORRUPTIONS:
         combo_root = out_dir / f"I={corr}_S={args.severity}"
         combo_root.mkdir(parents=True, exist_ok=True)
+        error_csv = combo_root / "error.csv"
 
         for img in images:
             rel = img.relative_to(images_dir) if images_dir.is_dir() else Path(img.name)
             out_img = combo_root / rel
             if out_img.exists() and not args.overwrite:
                 continue
-            apply_image_corruption(img, out_img, corr, args.severity)
+            try:
+                apply_image_corruption(img, out_img, corr, args.severity)
+            except Exception as exc:
+                _append_error_row(error_csv, str(img), str(exc))
+                print(f"[WARN] Failed {img}: {exc}")
+                continue
 
         print(f"[OK] Finished image corruption: {combo_root}")
 

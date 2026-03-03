@@ -1,4 +1,5 @@
 import argparse
+import csv
 import shutil
 import subprocess
 from pathlib import Path
@@ -22,6 +23,16 @@ def _ffmpeg():
 
 def _run(cmd: list[str]):
     subprocess.run(cmd, check=True)
+
+
+def _append_error_row(path: Path, file_name: str, error: str):
+    write_header = not path.exists()
+    with open(path, "a", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=["file", "error"])
+        if write_header:
+            writer.writeheader()
+        writer.writerow({"file": file_name, "error": error})
+
 
 def _iter_videos(inp: Path, recursive: bool):
     if inp.is_file():
@@ -703,6 +714,7 @@ def main():
         audio_only_out = videos_out / "audio_only"
         videos_out.mkdir(parents=True, exist_ok=True)
         audio_only_out.mkdir(parents=True, exist_ok=True)
+        error_csv = combo_root / "error.csv"
 
         for vid in vids:
             rel = vid.relative_to(videos_dir) if videos_dir.is_dir() else Path(vid.name)
@@ -712,40 +724,45 @@ def main():
             if out_video.exists() and not args.overwrite:
                 continue
 
-            # apply_audio_corruption may change the output file's suffix (e.g., when
-            # OUT_EXTENSION is set in lossless mode). Capture the actual path it writes.
-            processed_video = apply_audio_corruption(vid, out_video, corr, args.severity, args.overwrite)
-
-            # Ensure the processed video's audio is mono before extracting WAV
-            _ensure_video_audio_mono(processed_video, logger=print)
-
-            # Produce an MP4 copy for downstream use (AAC mono). We keep the MKV as
-            # the canonical, lossless container for WAV extraction, then remove it.
-            mp4_copy = out_video.with_suffix('.mp4')
-            mp4_copy.parent.mkdir(parents=True, exist_ok=True)
+            processed_video = None
             try:
-                _run([
-                    "ffmpeg", "-y" if args.overwrite else "-n",
-                    "-i", str(processed_video),
-                    "-map", "0:v:0", "-map", "0:a:0",
-                    "-c:v", "copy",
-                    "-c:a", "aac", "-ac", "1", "-b:a", "128k",
-                    str(mp4_copy),
-                ])
-            except Exception as e:
-                print(f"[WARN] Failed to create MP4 copy for {processed_video}: {e}")
+                # apply_audio_corruption may change the output file's suffix (e.g., when
+                # OUT_EXTENSION is set in lossless mode). Capture the actual path it writes.
+                processed_video = apply_audio_corruption(vid, out_video, corr, args.severity, args.overwrite)
 
-            out_wav = (audio_only_out / rel).with_suffix(".wav")
-            extract_audio_only(processed_video, out_wav, args.overwrite, args.audio_sr)
+                # Ensure the processed video's audio is mono before extracting WAV
+                _ensure_video_audio_mono(processed_video, logger=print)
 
-            # Remove the temporary MKV (lossless) if an MP4 copy was created; keep the MP4
-            # for downstream use. Best-effort deletion: warn on error but don't stop.
-            try:
-                if processed_video.exists():
-                    processed_video.unlink()
-                    print(f"[INFO] Removed temporary lossless file {processed_video}")
-            except Exception as e:
-                print(f"[WARN] Failed to remove temporary file {processed_video}: {e}")
+                # Produce an MP4 copy for downstream use (AAC mono). We keep the MKV as
+                # the canonical, lossless container for WAV extraction, then remove it.
+                mp4_copy = out_video.with_suffix('.mp4')
+                mp4_copy.parent.mkdir(parents=True, exist_ok=True)
+                try:
+                    _run([
+                        "ffmpeg", "-y" if args.overwrite else "-n",
+                        "-i", str(processed_video),
+                        "-map", "0:v:0", "-map", "0:a:0",
+                        "-c:v", "copy",
+                        "-c:a", "aac", "-ac", "1", "-b:a", "128k",
+                        str(mp4_copy),
+                    ])
+                except Exception as e:
+                    print(f"[WARN] Failed to create MP4 copy for {processed_video}: {e}")
+
+                out_wav = (audio_only_out / rel).with_suffix(".wav")
+                extract_audio_only(processed_video, out_wav, args.overwrite, args.audio_sr)
+            except Exception as exc:
+                _append_error_row(error_csv, str(vid), str(exc))
+                print(f"[WARN] Failed {vid}: {exc}")
+                continue
+            finally:
+                # Remove the temporary MKV (lossless) if present; keep MP4 for downstream use.
+                try:
+                    if processed_video is not None and processed_video.exists():
+                        processed_video.unlink()
+                        print(f"[INFO] Removed temporary lossless file {processed_video}")
+                except Exception as e:
+                    print(f"[WARN] Failed to remove temporary file {processed_video}: {e}")
 
         print(f"[OK] Finished audio corruption: {combo_root}")
 
@@ -754,4 +771,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

@@ -1,4 +1,5 @@
 import argparse
+import csv
 import shutil
 import subprocess
 import tempfile
@@ -25,6 +26,15 @@ def _ffmpeg():
 
 def _run(cmd: list[str]):
     subprocess.run(cmd, check=True)
+
+
+def _append_error_row(path: Path, file_name: str, error: str):
+    write_header = not path.exists()
+    with open(path, "a", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=["file", "error"])
+        if write_header:
+            writer.writeheader()
+        writer.writerow({"file": file_name, "error": error})
 
 
 def _iter_videos(inp: Path, recursive: bool):
@@ -432,6 +442,7 @@ def main():
         combo_root = out_dir / f"V={corr}_S={args.severity}"
         videos_out = combo_root
         videos_out.mkdir(parents=True, exist_ok=True)
+        error_csv = combo_root / "error.csv"
 
         for vid in vids:
             rel = vid.relative_to(videos_dir) if videos_dir.is_dir() else Path(vid.name)
@@ -441,13 +452,18 @@ def main():
             if out_video.exists() and not args.overwrite:
                 continue
 
-            apply_visual_corruption(vid, out_video, corr, args.severity, args.overwrite)
+            try:
+                apply_visual_corruption(vid, out_video, corr, args.severity, args.overwrite)
 
-            audio_dir = combo_root / "audio_only"
-            audio_dir.mkdir(parents=True, exist_ok=True)
-            wav_path = audio_dir / (out_video.stem + ".wav")
-            print(out_video)
-            ffmpeg_extract_wav(out_video, wav_path, 1, False)
+                audio_dir = combo_root / "audio_only"
+                audio_dir.mkdir(parents=True, exist_ok=True)
+                wav_path = audio_dir / (out_video.stem + ".wav")
+                print(out_video)
+                ffmpeg_extract_wav(out_video, wav_path, 1, False)
+            except Exception as exc:
+                _append_error_row(error_csv, str(vid), str(exc))
+                print(f"[WARN] Failed {vid}: {exc}")
+                continue
 
         print(f"[OK] Finished visual corruption: {combo_root}")
 
