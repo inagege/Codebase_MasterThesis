@@ -47,10 +47,12 @@ def extract_assistant_reply(full_text: str) -> str:
     """
     if not full_text:
         return ""
-    pattern = re.compile(r"\bassistant\b\s*[:\-]?\s*([\s\S]+)$", flags=re.IGNORECASE)
-    matches = list(pattern.finditer(full_text))
-    if matches:
-        return matches[-1].group(1).strip()
+    # Match standalone "assistant" tokens and cut after the last occurrence.
+    marker_matches = list(re.finditer(r"\bassistant\b", full_text, flags=re.IGNORECASE))
+    if marker_matches:
+        tail = full_text[marker_matches[-1].end() :]
+        tail = re.sub(r"^\s*[:\-]?\s*", "", tail)
+        return tail.strip()
     # fallback: last non-empty line
     for line in reversed(full_text.splitlines()):
         if line.strip():

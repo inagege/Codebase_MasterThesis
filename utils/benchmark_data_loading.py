@@ -163,11 +163,11 @@ def validate_modalities(dataset: str, enabled_modalities, noisy_modalities):
             f"Allowed: {sorted(allowed)}"
         )
     if noisy_modalities is not None:
-        if dataset != "meld":
-            raise ValueError("--noisy-modalities is currently supported only for dataset=meld.")
         unknown_noisy = noisy_modalities - allowed
         if unknown_noisy:
-            raise ValueError(f"Unknown noisy modalities for MELD: {sorted(unknown_noisy)}")
+            raise ValueError(
+                f"Unknown noisy modalities for dataset {dataset}: {sorted(unknown_noisy)}"
+            )
         if not noisy_modalities.issubset(enabled_modalities):
             raise ValueError("--noisy-modalities must be a subset of --modalities.")
 
@@ -176,15 +176,15 @@ def load_samples(dataset, args, enabled_modalities, noisy_modalities, label_colu
     if dataset == "meld":
         return _load_meld_samples(args, noisy_modalities, label_column)
     if dataset == "homeprice":
-        return _load_homeprice_samples()
+        return _load_homeprice_samples(enabled_modalities, noisy_modalities)
     if dataset == "imdb":
-        return _load_imdb_samples()
+        return _load_imdb_samples(enabled_modalities, noisy_modalities)
     if dataset == "voxceleb":
-        return _load_voxceleb_samples(args, enabled_modalities, label_column)
+        return _load_voxceleb_samples(args, enabled_modalities, noisy_modalities, label_column)
     if dataset == "nejm":
-        return _load_nejm_samples()
+        return _load_nejm_samples(enabled_modalities, noisy_modalities)
     if dataset == "marine":
-        return _load_marine_samples(enabled_modalities)
+        return _load_marine_samples(enabled_modalities, noisy_modalities)
     raise ValueError(f"Unsupported dataset {dataset}")
 
 
@@ -215,6 +215,28 @@ def _resolve_media_path_with_fallback(base_path: Path):
         if path.exists():
             return path
     return None
+
+
+def _iter_noise_variants(noise_root: Path, modality: str):
+    modality_root = noise_root / modality
+    if not modality_root.exists():
+        print(f"[WARN] No noisy root found for modality {modality}: {modality_root}", flush=True)
+        return []
+    return sorted(path for path in modality_root.iterdir() if path.is_dir())
+
+
+def _load_text_variant_map(csv_path: Path, key_column: str, text_column: str):
+    if not csv_path.exists():
+        print(f"[WARN] No noisy text metadata found: {csv_path}", flush=True)
+        return {}
+
+    df = pd.read_csv(csv_path)
+    mapping = {}
+    for _, row in df.iterrows():
+        key = _sanitize_value(row.get(key_column))
+        if key:
+            mapping[key] = _sanitize_value(row.get(text_column))
+    return mapping
 
 
 def _requested_meld_splits(split_arg: str):
@@ -345,54 +367,162 @@ def _resolve_homeprice_csv_path():
     )
 
 
-def _load_homeprice_samples():
+def _load_homeprice_samples(enabled_modalities, noisy_modalities):
     csv_path = _resolve_homeprice_csv_path()
     image_dir = Path("data/HomePrice/homeImages")
+    noise_root = Path("data/HomePrice/noise")
     df = pd.read_csv(csv_path)
+
+    if noisy_modalities is None:
+        samples = []
+        for _, row in df.iterrows():
+            image_name = _sanitize_value(row.get("homeImage"))
+            if not image_name:
+                continue
+            samples.append(
+                {
+                    "dataset": "homeprice",
+                    "split": "all",
+                    "sample_id": image_name,
+                    "file": image_name,
+                    "text": _sanitize_value(row.get("description")),
+                    "audio": None,
+                    "video": None,
+                    "image": image_dir / image_name,
+                    "label": _sanitize_value(row.get("price_bin", "unknown")) or "unknown",
+                }
+            )
+        return samples
+
     samples = []
-    for _, row in df.iterrows():
-        image_name = _sanitize_value(row.get("homeImage"))
-        if not image_name:
-            continue
-        samples.append(
-            {
-                "dataset": "homeprice",
-                "split": "all",
-                "sample_id": image_name,
-                "file": image_name,
-                "text": _sanitize_value(row.get("description")),
-                "audio": None,
-                "video": None,
-                "image": image_dir / image_name,
-                "label": _sanitize_value(row.get("price_bin", "unknown")) or "unknown",
-            }
-        )
+    base_rows = [row for _, row in df.iterrows()]
+
+    if "image" in noisy_modalities:
+        for variant in _iter_noise_variants(noise_root, "image"):
+            for row in base_rows:
+                image_name = _sanitize_value(row.get("homeImage"))
+                if not image_name:
+                    continue
+                samples.append(
+                    {
+                        "dataset": "homeprice",
+                        "split": f"all_{variant.name}",
+                        "sample_id": image_name,
+                        "file": image_name,
+                        "text": _sanitize_value(row.get("description")),
+                        "audio": None,
+                        "video": None,
+                        "image": variant / image_name,
+                        "label": _sanitize_value(row.get("price_bin", "unknown")) or "unknown",
+                    }
+                )
+
+    if "text" in noisy_modalities:
+        for variant in _iter_noise_variants(noise_root, "text"):
+            text_map = _load_text_variant_map(
+                csv_path=variant / csv_path.name,
+                key_column="homeImage",
+                text_column="description",
+            )
+            for row in base_rows:
+                image_name = _sanitize_value(row.get("homeImage"))
+                if not image_name:
+                    continue
+                samples.append(
+                    {
+                        "dataset": "homeprice",
+                        "split": f"all_{variant.name}",
+                        "sample_id": image_name,
+                        "file": image_name,
+                        "text": text_map.get(image_name, _sanitize_value(row.get("description"))),
+                        "audio": None,
+                        "video": None,
+                        "image": image_dir / image_name,
+                        "label": _sanitize_value(row.get("price_bin", "unknown")) or "unknown",
+                    }
+                )
+
     return samples
 
 
-def _load_imdb_samples():
+def _load_imdb_samples(enabled_modalities, noisy_modalities):
     csv_path = Path("data/IMDB/IMDB_four_genre_larger_plot_description.csv")
     image_dir = Path("data/IMDB/IMDB_four_genre_posters")
+    noise_root = Path("data/IMDB/noise")
     df = pd.read_csv(csv_path)
+
+    if noisy_modalities is None:
+        samples = []
+        for _, row in df.iterrows():
+            movie_id = _sanitize_value(row.get("movie_id"))
+            if not movie_id:
+                continue
+            image_path = _resolve_media_path_with_fallback(image_dir / movie_id)
+            samples.append(
+                {
+                    "dataset": "imdb",
+                    "split": "all",
+                    "sample_id": movie_id,
+                    "file": f"{movie_id}.jpg",
+                    "text": _sanitize_value(row.get("description")),
+                    "audio": None,
+                    "video": None,
+                    "image": image_path if image_path is not None else image_dir / f"{movie_id}.jpg",
+                    "label": _sanitize_value(row.get("genre", "unknown")) or "unknown",
+                }
+            )
+        return samples
+
     samples = []
-    for _, row in df.iterrows():
-        movie_id = _sanitize_value(row.get("movie_id"))
-        if not movie_id:
-            continue
-        image_path = _resolve_media_path_with_fallback(image_dir / movie_id)
-        samples.append(
-            {
-                "dataset": "imdb",
-                "split": "all",
-                "sample_id": movie_id,
-                "file": f"{movie_id}.jpg",
-                "text": _sanitize_value(row.get("description")),
-                "audio": None,
-                "video": None,
-                "image": image_path if image_path is not None else image_dir / f"{movie_id}.jpg",
-                "label": _sanitize_value(row.get("genre", "unknown")) or "unknown",
-            }
-        )
+    base_rows = [row for _, row in df.iterrows()]
+
+    if "image" in noisy_modalities:
+        for variant in _iter_noise_variants(noise_root, "image"):
+            for row in base_rows:
+                movie_id = _sanitize_value(row.get("movie_id"))
+                if not movie_id:
+                    continue
+                noisy_image_path = _resolve_media_path_with_fallback(variant / movie_id)
+                samples.append(
+                    {
+                        "dataset": "imdb",
+                        "split": f"all_{variant.name}",
+                        "sample_id": movie_id,
+                        "file": f"{movie_id}.jpg",
+                        "text": _sanitize_value(row.get("description")),
+                        "audio": None,
+                        "video": None,
+                        "image": noisy_image_path if noisy_image_path is not None else variant / f"{movie_id}.jpg",
+                        "label": _sanitize_value(row.get("genre", "unknown")) or "unknown",
+                    }
+                )
+
+    if "text" in noisy_modalities:
+        for variant in _iter_noise_variants(noise_root, "text"):
+            text_map = _load_text_variant_map(
+                csv_path=variant / csv_path.name,
+                key_column="movie_id",
+                text_column="description",
+            )
+            for row in base_rows:
+                movie_id = _sanitize_value(row.get("movie_id"))
+                if not movie_id:
+                    continue
+                image_path = _resolve_media_path_with_fallback(image_dir / movie_id)
+                samples.append(
+                    {
+                        "dataset": "imdb",
+                        "split": f"all_{variant.name}",
+                        "sample_id": movie_id,
+                        "file": f"{movie_id}.jpg",
+                        "text": text_map.get(movie_id, _sanitize_value(row.get("description"))),
+                        "audio": None,
+                        "video": None,
+                        "image": image_path if image_path is not None else image_dir / f"{movie_id}.jpg",
+                        "label": _sanitize_value(row.get("genre", "unknown")) or "unknown",
+                    }
+                )
+
     return samples
 
 
@@ -403,70 +533,138 @@ def _parse_nejm_label(answer: str):
     return answer
 
 
-def _load_nejm_samples():
+def _load_nejm_samples(enabled_modalities, noisy_modalities):
     csv_path = Path("data/NEJM/metadata.csv")
+    image_root = Path("data/NEJM/images")
+    noise_root = Path("data/NEJM/noise")
     df = pd.read_csv(csv_path)
-    samples = []
-    for _, row in df.iterrows():
-        image_id = _sanitize_value(row.get("image_id"))
-        raw_image_path = _sanitize_value(row.get("image_path"))
-        if raw_image_path:
-            image_path = Path(raw_image_path)
-        else:
-            image_path = Path("data/NEJM/images") / f"image_{image_id}.jpg"
-        if not image_path.exists():
-            fallback = _resolve_media_path_with_fallback(image_path.with_suffix(""))
-            if fallback is not None:
-                image_path = fallback
 
-        question = _sanitize_value(row.get("question")).replace("<image>", "").strip()
-        label = _parse_nejm_label(_sanitize_value(row.get("answer")))
-        samples.append(
-            {
-                "dataset": "nejm",
-                "split": "all",
-                "sample_id": image_id,
-                "file": image_path.name,
-                "text": question,
-                "options": _sanitize_value(row.get("options")),
-                "audio": None,
-                "video": None,
-                "image": image_path,
-                "label": label or "unknown",
-            }
-        )
+    if noisy_modalities is None:
+        samples = []
+        for _, row in df.iterrows():
+            image_id = _sanitize_value(row.get("image_id"))
+            raw_image_path = _sanitize_value(row.get("image_path"))
+            if raw_image_path:
+                image_path = Path(raw_image_path)
+            else:
+                image_path = image_root / f"image_{image_id}.jpg"
+            if not image_path.exists():
+                fallback = _resolve_media_path_with_fallback(image_path.with_suffix(""))
+                if fallback is not None:
+                    image_path = fallback
+
+            question = _sanitize_value(row.get("question")).replace("<image>", "").strip()
+            label = _parse_nejm_label(_sanitize_value(row.get("answer")))
+            samples.append(
+                {
+                    "dataset": "nejm",
+                    "split": "all",
+                    "sample_id": image_id,
+                    "file": image_path.name,
+                    "text": question,
+                    "options": _sanitize_value(row.get("options")),
+                    "audio": None,
+                    "video": None,
+                    "image": image_path,
+                    "label": label or "unknown",
+                }
+            )
+        return samples
+
+    base_rows = [row for _, row in df.iterrows()]
+    samples = []
+
+    if "image" in noisy_modalities:
+        for variant in _iter_noise_variants(noise_root, "image"):
+            for row in base_rows:
+                image_id = _sanitize_value(row.get("image_id"))
+                raw_image_path = _sanitize_value(row.get("image_path"))
+                if raw_image_path:
+                    base_image_path = Path(raw_image_path)
+                else:
+                    base_image_path = image_root / f"image_{image_id}.jpg"
+
+                noisy_image_path = variant / base_image_path.name
+                if not noisy_image_path.exists():
+                    fallback = _resolve_media_path_with_fallback((variant / base_image_path.name).with_suffix(""))
+                    if fallback is not None:
+                        noisy_image_path = fallback
+
+                question = _sanitize_value(row.get("question")).replace("<image>", "").strip()
+                label = _parse_nejm_label(_sanitize_value(row.get("answer")))
+                samples.append(
+                    {
+                        "dataset": "nejm",
+                        "split": f"all_{variant.name}",
+                        "sample_id": image_id,
+                        "file": noisy_image_path.name,
+                        "text": question,
+                        "options": _sanitize_value(row.get("options")),
+                        "audio": None,
+                        "video": None,
+                        "image": noisy_image_path,
+                        "label": label or "unknown",
+                    }
+                )
+
+    if "text" in noisy_modalities:
+        for variant in _iter_noise_variants(noise_root, "text"):
+            text_map = _load_text_variant_map(
+                csv_path=variant / "metadata.csv",
+                key_column="image_id",
+                text_column="question",
+            )
+            for row in base_rows:
+                image_id = _sanitize_value(row.get("image_id"))
+                raw_image_path = _sanitize_value(row.get("image_path"))
+                if raw_image_path:
+                    image_path = Path(raw_image_path)
+                else:
+                    image_path = image_root / f"image_{image_id}.jpg"
+                if not image_path.exists():
+                    fallback = _resolve_media_path_with_fallback(image_path.with_suffix(""))
+                    if fallback is not None:
+                        image_path = fallback
+
+                question = text_map.get(image_id, _sanitize_value(row.get("question")))
+                question = question.replace("<image>", "").strip()
+                label = _parse_nejm_label(_sanitize_value(row.get("answer")))
+                samples.append(
+                    {
+                        "dataset": "nejm",
+                        "split": f"all_{variant.name}",
+                        "sample_id": image_id,
+                        "file": image_path.name,
+                        "text": question,
+                        "options": _sanitize_value(row.get("options")),
+                        "audio": None,
+                        "video": None,
+                        "image": image_path,
+                        "label": label or "unknown",
+                    }
+                )
+
     return samples
 
 
-def _load_voxceleb_samples(args, enabled_modalities, label_column):
-    mp4_root = Path("data/VoxCeleb2/dev/mp4")
-    audio_root = mp4_root / args.audio_subdir
-    speaker_csv = Path("data/VoxCeleb2/speaker_information.csv")
-
-    speaker_df = pd.read_csv(speaker_csv)
-    if label_column not in speaker_df.columns:
-        raise ValueError(
-            f"Label column {label_column!r} not found in {speaker_csv}. "
-            f"Available: {list(speaker_df.columns)}"
-        )
-
-    speaker_to_label = {}
-    for _, row in speaker_df.iterrows():
-        speaker_id = _sanitize_value(row.get("VoxCeleb_ID"))
-        if speaker_id:
-            speaker_to_label[speaker_id] = _sanitize_value(row.get(label_column)) or "unknown"
-
+def _build_voxceleb_samples_for_roots(
+    args, enabled_modalities, speaker_to_label, split_name, video_root: Path, audio_root: Path
+):
     video_map = {}
     audio_map = {}
 
     if "video" in enabled_modalities:
-        for mp4_path in mp4_root.rglob("*.mp4"):
+        if not video_root.exists():
+            print(f"[WARN] VoxCeleb video root does not exist: {video_root}", flush=True)
+        for mp4_path in video_root.rglob("*.mp4"):
             if args.audio_subdir in mp4_path.parts:
                 continue
-            rel = mp4_path.relative_to(mp4_root).with_suffix("").as_posix()
+            rel = mp4_path.relative_to(video_root).with_suffix("").as_posix()
             video_map[rel] = mp4_path
 
     if "audio" in enabled_modalities:
+        if not audio_root.exists():
+            print(f"[WARN] VoxCeleb audio root does not exist: {audio_root}", flush=True)
         for wav_path in audio_root.rglob("*.wav"):
             rel = wav_path.relative_to(audio_root).with_suffix("").as_posix()
             audio_map[rel] = wav_path
@@ -487,7 +685,7 @@ def _load_voxceleb_samples(args, enabled_modalities, label_column):
         samples.append(
             {
                 "dataset": "voxceleb",
-                "split": "dev",
+                "split": split_name,
                 "sample_id": key,
                 "file": file_name,
                 "text": "",
@@ -497,6 +695,63 @@ def _load_voxceleb_samples(args, enabled_modalities, label_column):
                 "label": label,
             }
         )
+    return samples
+
+
+def _load_voxceleb_samples(args, enabled_modalities, noisy_modalities, label_column):
+    base_video_root = Path("data/VoxCeleb2/dev/mp4")
+    base_audio_root = base_video_root / args.audio_subdir
+    noise_root = Path("data/VoxCeleb2/dev/noise")
+    speaker_csv = Path("data/VoxCeleb2/speaker_information.csv")
+
+    speaker_df = pd.read_csv(speaker_csv)
+    if label_column not in speaker_df.columns:
+        raise ValueError(
+            f"Label column {label_column!r} not found in {speaker_csv}. "
+            f"Available: {list(speaker_df.columns)}"
+        )
+
+    speaker_to_label = {}
+    for _, row in speaker_df.iterrows():
+        speaker_id = _sanitize_value(row.get("VoxCeleb_ID"))
+        if speaker_id:
+            speaker_to_label[speaker_id] = _sanitize_value(row.get(label_column)) or "unknown"
+
+    if noisy_modalities is None:
+        return _build_voxceleb_samples_for_roots(
+            args=args,
+            enabled_modalities=enabled_modalities,
+            speaker_to_label=speaker_to_label,
+            split_name="dev",
+            video_root=base_video_root,
+            audio_root=base_audio_root,
+        )
+
+    samples = []
+    if "video" in noisy_modalities:
+        for variant in _iter_noise_variants(noise_root, "video"):
+            samples.extend(
+                _build_voxceleb_samples_for_roots(
+                    args=args,
+                    enabled_modalities=enabled_modalities,
+                    speaker_to_label=speaker_to_label,
+                    split_name=f"dev_{variant.name}",
+                    video_root=variant,
+                    audio_root=base_audio_root,
+                )
+            )
+    if "audio" in noisy_modalities:
+        for variant in _iter_noise_variants(noise_root, "audio"):
+            samples.extend(
+                _build_voxceleb_samples_for_roots(
+                    args=args,
+                    enabled_modalities=enabled_modalities,
+                    speaker_to_label=speaker_to_label,
+                    split_name=f"dev_{variant.name}",
+                    video_root=base_video_root,
+                    audio_root=variant / "audio_only",
+                )
+            )
     return samples
 
 
@@ -519,20 +774,25 @@ def _marine_species_from_path(path: Path):
     return base
 
 
-def _load_marine_samples(enabled_modalities):
-    image_dir = Path("data/Marine/images")
-    audio_dir = Path("data/Marine/audio")
-
+def _build_marine_samples_for_dirs(enabled_modalities, split_name: str, image_dir: Path, audio_dir: Path):
     images_by_species = defaultdict(list)
     audios_by_species = defaultdict(list)
 
-    for path in sorted(image_dir.iterdir()):
-        if path.is_file() and path.suffix.lower() in {".jpg", ".jpeg", ".png"}:
-            images_by_species[_marine_species_from_path(path)].append(path)
+    if "image" in enabled_modalities:
+        if not image_dir.exists():
+            print(f"[WARN] Marine image dir does not exist: {image_dir}", flush=True)
+        else:
+            for path in sorted(image_dir.iterdir()):
+                if path.is_file() and path.suffix.lower() in {".jpg", ".jpeg", ".png"}:
+                    images_by_species[_marine_species_from_path(path)].append(path)
 
-    for path in sorted(audio_dir.iterdir()):
-        if path.is_file() and path.suffix.lower() == ".wav":
-            audios_by_species[_marine_species_from_path(path)].append(path)
+    if "audio" in enabled_modalities:
+        if not audio_dir.exists():
+            print(f"[WARN] Marine audio dir does not exist: {audio_dir}", flush=True)
+        else:
+            for path in sorted(audio_dir.iterdir()):
+                if path.is_file() and path.suffix.lower() == ".wav":
+                    audios_by_species[_marine_species_from_path(path)].append(path)
 
     samples = []
     if "image" in enabled_modalities and "audio" in enabled_modalities:
@@ -542,7 +802,7 @@ def _load_marine_samples(enabled_modalities):
                     samples.append(
                         {
                             "dataset": "marine",
-                            "split": "all",
+                            "split": split_name,
                             "sample_id": f"{species}__img={image_path.stem}__aud={audio_path.stem}",
                             "file": f"{image_path.name}|{audio_path.name}",
                             "text": "",
@@ -558,7 +818,7 @@ def _load_marine_samples(enabled_modalities):
                 samples.append(
                     {
                         "dataset": "marine",
-                        "split": "all",
+                        "split": split_name,
                         "sample_id": image_path.stem,
                         "file": image_path.name,
                         "text": "",
@@ -574,7 +834,7 @@ def _load_marine_samples(enabled_modalities):
                 samples.append(
                     {
                         "dataset": "marine",
-                        "split": "all",
+                        "split": split_name,
                         "sample_id": audio_path.stem,
                         "file": audio_path.name,
                         "text": "",
@@ -584,4 +844,41 @@ def _load_marine_samples(enabled_modalities):
                         "label": species,
                     }
                 )
+    return samples
+
+
+def _load_marine_samples(enabled_modalities, noisy_modalities):
+    base_image_dir = Path("data/Marine/images")
+    base_audio_dir = Path("data/Marine/audio")
+    noise_root = Path("data/Marine/noise")
+
+    if noisy_modalities is None:
+        return _build_marine_samples_for_dirs(
+            enabled_modalities=enabled_modalities,
+            split_name="all",
+            image_dir=base_image_dir,
+            audio_dir=base_audio_dir,
+        )
+
+    samples = []
+    if "image" in noisy_modalities:
+        for variant in _iter_noise_variants(noise_root, "image"):
+            samples.extend(
+                _build_marine_samples_for_dirs(
+                    enabled_modalities=enabled_modalities,
+                    split_name=f"all_{variant.name}",
+                    image_dir=variant,
+                    audio_dir=base_audio_dir,
+                )
+            )
+    if "audio" in noisy_modalities:
+        for variant in _iter_noise_variants(noise_root, "audio"):
+            samples.extend(
+                _build_marine_samples_for_dirs(
+                    enabled_modalities=enabled_modalities,
+                    split_name=f"all_{variant.name}",
+                    image_dir=base_image_dir,
+                    audio_dir=variant,
+                )
+            )
     return samples
