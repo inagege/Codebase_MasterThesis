@@ -138,7 +138,7 @@ def get_prompt_for_classification(dataset: str, meld_task: str | None):
     if dataset == "nejm":
         return (
             "The dataset contains medical questions and images. "
-            "Answer with exactly one of the following options (text without the option letter prefix)."
+            "Classify the disease by answering with exactly one of the following disease labels (without the prefic letter):"
         )
     if dataset == "marine":
         return (
@@ -428,7 +428,7 @@ def _load_nejm_samples():
                 "sample_id": image_id,
                 "file": image_path.name,
                 "text": question,
-                "relevant_context": _sanitize_value(row.get("relevant_context")),
+                "options": _sanitize_value(row.get("options")),
                 "audio": None,
                 "video": None,
                 "image": image_path,
@@ -501,10 +501,22 @@ def _load_voxceleb_samples(args, enabled_modalities, label_column):
 
 
 def _marine_species_from_path(path: Path):
-    stem = path.stem
+    stem = path.stem.strip()
     if "_" not in stem:
-        return stem.strip()
-    return stem.rsplit("_", 1)[0].strip()
+        return stem
+
+    # Drop the trailing sample index (e.g. *_15 or *_1209)
+    base = stem.rsplit("_", 1)[0].strip()
+
+    # Image files may include a source tag before the index, such as:
+    # "<species>_matched_<n>" or "<species>_inat_<n>".
+    # Remove that tag so species names align with audio filenames.
+    for tag in ("_matched", "_inat"):
+        if base.endswith(tag):
+            base = base[: -len(tag)].strip()
+            break
+
+    return base
 
 
 def _load_marine_samples(enabled_modalities):
