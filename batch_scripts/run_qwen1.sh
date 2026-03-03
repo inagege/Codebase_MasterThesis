@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=voxceleb_v   # Job name
+#SBATCH --job-name=voxceleb_av   # Job name
 #SBATCH --output=logs/%x_%j.out           # Stdout log
 #SBATCH --error=logs/%x_%j.err            # Stderr log
 #SBATCH --time=72:00:00                   # Max runtime (hh:mm:ss)
@@ -19,8 +19,8 @@ mkdir -p logs
 # Run your Python script
 pixi run python benchmark_modalities.py \
   --dataset voxceleb \
-  --modalities video \
+  --modalities audio,video \
   --batch-size 8 \
-  --out-path out/voxceleb/prediction_v_noise_.csv \
-  --out-error-path out/voxceleb/errors_v_noise_.csv \
-  --start-at-sample 355549
+  --out-path out/voxceleb/prediction_av_noise_.csv \
+  --out-error-path out/voxceleb/errors_av_noise_.csv \
+  --start-at-sample 296284
