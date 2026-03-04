@@ -365,7 +365,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/38/a8/dfc07e5b9005decbd2f08ac564250775fea9526473ae1bc90fbf45e8036f/qwen_omni_utils-0.0.9-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/12/2f/049901def913954e640d199bbc6a7ca2902b6aeda0e5da9d17f114100ec2/regex-2026.2.28-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/f2/90/273b6c7ec78af547694eddeea9e05de771278bd20476525ab930cecaf7d8/tokenizers-0.21.4-cp39-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
-      - pypi: git+https://github.com/huggingface/transformers#cb39f7dd5ba874ee1859b47283b08cd3a6ab5a0d
+      - pypi: git+https://github.com/huggingface/transformers?tag=v4.51.3-Qwen2.5-Omni-preview#cb39f7dd5ba874ee1859b47283b08cd3a6ab5a0d
       osx-64:
       - conda: https://conda.anaconda.org/conda-forge/osx-64/_openmp_mutex-4.5-7_kmp_llvm.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/_python_abi3_support-1.0-hd8ed1ab_2.conda
@@ -9495,7 +9495,7 @@ packages:
   - pkg:pypi/traitlets?source=hash-mapping
   size: 110051
   timestamp: 1733367480074
-- pypi: git+https://github.com/huggingface/transformers#cb39f7dd5ba874ee1859b47283b08cd3a6ab5a0d
+- pypi: git+https://github.com/huggingface/transformers?tag=v4.51.3-Qwen2.5-Omni-preview#cb39f7dd5ba874ee1859b47283b08cd3a6ab5a0d
   name: transformers
   version: 4.52.0.dev0
   requires_dist:
