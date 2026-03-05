@@ -40,6 +40,7 @@ cuda-version = "12.9.*"
 qwen-omni-utils = {version = "*", extras=["decord"]}
 transformers = { git = "https://github.com/huggingface/transformers", tag = "v4.51.3-Qwen2.5-Omni-preview"}
 soundfile = "*"
+brisque = "*"
 
 [target.osx-64]
 [target.osx-64.dependencies]
