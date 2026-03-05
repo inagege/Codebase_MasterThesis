@@ -1,0 +1,257 @@
+dataset,split,sample_id,file,error,traceback
+homeprice,all_T=char_delete_S=3,80098038_052b4d06590a0b5660f416a08cf5bb13-p_f.jpg,80098038_052b4d06590a0b5660f416a08cf5bb13-p_f.jpg,image file is truncated (2 bytes not processed),"Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/benchmark_modalities.py"", line 326, in main
+    replies = run_batch_generation(
+        model=model,
+    ...<4 lines>...
+        dtype=dtype,
+    )
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/benchmark_modalities.py"", line 173, in run_batch_generation
+    audios, images, videos = process_mm_info(conversations, use_audio_in_video=False)
+                             ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/.pixi/envs/default/lib/python3.13/site-packages/qwen_omni_utils/v2_5/__init__.py"", line 19, in process_mm_info
+    vision = process_vision_info(
+        conversations,
+    ...<2 lines>...
+        image_patch_size=image_patch_size,
+    )
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/.pixi/envs/default/lib/python3.13/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 515, in process_vision_info
+    image_inputs.append(fetch_image(vision_info, image_patch_size=image_patch_size))
+                        ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/.pixi/envs/default/lib/python3.13/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 120, in fetch_image
+    image = to_rgb(image_obj)
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/.pixi/envs/default/lib/python3.13/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 90, in to_rgb
+    return pil_image.convert(""RGB"")
+           ~~~~~~~~~~~~~~~~~^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/.pixi/envs/default/lib/python3.13/site-packages/PIL/Image.py"", line 967, in convert
+    self.load()
+    ~~~~~~~~~^^
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/.pixi/envs/default/lib/python3.13/site-packages/PIL/ImageFile.py"", line 403, in load
+    raise OSError(msg)
+OSError: image file is truncated (2 bytes not processed)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/benchmark_modalities.py"", line 342, in main
+    replies = run_batch_generation(
+        model=model,
+    ...<4 lines>...
+        dtype=dtype,
+    )
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/benchmark_modalities.py"", line 173, in run_batch_generation
+    audios, images, videos = process_mm_info(conversations, use_audio_in_video=False)
+                             ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/.pixi/envs/default/lib/python3.13/site-packages/qwen_omni_utils/v2_5/__init__.py"", line 19, in process_mm_info
+    vision = process_vision_info(
+        conversations,
+    ...<2 lines>...
+        image_patch_size=image_patch_size,
+    )
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/.pixi/envs/default/lib/python3.13/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 515, in process_vision_info
+    image_inputs.append(fetch_image(vision_info, image_patch_size=image_patch_size))
+                        ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/.pixi/envs/default/lib/python3.13/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 120, in fetch_image
+    image = to_rgb(image_obj)
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/.pixi/envs/default/lib/python3.13/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 90, in to_rgb
+    return pil_image.convert(""RGB"")
+           ~~~~~~~~~~~~~~~~~^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/.pixi/envs/default/lib/python3.13/site-packages/PIL/Image.py"", line 967, in convert
+    self.load()
+    ~~~~~~~~~^^
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/.pixi/envs/default/lib/python3.13/site-packages/PIL/ImageFile.py"", line 403, in load
+    raise OSError(msg)
+OSError: image file is truncated (2 bytes not processed)
+"
+homeprice,all_T=char_replace_S=3,80098038_052b4d06590a0b5660f416a08cf5bb13-p_f.jpg,80098038_052b4d06590a0b5660f416a08cf5bb13-p_f.jpg,image file is truncated (2 bytes not processed),"Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/benchmark_modalities.py"", line 326, in main
+    replies = run_batch_generation(
+        model=model,
+    ...<4 lines>...
+        dtype=dtype,
+    )
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/benchmark_modalities.py"", line 173, in run_batch_generation
+    audios, images, videos = process_mm_info(conversations, use_audio_in_video=False)
+                             ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/.pixi/envs/default/lib/python3.13/site-packages/qwen_omni_utils/v2_5/__init__.py"", line 19, in process_mm_info
+    vision = process_vision_info(
+        conversations,
+    ...<2 lines>...
+        image_patch_size=image_patch_size,
+    )
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/.pixi/envs/default/lib/python3.13/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 515, in process_vision_info
+    image_inputs.append(fetch_image(vision_info, image_patch_size=image_patch_size))
+                        ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/.pixi/envs/default/lib/python3.13/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 120, in fetch_image
+    image = to_rgb(image_obj)
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/.pixi/envs/default/lib/python3.13/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 90, in to_rgb
+    return pil_image.convert(""RGB"")
+           ~~~~~~~~~~~~~~~~~^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/.pixi/envs/default/lib/python3.13/site-packages/PIL/Image.py"", line 967, in convert
+    self.load()
+    ~~~~~~~~~^^
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/.pixi/envs/default/lib/python3.13/site-packages/PIL/ImageFile.py"", line 403, in load
+    raise OSError(msg)
+OSError: image file is truncated (2 bytes not processed)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/benchmark_modalities.py"", line 342, in main
+    replies = run_batch_generation(
+        model=model,
+    ...<4 lines>...
+        dtype=dtype,
+    )
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/benchmark_modalities.py"", line 173, in run_batch_generation
+    audios, images, videos = process_mm_info(conversations, use_audio_in_video=False)
+                             ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/.pixi/envs/default/lib/python3.13/site-packages/qwen_omni_utils/v2_5/__init__.py"", line 19, in process_mm_info
+    vision = process_vision_info(
+        conversations,
+    ...<2 lines>...
+        image_patch_size=image_patch_size,
+    )
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/.pixi/envs/default/lib/python3.13/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 515, in process_vision_info
+    image_inputs.append(fetch_image(vision_info, image_patch_size=image_patch_size))
+                        ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/.pixi/envs/default/lib/python3.13/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 120, in fetch_image
+    image = to_rgb(image_obj)
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/.pixi/envs/default/lib/python3.13/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 90, in to_rgb
+    return pil_image.convert(""RGB"")
+           ~~~~~~~~~~~~~~~~~^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/.pixi/envs/default/lib/python3.13/site-packages/PIL/Image.py"", line 967, in convert
+    self.load()
+    ~~~~~~~~~^^
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/.pixi/envs/default/lib/python3.13/site-packages/PIL/ImageFile.py"", line 403, in load
+    raise OSError(msg)
+OSError: image file is truncated (2 bytes not processed)
+"
+homeprice,all_T=keyboard_S=3,80098038_052b4d06590a0b5660f416a08cf5bb13-p_f.jpg,80098038_052b4d06590a0b5660f416a08cf5bb13-p_f.jpg,image file is truncated (2 bytes not processed),"Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/benchmark_modalities.py"", line 326, in main
+    replies = run_batch_generation(
+        model=model,
+    ...<4 lines>...
+        dtype=dtype,
+    )
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/benchmark_modalities.py"", line 173, in run_batch_generation
+    audios, images, videos = process_mm_info(conversations, use_audio_in_video=False)
+                             ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/.pixi/envs/default/lib/python3.13/site-packages/qwen_omni_utils/v2_5/__init__.py"", line 19, in process_mm_info
+    vision = process_vision_info(
+        conversations,
+    ...<2 lines>...
+        image_patch_size=image_patch_size,
+    )
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/.pixi/envs/default/lib/python3.13/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 515, in process_vision_info
+    image_inputs.append(fetch_image(vision_info, image_patch_size=image_patch_size))
+                        ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/.pixi/envs/default/lib/python3.13/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 120, in fetch_image
+    image = to_rgb(image_obj)
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/.pixi/envs/default/lib/python3.13/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 90, in to_rgb
+    return pil_image.convert(""RGB"")
+           ~~~~~~~~~~~~~~~~~^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/.pixi/envs/default/lib/python3.13/site-packages/PIL/Image.py"", line 967, in convert
+    self.load()
+    ~~~~~~~~~^^
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/.pixi/envs/default/lib/python3.13/site-packages/PIL/ImageFile.py"", line 403, in load
+    raise OSError(msg)
+OSError: image file is truncated (2 bytes not processed)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/benchmark_modalities.py"", line 342, in main
+    replies = run_batch_generation(
+        model=model,
+    ...<4 lines>...
+        dtype=dtype,
+    )
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/benchmark_modalities.py"", line 173, in run_batch_generation
+    audios, images, videos = process_mm_info(conversations, use_audio_in_video=False)
+                             ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/.pixi/envs/default/lib/python3.13/site-packages/qwen_omni_utils/v2_5/__init__.py"", line 19, in process_mm_info
+    vision = process_vision_info(
+        conversations,
+    ...<2 lines>...
+        image_patch_size=image_patch_size,
+    )
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/.pixi/envs/default/lib/python3.13/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 515, in process_vision_info
+    image_inputs.append(fetch_image(vision_info, image_patch_size=image_patch_size))
+                        ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/.pixi/envs/default/lib/python3.13/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 120, in fetch_image
+    image = to_rgb(image_obj)
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/.pixi/envs/default/lib/python3.13/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 90, in to_rgb
+    return pil_image.convert(""RGB"")
+           ~~~~~~~~~~~~~~~~~^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/.pixi/envs/default/lib/python3.13/site-packages/PIL/Image.py"", line 967, in convert
+    self.load()
+    ~~~~~~~~~^^
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/.pixi/envs/default/lib/python3.13/site-packages/PIL/ImageFile.py"", line 403, in load
+    raise OSError(msg)
+OSError: image file is truncated (2 bytes not processed)
+"
+homeprice,all_T=ocr_S=3,80098038_052b4d06590a0b5660f416a08cf5bb13-p_f.jpg,80098038_052b4d06590a0b5660f416a08cf5bb13-p_f.jpg,image file is truncated (2 bytes not processed),"Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/benchmark_modalities.py"", line 326, in main
+    replies = run_batch_generation(
+        model=model,
+    ...<4 lines>...
+        dtype=dtype,
+    )
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/benchmark_modalities.py"", line 173, in run_batch_generation
+    audios, images, videos = process_mm_info(conversations, use_audio_in_video=False)
+                             ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/.pixi/envs/default/lib/python3.13/site-packages/qwen_omni_utils/v2_5/__init__.py"", line 19, in process_mm_info
+    vision = process_vision_info(
+        conversations,
+    ...<2 lines>...
+        image_patch_size=image_patch_size,
+    )
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/.pixi/envs/default/lib/python3.13/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 515, in process_vision_info
+    image_inputs.append(fetch_image(vision_info, image_patch_size=image_patch_size))
+                        ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/.pixi/envs/default/lib/python3.13/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 120, in fetch_image
+    image = to_rgb(image_obj)
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/.pixi/envs/default/lib/python3.13/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 90, in to_rgb
+    return pil_image.convert(""RGB"")
+           ~~~~~~~~~~~~~~~~~^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/.pixi/envs/default/lib/python3.13/site-packages/PIL/Image.py"", line 967, in convert
+    self.load()
+    ~~~~~~~~~^^
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/.pixi/envs/default/lib/python3.13/site-packages/PIL/ImageFile.py"", line 403, in load
+    raise OSError(msg)
+OSError: image file is truncated (2 bytes not processed)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/benchmark_modalities.py"", line 342, in main
+    replies = run_batch_generation(
+        model=model,
+    ...<4 lines>...
+        dtype=dtype,
+    )
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/benchmark_modalities.py"", line 173, in run_batch_generation
+    audios, images, videos = process_mm_info(conversations, use_audio_in_video=False)
+                             ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/.pixi/envs/default/lib/python3.13/site-packages/qwen_omni_utils/v2_5/__init__.py"", line 19, in process_mm_info
+    vision = process_vision_info(
+        conversations,
+    ...<2 lines>...
+        image_patch_size=image_patch_size,
+    )
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/.pixi/envs/default/lib/python3.13/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 515, in process_vision_info
+    image_inputs.append(fetch_image(vision_info, image_patch_size=image_patch_size))
+                        ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/.pixi/envs/default/lib/python3.13/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 120, in fetch_image
+    image = to_rgb(image_obj)
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/.pixi/envs/default/lib/python3.13/site-packages/qwen_omni_utils/v2_5/vision_process.py"", line 90, in to_rgb
+    return pil_image.convert(""RGB"")
+           ~~~~~~~~~~~~~~~~~^^^^^^^
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/.pixi/envs/default/lib/python3.13/site-packages/PIL/Image.py"", line 967, in convert
+    self.load()
+    ~~~~~~~~~^^
+  File ""/hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis/.pixi/envs/default/lib/python3.13/site-packages/PIL/ImageFile.py"", line 403, in load
+    raise OSError(msg)
+OSError: image file is truncated (2 bytes not processed)
+"
