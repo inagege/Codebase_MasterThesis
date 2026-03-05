@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import os
 import re
 from collections import defaultdict
@@ -186,6 +187,82 @@ def load_samples(dataset, args, enabled_modalities, noisy_modalities, label_colu
     if dataset == "marine":
         return _load_marine_samples(enabled_modalities, noisy_modalities)
     raise ValueError(f"Unsupported dataset {dataset}")
+
+
+def _label_for_sample(sample) -> str:
+    return _sanitize_value(sample.get("label")) or "unknown"
+
+
+def _sample_selection_key(sample) -> str:
+    return _sanitize_value(sample.get("sample_id"))
+
+
+def _deterministic_sample_rank(sample):
+    dataset = _sanitize_value(sample.get("dataset"))
+    split = _sanitize_value(sample.get("split"))
+    sample_id = _sanitize_value(sample.get("sample_id"))
+    file_name = _sanitize_value(sample.get("file"))
+    label = _label_for_sample(sample)
+    token = f"{dataset}|{split}|{sample_id}|{file_name}|{label}"
+    digest = hashlib.sha256(token.encode("utf-8")).hexdigest()
+    return digest, split, sample_id, file_name
+
+
+def select_stratified_samples(samples, sample_limit: int):
+    """Deterministically select a label-stratified subset of samples."""
+    if sample_limit < 1:
+        raise ValueError("sample_limit must be >= 1")
+    if sample_limit >= len(samples):
+        return samples
+
+    grouped = defaultdict(list)
+    for sample in samples:
+        grouped[_label_for_sample(sample)].append(sample)
+
+    labels = sorted(grouped)
+    for label in labels:
+        grouped[label] = sorted(grouped[label], key=_deterministic_sample_rank)
+
+    total_count = len(samples)
+    per_label_take = {}
+    remainder_scores = []
+    allocated = 0
+    for label in labels:
+        group_size = len(grouped[label])
+        exact_target = sample_limit * group_size / total_count
+        base_take = int(exact_target)
+        per_label_take[label] = min(base_take, group_size)
+        allocated += per_label_take[label]
+        remainder_scores.append((exact_target - base_take, label))
+
+    remaining = sample_limit - allocated
+    remainder_scores.sort(key=lambda item: (-item[0], item[1]))
+    for _, label in remainder_scores:
+        if remaining == 0:
+            break
+        if per_label_take[label] < len(grouped[label]):
+            per_label_take[label] += 1
+            remaining -= 1
+
+    if remaining > 0:
+        leftovers = []
+        for label in labels:
+            leftovers.extend(grouped[label][per_label_take[label] :])
+        leftovers.sort(key=_deterministic_sample_rank)
+        for sample in leftovers[:remaining]:
+            per_label_take[_label_for_sample(sample)] += 1
+
+    selected = []
+    for label in labels:
+        selected.extend(grouped[label][: per_label_take[label]])
+
+    selected.sort(key=_deterministic_sample_rank)
+    return selected[:sample_limit]
+
+
+def filter_samples_by_sample_id(samples, selected_sample_ids):
+    normalized_ids = {_sanitize_value(sample_id) for sample_id in selected_sample_ids if _sanitize_value(sample_id)}
+    return [sample for sample in samples if _sample_selection_key(sample) in normalized_ids]
 
 
 def _sanitize_value(value) -> str:

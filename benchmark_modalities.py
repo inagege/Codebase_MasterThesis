@@ -10,11 +10,13 @@ from transformers import Qwen2_5OmniForConditionalGeneration, Qwen2_5OmniProcess
 
 from utils.benchmark_data_loading import (
     default_modalities_for_dataset,
+    filter_samples_by_sample_id,
     get_prompt_for_classification,
     load_samples,
     normalize_dataset_name,
     normalize_meld_task,
     normalize_modalities,
+    select_stratified_samples,
     validate_modalities,
 )
 from utils.parsing_util import extract_assistant_reply
@@ -57,6 +59,12 @@ def parse_args():
         type=int,
         default=None,
         help="Optional lower bound (0-based). If set, skip all samples before this index.",
+    )
+    parser.add_argument(
+        "--stratified-samples",
+        type=int,
+        default=None,
+        help="Non-MELD only: deterministically select this many samples, stratified by label.",
     )
     parser.add_argument("--total-samples", type=int, default=None, help="Limit total files across all splits")
     parser.add_argument("--audio-subdir", type=str, default="audio_only", help="Subdir for WAV files")
@@ -223,6 +231,8 @@ def main():
         raise ValueError("--batch-size must be >= 1.")
     if args.start_at_sample is not None and args.start_at_sample < 0:
         raise ValueError("--start-at-sample must be >= 0 when provided.")
+    if args.stratified_samples is not None and args.stratified_samples < 1:
+        raise ValueError("--stratified-samples must be >= 1 when provided.")
 
     dataset = normalize_dataset_name(args.dataset)
     enabled_modalities = normalize_modalities(args.modalities)
@@ -249,6 +259,8 @@ def main():
     print(f"[INFO] audio_subdir={args.audio_subdir}", flush=True)
     print(f"[INFO] batch_size={args.batch_size}", flush=True)
     print(f"[INFO] start_at_sample={args.start_at_sample}", flush=True)
+    print(f"[INFO] stratified_samples={args.stratified_samples}", flush=True)
+    print(f"[INFO] total_samples={args.total_samples}", flush=True)
     if label_column is not None:
         print(f"[INFO] Label column: {label_column}", flush=True)
     print(f"[INFO] out_path={args.out_path}", flush=True)
@@ -259,6 +271,51 @@ def main():
     os.makedirs("out", exist_ok=True)
 
     samples = load_samples(dataset, args, enabled_modalities, noisy_modalities, label_column)
+    if args.stratified_samples is not None:
+        if dataset == "meld":
+            print(
+                "[INFO] Ignoring --stratified-samples for MELD (explicit train/val/test splits are already defined).",
+                flush=True,
+            )
+        else:
+            if noisy_modalities is None:
+                before_count = len(samples)
+                if args.stratified_samples >= before_count:
+                    print(
+                        "[INFO] --stratified-samples is >= available samples; selecting all samples.",
+                        flush=True,
+                    )
+                else:
+                    samples = select_stratified_samples(samples, args.stratified_samples)
+                    print(
+                        f"[INFO] Applied deterministic stratified sampling: {before_count} -> {len(samples)} samples",
+                        flush=True,
+                    )
+            else:
+                base_samples = load_samples(dataset, args, enabled_modalities, None, label_column)
+                base_before_count = len(base_samples)
+                if args.stratified_samples >= base_before_count:
+                    selected_base_samples = base_samples
+                    print(
+                        "[INFO] --stratified-samples is >= available unmodified samples; selecting all base samples.",
+                        flush=True,
+                    )
+                else:
+                    selected_base_samples = select_stratified_samples(base_samples, args.stratified_samples)
+                    print(
+                        "[INFO] Applied deterministic stratified sampling on unmodified data: "
+                        f"{base_before_count} -> {len(selected_base_samples)} base samples",
+                        flush=True,
+                    )
+
+                selected_base_ids = {sample.get("sample_id") for sample in selected_base_samples}
+                noisy_before_count = len(samples)
+                samples = filter_samples_by_sample_id(samples, selected_base_ids)
+                print(
+                    "[INFO] Expanded selected base samples across noisy variants: "
+                    f"{noisy_before_count} -> {len(samples)} noisy samples",
+                    flush=True,
+                )
     if args.start_at_sample is not None:
         samples = samples[args.start_at_sample :]
     if args.total_samples is not None:
