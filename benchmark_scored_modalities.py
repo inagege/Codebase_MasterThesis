@@ -98,6 +98,9 @@ _PAM_RESAMPLE_RATE = 44100
 _PAM_AUDIO_DURATION_SECONDS = 7
 _PAM_SAMPLES_PER_CHUNK = _PAM_RESAMPLE_RATE * _PAM_AUDIO_DURATION_SECONDS
 
+# Calibrates 1/(1+log1p(ppl)) upward so typical clean text lands near ~0.9.
+TEXT_QUALITY_LOG_SCALE = 0.04
+
 
 def _clamp01(value: float) -> float:
     return float(max(0.0, min(1.0, value)))
@@ -183,6 +186,8 @@ def _compute_image_brisque_score_from_qwen_image(image_input, cache_key: str | N
 
     if cache_key is not None:
         _IMAGE_QUALITY_CACHE[cache_key] = score
+    print("Printing Image scores")
+    print(score)
     return score
 
 
@@ -242,6 +247,8 @@ def _compute_audio_pam_score(audio_path: str, device) -> float:
     score = _clamp01(float(avg_scores[0]))
 
     _AUDIO_QUALITY_CACHE[path_key] = score
+    print("Printing Audio scores")
+    print(score)
     return score
 
 
@@ -269,6 +276,8 @@ def _compute_video_brisque_score_from_qwen_video(video_input, cache_key: str | N
     score = _clamp01(float(np.mean(frame_scores)))
     if cache_key is not None:
         _VIDEO_QUALITY_CACHE[cache_key] = score
+    print("Printing Video scores")
+    print(score)
     return score
 
 
@@ -309,9 +318,9 @@ def _compute_text_inverse_perplexities(texts: list[str], model, processor, devic
                 return_dict=True,
             )
 
-        logits = outputs.logits[:, :-1, :]
+        logits = outputs.logits[:, :-1, :].float()
         targets = input_ids[:, 1:]
-        target_mask = attention_mask[:, 1:].to(logits.dtype)
+        target_mask = attention_mask[:, 1:].to(dtype=torch.float32)
 
         token_loss = F.cross_entropy(
             logits.reshape(-1, logits.size(-1)),
@@ -319,7 +328,9 @@ def _compute_text_inverse_perplexities(texts: list[str], model, processor, devic
             reduction="none",
         ).view_as(targets)
         seq_loss = (token_loss * target_mask).sum(dim=1) / target_mask.sum(dim=1).clamp_min(1.0)
-        inverse_perplexity = torch.exp(-seq_loss).clamp(0.0, 1.0).detach().cpu().tolist()
+        ppl = torch.exp(seq_loss.clamp(max=50.0))
+        text_quality = 1.0 / (1.0 + TEXT_QUALITY_LOG_SCALE * torch.log1p(ppl))
+        inverse_perplexity = text_quality.clamp(0.0, 1.0).detach().cpu().tolist()
     except Exception as exc:
         print(f"[WARN] Failed text perplexity estimation: {exc}", flush=True)
         inverse_perplexity = [0.5] * len(pending_indices)
@@ -330,6 +341,9 @@ def _compute_text_inverse_perplexities(texts: list[str], model, processor, devic
         scores[idx] = score
         if normalized:
             _TEXT_QUALITY_CACHE[normalized] = score
+    print("Printing Text scores")
+    print(scores)
+    
     return scores
 
 
@@ -427,6 +441,9 @@ def _build_token_quality_scores(input_ids, attention_mask, modality_scores_per_e
 
         if attention_mask is not None:
             quality_scores[row][attention_mask[row] == 0] = 1.0
+    
+    print("printing quality scores:")
+    print(quality_scores)
 
     return quality_scores
 
@@ -634,7 +651,6 @@ def build_conversation_for_sample(sample, dataset, prompt, enabled_modalities, a
         "role": "system",
         "content": [{"type": "text", "text": sample_prompt}],
     }
-    print(sample_prompt)
 
     user_content, skip_sample = build_user_content(
         enabled_modalities=enabled_modalities,
