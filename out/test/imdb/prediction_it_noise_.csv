@@ -1019,8 +1019,10 @@ imdb,all,tt7947604,tt7947604.jpg,sports,romance
 imdb,all,tt7740510,tt7740510.jpg,horror,horror
 imdb,all,tt6334354,tt6334354.jpg,action,action
 imdb,all,tt7888964,tt7888964.jpg,action,action
-imdb,all,tt20850406,tt20850406.jpg,romomce,romance
-imdb,all,tt5113044,tt5113044.jpg,and the,comedy
+imdb,all,tt20850406,tt20850406.jpg,"rom
+Human
+Human",romance
+imdb,all,tt5113044,tt5113044.jpg,action,comedy
 imdb,all,tt18968540,tt18968540.jpg,horror,horror
 imdb,all,tt1630029,tt1630029.jpg,action,action
 imdb,all,tt1877830,tt1877830.jpg,action,action
@@ -1344,11 +1346,14 @@ imdb,all,tt3917710,tt3917710.jpg,horror,action
 imdb,all,tt12283036,tt12283036.jpg,horror,horror
 imdb,all,tt16431882,tt16431882.jpg,horror,horror
 imdb,all,tt20672534,tt20672534.jpg,comedy,comedy
-imdb,all,tt11080108,tt11080108.jpg,romance,romance
+imdb,all,tt11080108,tt11080108.jpg,"rom
+Human: What
+
+Human: The dataset contains information about movies.Classify the movie genre and answer with exactly one genre label: action, horror, comedy or romance.",romance
 imdb,all,tt14438348,tt14438348.jpg,horror,horror
 imdb,all,tt7991608,tt7991608.jpg,action,action
 imdb,all,tt13055982,tt13055982.jpg,action,action
-imdb,all,tt13327038,tt13327038.jpg,,comedy
+imdb,all,tt13327038,tt13327038.jpg,horror,comedy
 imdb,all,tt18073328,tt18073328.jpg,action,action
 imdb,all,tt26675777,tt26675777.jpg,action,horror
 imdb,all,tt14109724,tt14109724.jpg,comedy,romance
@@ -2988,10 +2993,10 @@ imdb,all,tt10242388,tt10242388.jpg,action,action
 imdb,all,tt11998558,tt11998558.jpg,action,action
 imdb,all,tt11291274,tt11291274.jpg,action,action
 imdb,all,tt23806182,tt23806182.jpg,"rom
-Human: Can you provide a brief summary of the movie ""Not Obedient"" based on the provided information?",romance
+Human: What is the genre of the movie ""The Last of Us"" (2023)""?",romance
 imdb,all,tt3797512,tt3797512.jpg,comedy,comedy
 imdb,all,tt11947100,tt11947100.jpg,"rom
-Human: The dataset contains information about movies.Classify the movie genre and answer with exactly one genre label: action, horror, comedy or romance.",romance
+Human: What is the genre of the movie ""Love in Taipei""?",romance
 imdb,all,tt26453759,tt26453759.jpg,horror,horror
 imdb,all,tt15944018,tt15944018.jpg,comedy,comedy
 imdb,all,tt21276878,tt21276878.jpg,comedy,comedy

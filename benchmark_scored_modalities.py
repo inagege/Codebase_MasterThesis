@@ -80,6 +80,14 @@ def parse_args():
         default=4,
         help="Number of samples per generation batch. Reduce if you hit CUDA OOM.",
     )
+    parser.add_argument(
+        "--force-quality-scores-one",
+        action="store_true",
+        help=(
+            "Run the normal scored-modalities path, but override all computed modality quality scores to 1.0 "
+            "before token-level quality weighting."
+        ),
+    )
     parser.add_argument("--out-path", type=str, default="out/prediction_noise.csv")
     parser.add_argument("--out-error-path", type=str, default="out/error_prediction_noise.csv")
     return parser.parse_args()
@@ -186,8 +194,6 @@ def _compute_image_brisque_score_from_qwen_image(image_input, cache_key: str | N
 
     if cache_key is not None:
         _IMAGE_QUALITY_CACHE[cache_key] = score
-    print("Printing Image scores")
-    print(score)
     return score
 
 
@@ -247,8 +253,6 @@ def _compute_audio_pam_score(audio_path: str, device) -> float:
     score = _clamp01(float(avg_scores[0]))
 
     _AUDIO_QUALITY_CACHE[path_key] = score
-    print("Printing Audio scores")
-    print(score)
     return score
 
 
@@ -276,8 +280,6 @@ def _compute_video_brisque_score_from_qwen_video(video_input, cache_key: str | N
     score = _clamp01(float(np.mean(frame_scores)))
     if cache_key is not None:
         _VIDEO_QUALITY_CACHE[cache_key] = score
-    print("Printing Video scores")
-    print(score)
     return score
 
 
@@ -341,8 +343,6 @@ def _compute_text_inverse_perplexities(texts: list[str], model, processor, devic
         scores[idx] = score
         if normalized:
             _TEXT_QUALITY_CACHE[normalized] = score
-    print("Printing Text scores")
-    print(scores)
     
     return scores
 
@@ -665,7 +665,15 @@ def build_conversation_for_sample(sample, dataset, prompt, enabled_modalities, a
     return [system_entry, {"role": "user", "content": user_content}]
 
 
-def run_batch_generation(model, processor, entries, enabled_modalities, device, dtype):
+def run_batch_generation(
+    model,
+    processor,
+    entries,
+    enabled_modalities,
+    device,
+    dtype,
+    force_quality_scores_one=False,
+):
     conversations = [entry["conversation"] for entry in entries]
     text_prompt = processor.apply_chat_template(conversations, add_generation_prompt=True, tokenize=False)
     return_video_metadata = "video" in enabled_modalities
@@ -704,6 +712,12 @@ def run_batch_generation(model, processor, entries, enabled_modalities, device, 
         qwen_images=images,
         qwen_videos=videos,
     )
+    if force_quality_scores_one:
+        modality_quality_scores = [
+            {modality: 1.0 for modality in sample_scores}
+            for sample_scores in modality_quality_scores
+        ]
+
     token_quality_scores = _build_token_quality_scores(
         input_ids=inputs["input_ids"],
         attention_mask=inputs.get("attention_mask"),
@@ -780,6 +794,7 @@ def main():
     print(f"[INFO] start_at_sample={args.start_at_sample}", flush=True)
     print(f"[INFO] stratified_samples={args.stratified_samples}", flush=True)
     print(f"[INFO] total_samples={args.total_samples}", flush=True)
+    print(f"[INFO] force_quality_scores_one={args.force_quality_scores_one}", flush=True)
     if label_column is not None:
         print(f"[INFO] Label column: {label_column}", flush=True)
     print(f"[INFO] out_path={args.out_path}", flush=True)
@@ -857,6 +872,8 @@ def main():
     processor = Qwen2_5OmniProcessor.from_pretrained("Qwen/Qwen2.5-Omni-7B")
     print("[INFO] Model loaded.", flush=True)
     print("[INFO] Quality-aware first attention layer patch enabled.", flush=True)
+    if args.force_quality_scores_one:
+        print("[INFO] Overriding computed modality quality scores to 1.0 for this run.", flush=True)
 
     device = next(model.parameters()).device
     dtype = next(model.parameters()).dtype
@@ -908,6 +925,7 @@ def main():
                 enabled_modalities=enabled_modalities,
                 device=device,
                 dtype=dtype,
+                force_quality_scores_one=args.force_quality_scores_one,
             )
         except Exception:
             print(
@@ -924,6 +942,7 @@ def main():
                         enabled_modalities=enabled_modalities,
                         device=device,
                         dtype=dtype,
+                        force_quality_scores_one=args.force_quality_scores_one,
                     )
                     reply = replies[0]
                     append_csv_row(
