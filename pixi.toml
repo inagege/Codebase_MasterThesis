@@ -41,6 +41,7 @@ qwen-omni-utils = {version = "*", extras=["decord"]}
 transformers = { git = "https://github.com/huggingface/transformers", tag = "v4.51.3-Qwen2.5-Omni-preview"}
 soundfile = "*"
 brisque = "*"
+opencv-python-headless = "*"
 
 [target.osx-64]
 [target.osx-64.dependencies]
