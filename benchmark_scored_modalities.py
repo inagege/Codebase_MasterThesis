@@ -286,15 +286,16 @@ def run_batch_generation(
         qwen_images=images,
         qwen_videos=videos,
     )
-    modality_quality_scores = apply_percentile_calibration_to_batch(
-        raw_modality_quality_scores,
-        quality_calibrators,
-    )
     if force_quality_scores_one:
         modality_quality_scores = [
             {modality: 1.0 for modality in sample_scores}
-            for sample_scores in modality_quality_scores
+            for sample_scores in raw_modality_quality_scores
         ]
+    else:
+        modality_quality_scores = apply_percentile_calibration_to_batch(
+        raw_modality_quality_scores,
+        quality_calibrators,
+    )
 
     token_quality_scores = _build_token_quality_scores(
         input_ids=inputs["input_ids"],
@@ -375,7 +376,6 @@ def main():
     print(f"[INFO] batch_size={args.batch_size}", flush=True)
     print(f"[INFO] start_at_sample={args.start_at_sample}", flush=True)
     print(f"[INFO] stratified_samples={args.stratified_samples}", flush=True)
-    print(f"[INFO] total_samples={args.total_samples}", flush=True)
     print(f"[INFO] force_quality_scores_one={args.force_quality_scores_one}", flush=True)
     print(f"[INFO] quality_calibration_path={args.quality_calibration_path}", flush=True)
     print(f"[INFO] quality_score_out_path={args.quality_score_out_path}", flush=True)
@@ -454,8 +454,6 @@ def main():
                 )
     if args.start_at_sample is not None:
         samples = samples[args.start_at_sample :]
-    if args.total_samples is not None:
-        samples = samples[: args.total_samples]
 
     print(f"[INFO] Total samples to process: {len(samples)}", flush=True)
     if not samples:
