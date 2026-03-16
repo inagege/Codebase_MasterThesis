@@ -1,1895 +1,948 @@
 dataset,split,sample_id,file,prediction,label
-nejm,all,1,image_1.jpg,Pustular dermatitis,"Hand, foot, and mouth disease"
-nejm,all,2,image_2.jpg,Abscess,Tularemia
-nejm,all,3,image_3.jpg,paronychia,Dermatomyositis
-nejm,all,4,image_4.jpg,Cervical spondylosis,Epiglottitis
-nejm,all,5,image_5.jpg,Eczema,Frey’s syndrome
-nejm,all,6,image_6.jpg,Stroke,Hemiplegia
-nejm,all,7,image_7.jpg,Pneumonia,Paraesophageal hernia
-nejm,all,8,image_8.jpg,Appendicitis,Pneumatosis intestinalis
-nejm,all,9,image_9.jpg,Keratitis,Separation of the iris
-nejm,all,10,image_10.jpg,Cancer,Polycystic liver disease
-nejm,all,11,image_11.jpg,Lipoma,Lepromatous leprosy
-nejm,all,12,image_12.jpg,Pneumonia,Chondroblastic osteosarcoma
-nejm,all,13,image_13.jpg,Rheumatoid arthritis,Pseudoclubbing
-nejm,all,14,image_14.jpg,Pneumonia,Primary hyperoxaluria
-nejm,all,15,image_15.jpg,Osteoarthritis,Cecal volvulus
-nejm,all,16,image_16.jpg,Pustular,Varicella
-nejm,all,17,image_17.jpg,Cerebral edema,Metronidazole-associated encephalopathy
-nejm,all,18,image_18.jpg,Cancer,Knife-cut ulcers from Crohn’s disease
-nejm,all,19,image_19.jpg,Conjunctivitis,Right sixth cranial nerve palsy
-nejm,all,20,image_20.jpg,Psoriasis,Punctate palmoplantar keratoderma
-nejm,all,21,image_21.jpg,Cataract,Coloboma
-nejm,all,22,image_22.jpg,Raynaud's disease,Chemotherapy
-nejm,all,23,image_23.jpg,Cancer,Multiple biliary hamartomas
-nejm,all,24,image_24.jpg,Eczema,Graft-versus-host disease
-nejm,all,25,image_25.jpg,Stroke,Celiac disease
-nejm,all,26,image_26.jpg,Bacterial infection,Amelanotic melanoma
-nejm,all,27,image_27.jpg,Sickle cell anemia,Thrombotic thrombocytopenic purpura
-nejm,all,28,image_28.jpg,Stroke,Meningioma
-nejm,all,29,image_29.jpg,Obesity,Metastatic inguinal lymphadenopathy
-nejm,all,30,image_30.jpg,Cataract,Minocycline-induced pigmentation
+nejm,all,1,image_1.jpg,"Hand, foot, and mouth disease","Hand, foot, and mouth disease"
+nejm,all,2,image_2.jpg,Lyme disease,Tularemia
+nejm,all,3,image_3.jpg,Porphyria,Dermatomyositis
+nejm,all,4,image_4.jpg,Epiglottitis,Epiglottitis
+nejm,all,5,image_5.jpg,Rosacea,Frey’s syndrome
+nejm,all,6,image_6.jpg,Hemiplegia,Hemiplegia
+nejm,all,7,image_7.jpg,Pericardial effusion,Paraesophageal hernia
+nejm,all,8,image_8.jpg,Pneumatosis intestinalis,Pneumatosis intestinalis
+nejm,all,9,image_9.jpg,Separation of the iris,Separation of the iris
+nejm,all,10,image_10.jpg,Polycystic liver disease,Polycystic liver disease
+nejm,all,11,image_11.jpg,Lepromatous leprosy,Lepromatous leprosy
+nejm,all,12,image_12.jpg,Miliary tuberculosis,Chondroblastic osteosarcoma
+nejm,all,13,image_13.jpg,Pseudoclubbing,Pseudoclubbing
+nejm,all,14,image_14.jpg,Acid maltase deficiency (Pompe disease),Primary hyperoxaluria
+nejm,all,15,image_15.jpg,Ogilvie’s Syndrome (acute colonic pseudo-obstruction),Cecal volvulus
+nejm,all,16,image_16.jpg,Varicella,Varicella
+nejm,all,17,image_17.jpg,Middle cerebral artery stroke,Metronidazole-associated encephalopathy
+nejm,all,18,image_18.jpg,Knife-cut ulcers from Crohn’s disease,Knife-cut ulcers from Crohn’s disease
+nejm,all,19,image_19.jpg,Right sixth cranial nerve palsy,Right sixth cranial nerve palsy
+nejm,all,20,image_20.jpg,Punctate palmoplantar keratoderma,Punctate palmoplantar keratoderma
+nejm,all,21,image_21.jpg,Choroideremia,Coloboma
+nejm,all,22,image_22.jpg,Scleroderma,Chemotherapy
+nejm,all,23,image_23.jpg,Multiple biliary hamartomas,Multiple biliary hamartomas
+nejm,all,24,image_24.jpg,Leukemia cutis,Graft-versus-host disease
+nejm,all,25,image_25.jpg,Blastomycosis,Celiac disease
+nejm,all,26,image_26.jpg,Pyogenic granuloma,Amelanotic melanoma
+nejm,all,27,image_27.jpg,Idiopathic thrombocytopenic purpura,Thrombotic thrombocytopenic purpura
+nejm,all,28,image_28.jpg,Intracranial hemorrhage,Meningioma
+nejm,all,29,image_29.jpg,Inguinal hernia,Metastatic inguinal lymphadenopathy
+nejm,all,30,image_30.jpg,Conjunctival melanoma,Minocycline-induced pigmentation
 nejm,all,31,image_31.jpg,Psoriasis,Scabies
-nejm,all,32,image_32.jpg,Osteoarthritis,Osteopetrosis
-nejm,all,33,image_33.jpg,Pneumonia,Desquamative interstitial pneumonia
-nejm,all,34,image_34.jpg,Onychomycosis,Waldenstrom's macroglobulinemia
-nejm,all,35,image_35.jpg,Cancer,Esophagogastric bypass
-nejm,all,36,image_36.jpg,Allergy,Larva currens from Strongyloides
-nejm,all,37,image_37.jpg,Pancreatic cancer,Duodenal perforation
-nejm,all,38,image_38.jpg,Stretch marks,Adrenal mass
-nejm,all,39,image_39.jpg,Herpes,Hereditary hemorrhagic telangiectasia
-nejm,all,40,image_40.jpg,Cataract,Amiodarone-induced vortex keratopathy
-nejm,all,41,image_41.jpg,Cerebral edema,Metastatic adenocarcinoma
-nejm,all,42,image_42.jpg,Malaria,Babesiosis
-nejm,all,43,image_43.jpg,Candidiasis,Vernal keratoconjunctivitis
-nejm,all,44,image_44.jpg,Acne,Psoriasis
-nejm,all,45,image_45.jpg,Diabetic retinopathy,Hydroxychloroquine toxicity
-nejm,all,46,image_46.jpg,Cancer,Torus palatinus
-nejm,all,47,image_47.jpg,Pneumonia,Dexamethasone
-nejm,all,48,image_48.jpg,Appendicitis,Acute pancreatitis
-nejm,all,49,image_49.jpg,thyroid cancer,Bleeding into a thyroid nodule
-nejm,all,50,image_50.jpg,Blepharitis,Pyogenic granuloma
-nejm,all,51,image_51.jpg,Fracture,Assault
-nejm,all,52,image_52.jpg,Psoriasis,Tuberculoid leprosy
-nejm,all,53,image_53.jpg,Atelectasis,Vein-graft aneurysms
-nejm,all,54,image_54.jpg,Keratitis,Iris atrophy
-nejm,all,55,image_55.jpg,Bunions,Iron deficiency
-nejm,all,56,image_56.jpg,Lupus,Leprosy
-nejm,all,57,image_57.jpg,Hypertrophy,Hypercholesterolemia
-nejm,all,58,image_58.jpg,Raynaud's disease,Chronic kidney disease
-nejm,all,59,image_59.jpg,Esophageal cancer,Achalasia
-nejm,all,60,image_60.jpg,Diabetes,Malignant hypertension
-nejm,all,61,image_61.jpg,Cancer,Cryptococcosis
-nejm,all,62,image_62.jpg,Lymphedema,Lisch nodules
-nejm,all,63,image_63.jpg,Craniosynostosis,Acromegaly
-nejm,all,64,image_64.jpg,Pneumonia,Left-sided superior vena cava
-nejm,all,65,image_65.jpg,Cellulitis,Blastomyces dermatitidis
-nejm,all,66,image_66.jpg,Cancer,Relapsing polychondritis
-nejm,all,67,image_67.jpg,Cancer,Scrofula
-nejm,all,68,image_68.jpg,Cancer,Traumatic spondylolisthesis of the axis (hangman’s fracture)
-nejm,all,69,image_69.jpg,eczema,Gardening
-nejm,all,70,image_70.jpg,NailFungus,Melanoma
-nejm,all,71,image_71.jpg,Psoriasis,Actinomycosis
-nejm,all,72,image_72.jpg,Lichen simplex chronicus,Itraconazole
-nejm,all,73,image_73.jpg,Cerebral edema,Chiari I malformation
-nejm,all,74,image_74.jpg,alopecia,Primary adrenal insufficiency (Addison’s disease)
-nejm,all,75,image_75.jpg,Cancer,Herpes zoster
-nejm,all,76,image_76.jpg,Conjunctivitis,Melanoma
-nejm,all,77,image_77.jpg,Cataract,Fungal endophthalmitis
-nejm,all,78,image_78.jpg,Psoriasis,Urticaria
-nejm,all,79,image_79.jpg,Appendicitis,Gastrospenic fistulization
-nejm,all,80,image_80.jpg,Candidiasis,Neonatal hyperbilirubinemia
-nejm,all,81,image_81.jpg,Papular,Lichen planus
-nejm,all,82,image_82.jpg,Lymphoma,Inguinal hernia
-nejm,all,83,image_83.jpg,Eczema,Insulin-induced lipohypertrophy
-nejm,all,84,image_84.jpg,Pneumonia,Cessation of nitrofurantoin
-nejm,all,85,image_85.jpg,Psoriasis,Fixed drug eruption
-nejm,all,86,image_86.jpg,Pneumonia,Giant right atrium
-nejm,all,87,image_87.jpg,Cancer,Lupus pernio
-nejm,all,88,image_88.jpg,Diabetes,Von Hippel-Lindau disease
-nejm,all,89,image_89.jpg,Pustular,Myiasis
-nejm,all,90,image_90.jpg,Cyst,Left testicular torsion
-nejm,all,91,image_91.jpg,Pneumonia,Pulmonary hypertension
-nejm,all,92,image_92.jpg,Oral cancer,Metastasis of colorectal cancer
-nejm,all,93,image_93.jpg,Psoriasis,Mycobacterium marinum
-nejm,all,94,image_94.jpg,Cancer,Syphilitic gumma
-nejm,all,95,image_95.jpg,Osteoarthritis,Gaucher's disease
-nejm,all,96,image_96.jpg,Cancer,Cholesterol crystal embolization
-nejm,all,97,image_97.jpg,Genital warts,Pearly penile papules
-nejm,all,98,image_98.jpg,Atherosclerosis,Polyarteritis nodosa
-nejm,all,99,image_99.jpg,Psoriasis,End-stage renal disease
-nejm,all,100,image_100.jpg,Infection,Abscess
-nejm,all,101,image_101.jpg,Psoriasis,Eczema herpeticum
-nejm,all,102,image_102.jpg,Leukemia,Cold agglutinin syndrome
-nejm,all,103,image_103.jpg,Papilloma,Scrotal calcinosis
-nejm,all,104,image_104.jpg,Aneurysm,Takayasu’s arteritis
-nejm,all,105,image_105.jpg,Pancreatic cancer,Gallbladder volvulus
-nejm,all,106,image_106.jpg,Appendicitis,Bladder diverticula
-nejm,all,107,image_107.jpg,Appendicitis,Gastrogastric intussusception
-nejm,all,108,image_108.jpg,Pneumonia,Pneumatosis cystoides coli
-nejm,all,109,image_109.jpg,Atrial fibrillation,Pericardiocentesis
-nejm,all,110,image_110.jpg,Papular,Poststreptococcal pustulosis
-nejm,all,111,image_111.jpg,Rheumatoid arthritis,Osteoarthritis
-nejm,all,112,image_112.jpg,Cancer,Antrochoanal polyp
-nejm,all,113,image_113.jpg,Cellulitis,Trypanosomiasis
-nejm,all,114,image_114.jpg,Appendicitis,Emphysematous cholecystitis
-nejm,all,115,image_115.jpg,Herpes,Peutz-Jeghers syndrome
-nejm,all,116,image_116.jpg,Pectus carinatum,Chronic granulomatous disease
-nejm,all,117,image_117.jpg,Anemia,Decompensated cirrhosis
-nejm,all,118,image_118.jpg,Gynecomastia,Gastric bypass
-nejm,all,119,image_119.jpg,Psoriasis,Sweet’s syndrome
-nejm,all,120,image_120.jpg,Eczema,Type III hypersensitivity reaction
-nejm,all,121,image_121.jpg,Pneumonia,Alpha-glucosidase inhibitor
-nejm,all,122,image_122.jpg,Meningioma,Thrombosed intracranial aneurysm
-nejm,all,123,image_123.jpg,glaucoma,Multiple sclerosis
-nejm,all,124,image_124.jpg,Allergy,Ludwig's angina
-nejm,all,125,image_125.jpg,Lichen planus,Syphilis
-nejm,all,126,image_126.jpg,Retinopathy,Malignant hypertension
-nejm,all,127,image_127.jpg,Cysticercosis,Praziquantel
-nejm,all,128,image_128.jpg,Pigmentation,Pemphigoid gestationis
-nejm,all,129,image_129.jpg,Cancer,Squamous-cell carcinoma
-nejm,all,130,image_130.jpg,Appendicitis,Small-bowel volvulus
-nejm,all,131,image_131.jpg,Psoriasis,Toxic shock syndrome
-nejm,all,132,image_132.jpg,Cervical spondylosis,Epiglottitis
-nejm,all,133,image_133.jpg,Raynaud's disease,Chemotherapy treatment
-nejm,all,134,image_134.jpg,Stroke,Air embolism
-nejm,all,135,image_135.jpg,Cataract,Vitamin A deficiency
-nejm,all,136,image_136.jpg,Candidiasis,Anthrax
-nejm,all,137,image_137.jpg,Esophageal cancer,Eosinophilic bronchitis
-nejm,all,138,image_138.jpg,Pancreatic cancer,JAK2
-nejm,all,139,image_139.jpg,Fracture,Scleroderma
-nejm,all,140,image_140.jpg,Appendicitis,Emphysematous prostatitis
-nejm,all,141,image_141.jpg,Cervical spondylosis,Nitrous oxide
-nejm,all,142,image_142.jpg,Retinopathy,Malignant hypertension
-nejm,all,143,image_143.jpg,Appendicitis,Actinomycosis
-nejm,all,144,image_144.jpg,Appendicitis,Sigmoid volvulus
-nejm,all,145,image_145.jpg,Pneumonia,Gastric pneumatosis
-nejm,all,146,image_146.jpg,Cataract,Conjunctival squamous-cell carcinoma
-nejm,all,147,image_147.jpg,Eczema,Herpes gestationis
-nejm,all,148,image_148.jpg,Psoriasis,Aquagenic keratoderma
-nejm,all,149,image_149.jpg,Penile papilloma,Scrotal calcinosis
-nejm,all,150,image_150.jpg,Esophageal cancer,Carcinoma
-nejm,all,151,image_151.jpg,Diabetes,Lipemia retinalis
-nejm,all,152,image_152.jpg,periodontitis,Lead poisoning
-nejm,all,153,image_153.jpg,Black tongue,Tetracyclines
-nejm,all,154,image_154.jpg,Pneumonia,Thoracic endometriosis
-nejm,all,155,image_155.jpg,Liver Cancer,Calcium phosphate
-nejm,all,156,image_156.jpg,Glaucoma,Keratoconus
-nejm,all,157,image_157.jpg,Rheumatoid arthritis,Gout
-nejm,all,158,image_158.jpg,Cancer,Left hypoglossal nerve
-nejm,all,159,image_159.jpg,Eczema,Tinea imbricata
-nejm,all,160,image_160.jpg,Cancer,Mosquito
-nejm,all,161,image_161.jpg,Lichen simplex chronicus,Treatment with bleomycin
-nejm,all,162,image_162.jpg,Pigmentary Disorder,Langerhans-cell histiocytosis
-nejm,all,163,image_163.jpg,Retinopathy,Cholesterol embolism
-nejm,all,164,image_164.jpg,Onychomycosis,Squamous-cell carcinoma
-nejm,all,165,image_165.jpg,Nephritis,Renal cryptococcosis
-nejm,all,166,image_166.jpg,Fungal infection,Tungiasis
-nejm,all,167,image_167.jpg,Ear infection,Coronary artery disease
-nejm,all,168,image_168.jpg,Pancreatic cancer,Liver abscess
-nejm,all,169,image_169.jpg,paronychia,Hydrocolpos
-nejm,all,170,image_170.jpg,Stroke,Hemiparesis
-nejm,all,171,image_171.jpg,psoriasis,Keratoderma
-nejm,all,172,image_172.jpg,Leukemia,Parvovirus B19 infection
-nejm,all,173,image_173.jpg,Aneurysm,Polyarteritis nodosa
-nejm,all,174,image_174.jpg,Pneumonia,Pyloric stenosis
-nejm,all,175,image_175.jpg,Herpes,HIV nucleic acid test
-nejm,all,176,image_176.jpg,Candidiasis,Oxalate
-nejm,all,177,image_177.jpg,Psoriasis,Pemphigus vulgaris
-nejm,all,178,image_178.jpg,Anemia,Trypanosoma brucei
-nejm,all,179,image_179.jpg,Psoriasis,Drug-Eluting Bead Embolism
-nejm,all,180,image_180.jpg,Conjunctivitis,Dirofilaria repens
-nejm,all,181,image_181.jpg,Cyst,Giant-cell arteritis
-nejm,all,182,image_182.jpg,Cancer,Atlanto-occipital dislocation
-nejm,all,183,image_183.jpg,Cancer,Chickenpox
-nejm,all,184,image_184.jpg,Pneumonia,Bronchoesophageal fistula
-nejm,all,185,image_185.jpg,CerebralPalsy,Turner syndrome
-nejm,all,186,image_186.jpg,Varicose veins,Paget's disease
-nejm,all,187,image_187.jpg,Cancer,Squamous-cell carcinoma
-nejm,all,188,image_188.jpg,Appendicitis,Mycobacterial tenosynovitis due to Mycobacterium avium complex
-nejm,all,189,image_189.jpg,Lymphedema,Calcinos
-nejm,all,190,image_190.jpg,Canker sore,Lipoma
-nejm,all,191,image_191.jpg,Coronary artery disease,Kawasaki's disease
-nejm,all,192,image_192.jpg,Pneumonia,Multiple bacterial abscesses
-nejm,all,193,image_193.jpg,Genital warts,Hidradenitis suppurativa
-nejm,all,194,image_194.jpg,Lichen simplex chronicus,Thyrotropin receptor antibodies
-nejm,all,195,image_195.jpg,Corneal ulcer,Loa loa
-nejm,all,196,image_196.jpg,Pneumonia,Pneumopericardium
-nejm,all,197,image_197.jpg,Allergy,Erythema marginatum
-nejm,all,198,image_198.jpg,Eczema,Serpentine supravenous hyperpigmentation
-nejm,all,199,image_199.jpg,Psoriasis,Tinea
-nejm,all,200,image_200.jpg,Cerebellar Hemangioblastoma,Light-near dissociation
-nejm,all,201,image_201.jpg,Pneumonia,Supernumerary rib
-nejm,all,202,image_202.jpg,Conjunctivitis,Polychondritis
-nejm,all,203,image_203.jpg,Lymphoma,Hemophagocytosis of sickle cells
-nejm,all,204,image_204.jpg,Obesity,Hypogonadism
-nejm,all,205,image_205.jpg,Pneumonia,Esophageal diverticulum
-nejm,all,206,image_206.jpg,Psoriasis,Pseudoxanthoma elasticum
-nejm,all,207,image_207.jpg,erythema multiforme,Hereditary hemorrhagic telangiectasia
-nejm,all,208,image_208.jpg,Pneumonia,Aortic and mitral valves
-nejm,all,209,image_209.jpg,Rheumatoid arthritis,Albright's hereditary osteodystrophy
-nejm,all,210,image_210.jpg,Raynaud's disease,Polyarteritis nodosa
-nejm,all,211,image_211.jpg,Cancer,Osteogenesis imperfecta
-nejm,all,212,image_212.jpg,Stroke,Normal-pressure hydrocephalus
-nejm,all,213,image_213.jpg,Meningitis,Elevated opening pressure
-nejm,all,214,image_214.jpg,Psoriasis,Insulin resistance
-nejm,all,215,image_215.jpg,Eczema,Electrocution
-nejm,all,216,image_216.jpg,Bursitis,Cysticercosis
-nejm,all,217,image_217.jpg,Conjunctivitis,Leptospirosis
-nejm,all,218,image_218.jpg,Necrotizing fasciitis,Ischemic gangrene
-nejm,all,219,image_219.jpg,Psoriasis,Carcinoma en cuirasse
-nejm,all,220,image_220.jpg,Wound,Scabies
-nejm,all,221,image_221.jpg,Pneumonia,Air bronchogram
-nejm,all,222,image_222.jpg,Lymphoma,Echinococcal cysts
-nejm,all,223,image_223.jpg,Osteoarthritis,Chondrocalcinosis
-nejm,all,224,image_224.jpg,Atrial fibrillation,Stenosis of the left anterior descending artery
-nejm,all,225,image_225.jpg,Bunions,Papillomatosis cutis lymphostatica
-nejm,all,226,image_226.jpg,Colorectal cancer,Fallopian tube torsion
-nejm,all,227,image_227.jpg,Skin Cancer,Rhinophyma
-nejm,all,228,image_228.jpg,Cataract,Dermoid
-nejm,all,229,image_229.jpg,Lichen planus,Erythrodermic psoriasis
-nejm,all,230,image_230.jpg,Cataract,Prolapse of orbital fat
-nejm,all,231,image_231.jpg,Skin Cancer,Poland syndrome
-nejm,all,232,image_232.jpg,Oral thrush,Lingua villosa nigra
-nejm,all,233,image_233.jpg,Pneumonia,Intercostal muscle
-nejm,all,234,image_234.jpg,Pneumonia,Gastric cancer
-nejm,all,235,image_235.jpg,periodontitis,Somatotropic pituitary adenoma
-nejm,all,236,image_236.jpg,Psoriasis,Treponema pallidum
-nejm,all,237,image_237.jpg,periodontitis,Leukemic infiltration of the gingiva
-nejm,all,238,image_238.jpg,eczema,Necrolytic migratory erythema
-nejm,all,239,image_239.jpg,Diabetes,Waldenström’s macroglobulinemia
-nejm,all,240,image_240.jpg,Osteoarthritis,Open-book fracture
-nejm,all,241,image_241.jpg,Herpes,Tinea barbae
-nejm,all,242,image_242.jpg,Infection,Herpetic whitlow
-nejm,all,243,image_243.jpg,Lung Cancer,Urinary retention
-nejm,all,244,image_244.jpg,Pneumonia,Pneumothorax
-nejm,all,245,image_245.jpg,Cataract,Persistent pupillary membranes
-nejm,all,246,image_246.jpg,Caries,Odontogenic cutaneous fistula
-nejm,all,247,image_247.jpg,Varicose veins,Superficial thrombophlebitis
-nejm,all,248,image_248.jpg,Molluscum contagiosum,Molluscum contagiosum
-nejm,all,249,image_249.jpg,Impetigo,Cutaneous leishmaniasis
-nejm,all,250,image_250.jpg,Cancer,Giant-cell arteritis
-nejm,all,251,image_251.jpg,Onychomycosis,Antisynthetase syndrome
-nejm,all,252,image_252.jpg,Psoriasis,Nummular eczema
-nejm,all,253,image_253.jpg,Burn,Acute lymphangitis
-nejm,all,254,image_254.jpg,Cataract,Rheumatoid arthritis
-nejm,all,255,image_255.jpg,Laryngitis,Sublingual epidermoid cyst
-nejm,all,256,image_256.jpg,Osteoarthritis,Sarcoidosis
-nejm,all,257,image_257.jpg,Herpes,Syphilis
-nejm,all,258,image_258.jpg,Pneumonia,Foreign bodies that have been present for longer than 24 hours
-nejm,all,259,image_259.jpg,Atrial fibrillation,Cardiac allograft
-nejm,all,260,image_260.jpg,Lymphedema,Phlegmasia cerulea dolens
-nejm,all,261,image_261.jpg,Candidiasis,Measles
-nejm,all,262,image_262.jpg,Conjunctivitis,Vernal conjunctivitis
-nejm,all,263,image_263.jpg,Pneumonia,Left ventricle
-nejm,all,264,image_264.jpg,Pneumonia,Bilirubin
-nejm,all,265,image_265.jpg,Leprosy,Eisenmenger's syndrome
-nejm,all,266,image_266.jpg,Appendicitis,Page kidney
-nejm,all,267,image_267.jpg,Pneumonia,Ulcerative colitis
-nejm,all,268,image_268.jpg,Oral thrush,Geographic tongue
-nejm,all,269,image_269.jpg,Lung cancer,Bone marrow necrosis
-nejm,all,270,image_270.jpg,Hidradenitis,Permethrin
-nejm,all,271,image_271.jpg,Cataract,Hypothyroidism
-nejm,all,272,image_272.jpg,Macular degeneration,Preeclampsia
-nejm,all,273,image_273.jpg,Appendicitis,Intestinal lipomatosis
-nejm,all,274,image_274.jpg,Macular degeneration,Cholesterol emboli
-nejm,all,275,image_275.jpg,Oral thrush,Herpes zoster
-nejm,all,276,image_276.jpg,Candidiasis,Sporotrichosis
-nejm,all,277,image_277.jpg,Macular degeneration,Central retinal artery occlusion
-nejm,all,278,image_278.jpg,Cervical cancer,Hematometrocolpos
-nejm,all,279,image_279.jpg,Psoriasis,Superior vena cava syndrome
-nejm,all,280,image_280.jpg,Meningitis,Cirrhosis
-nejm,all,281,image_281.jpg,Pancreatitis,Ménétrier’s disease
-nejm,all,282,image_282.jpg,Leukemia,Pseudothrombocytosis due to red cell fragments
-nejm,all,283,image_283.jpg,Blepharitis,Carotid cavernous sinus fistula
-nejm,all,284,image_284.jpg,Pneumonia,Plastic bronchitis
-nejm,all,285,image_285.jpg,Abscess,Intraabdominal cancer
-nejm,all,286,image_286.jpg,Keratitis,Rosacea
-nejm,all,287,image_287.jpg,Cancer,Urachal mucinous cystic tumor
-nejm,all,288,image_288.jpg,Stroke,Quadriplegia
-nejm,all,289,image_289.jpg,Meningioma,Marfan’s syndrome
-nejm,all,290,image_290.jpg,Lymphoma,Sclerosing sialadenitis
-nejm,all,291,image_291.jpg,Myocarditis,Angiosarcoma
-nejm,all,292,image_292.jpg,Osteosarcoma,Chronic venous insufficiency
-nejm,all,293,image_293.jpg,Caries,Torus mandibularis
-nejm,all,294,image_294.jpg,Oral cancer,Spindle-cell sarcoma
-nejm,all,295,image_295.jpg,Cancer,Stomach
-nejm,all,296,image_296.jpg,Keratitis,Cogan’s syndrome
-nejm,all,297,image_297.jpg,Blepharitis,Ipratropium
-nejm,all,298,image_298.jpg,Papular,Eruptive xanthomas
-nejm,all,299,image_299.jpg,Thyroid cancer,Iodide-associated sialadenitis
-nejm,all,300,image_300.jpg,Appendicitis,Encapsulating peritoneal sclerosis
-nejm,all,301,image_301.jpg,Candidiasis,Calcitonin
-nejm,all,302,image_302.jpg,Rheumatoid arthritis,Primary hypertrophic osteoarthropathy
-nejm,all,303,image_303.jpg,Cancer,Congenital cytomegalovirus infection
-nejm,all,304,image_304.jpg,Myocardial infarction,Right coronary artery occlusion
-nejm,all,305,image_305.jpg,Pneumonia,Tracheal agenesis with bronchoesophageal fistula
-nejm,all,306,image_306.jpg,Psoriasis,Angiotensin-converting enzyme
-nejm,all,307,image_307.jpg,Papulonodular,Neurofibromatosis
-nejm,all,308,image_308.jpg,Eczema,Systemic lupus erythematosus
-nejm,all,309,image_309.jpg,Sinusitis,Granulomatosis with polyangiitis
-nejm,all,310,image_310.jpg,Gout,Ethylene glycol poisoning
-nejm,all,311,image_311.jpg,Colitis,Ascariasis
-nejm,all,312,image_312.jpg,tonsillitis,Group A streptococcus
-nejm,all,313,image_313.jpg,Cataract,Shaken-baby syndrome
-nejm,all,314,image_314.jpg,Oral thrush,Exanthematous pustulosis
-nejm,all,315,image_315.jpg,Eczema,Rubella
-nejm,all,316,image_316.jpg,Skin Cancer,Cutaneous leishmaniasis
-nejm,all,317,image_317.jpg,Cellulitis,Thrombotic vasculopathy
-nejm,all,318,image_318.jpg,Noma,Herpes simplex virus infection
-nejm,all,319,image_319.jpg,Esophagus,Eosinophilic esophagitis
-nejm,all,320,image_320.jpg,Cervical spondylosis,Prevertebral air
-nejm,all,321,image_321.jpg,Cancer,Cats
-nejm,all,322,image_322.jpg,Pancreatitis,Histoplasmosis
-nejm,all,323,image_323.jpg,Trichomoniasis,Paragonimiasis
-nejm,all,324,image_324.jpg,Atherosclerosis,Fibromuscular dysplasia
-nejm,all,325,image_325.jpg,Genital warts,Condylomata lata
-nejm,all,326,image_326.jpg,Cancer,Adrenal insufficiency
-nejm,all,327,image_327.jpg,Lichen planus,Vitamin B12 deficiency
-nejm,all,328,image_328.jpg,Psoriasis,Ostraceous psoriasis
-nejm,all,329,image_329.jpg,Cancer,Squamous-cell carcinoma
-nejm,all,330,image_330.jpg,Kidney stone,Primary adrenal lymphoma
-nejm,all,331,image_331.jpg,Eczema,Spider angioma
-nejm,all,332,image_332.jpg,Leprosy,Actinomycetoma
-nejm,all,333,image_333.jpg,Melanoma,Halo nevus
-nejm,all,334,image_334.jpg,Cancer,Amiodarone-induced skin discoloration
-nejm,all,335,image_335.jpg,periodontitis,Leukemia
-nejm,all,336,image_336.jpg,Sickle cell anemia,Tickborne relapsing fever
-nejm,all,337,image_337.jpg,Lichen simplex chronicus,Erythema gyratum repens
-nejm,all,338,image_338.jpg,Cellulitis,Deep venous thrombosis
-nejm,all,339,image_339.jpg,Pneumonia,Bordetella pertussis
-nejm,all,340,image_340.jpg,Appendicitis,Ingestion of a heavy metal
-nejm,all,341,image_341.jpg,Gout,Tophaceous gout
-nejm,all,342,image_342.jpg,Appendicitis,Internal hernia
-nejm,all,343,image_343.jpg,Appendicitis,Colocolonic intussusception
-nejm,all,344,image_344.jpg,Lupus,Cholesterol crystals
-nejm,all,345,image_345.jpg,Pneumonia,Pulmonary-artery dissection
-nejm,all,346,image_346.jpg,Pneumonia,Beta-thalassemia
-nejm,all,347,image_347.jpg,Cancer,"Consumption of undercooked, infected beef"
-nejm,all,348,image_348.jpg,Eczema,Neutrophilic dermatosis
-nejm,all,349,image_349.jpg,Cushing's syndrome,Alkaline phosphatase
-nejm,all,350,image_350.jpg,Appendicitis,Ogilvie’s syndrome
-nejm,all,351,image_351.jpg,Retinoblastoma,Toxoplasmosis
-nejm,all,352,image_352.jpg,Leprosy,Fluorouracil side effect
-nejm,all,353,image_353.jpg,Abscess,Furuncular myiasis
-nejm,all,354,image_354.jpg,Lymphoma,Sarcoidosis
-nejm,all,355,image_355.jpg,Cataract,Radial keratotomy
-nejm,all,356,image_356.jpg,Pneumonia,Uterine perforation
-nejm,all,357,image_357.jpg,Stroke,Creutzfeld-Jakob disease
-nejm,all,358,image_358.jpg,Pneumonia,Tobacco
-nejm,all,359,image_359.jpg,Osteosarcoma,Metastatic lung cancer
-nejm,all,360,image_360.jpg,psoriasis,Radiation-induced angiosarcoma
-nejm,all,361,image_361.jpg,Psoriasis,Atopic eruption of pregnancy
-nejm,all,362,image_362.jpg,Lymphedema,Niacin
-nejm,all,363,image_363.jpg,Anemia,Spur-cell hemolytic anemia
-nejm,all,364,image_364.jpg,Bacterial infection,Cutaneous larva migrans
-nejm,all,365,image_365.jpg,Cancer,Treponema pallidum infection
-nejm,all,366,image_366.jpg,Eczema,Insect bite
-nejm,all,367,image_367.jpg,Pneumonia,Diaphragm
-nejm,all,368,image_368.jpg,Pneumonia,Lung herniation
-nejm,all,369,image_369.jpg,Hirsutism,Spinal dysraphism
-nejm,all,370,image_370.jpg,Pneumonia,Infant harlequin syndrome
-nejm,all,371,image_371.jpg,periodontal disease,Mandibular fracture
-nejm,all,372,image_372.jpg,Eczema,Panniculitis
-nejm,all,373,image_373.jpg,Cancer,Peutz–Jeghers syndrome
-nejm,all,374,image_374.jpg,Oral thrush,Secondary syphilis
-nejm,all,375,image_375.jpg,Myocardial infarction,Osborn wave
-nejm,all,376,image_376.jpg,psoriasis,Staphylococcal scalded skin
-nejm,all,377,image_377.jpg,Gout,Insulin lipohypertrophy
-nejm,all,378,image_378.jpg,Psoriasis,Actinic granuloma
-nejm,all,379,image_379.jpg,Meningioma,Cystic echinococcosis
-nejm,all,380,image_380.jpg,Obesity,Alcohol dependency
-nejm,all,381,image_381.jpg,Keratitis,Lisch nodules
-nejm,all,382,image_382.jpg,Psoriasis,Zinc
-nejm,all,383,image_383.jpg,Acne,Eosinophilia
-nejm,all,384,image_384.jpg,Diabetic retinopathy,Antiphospholipid syndrome
-nejm,all,385,image_385.jpg,Stroke,Epidural hematoma
-nejm,all,386,image_386.jpg,Pancreatitis,Trichobezoar
-nejm,all,387,image_387.jpg,Osteoporosis,Osteomalacia
-nejm,all,388,image_388.jpg,Lupus,Lymphoma
-nejm,all,389,image_389.jpg,Cancer,Bone scan
-nejm,all,390,image_390.jpg,goiter,Gastric cancer
-nejm,all,391,image_391.jpg,Malignant tumor,Malakoplakia
-nejm,all,392,image_392.jpg,Meningioma,Prolactinoma
-nejm,all,393,image_393.jpg,Rosacea,Systemic lupus erythematosus
-nejm,all,394,image_394.jpg,Glaucoma,Traumatic bleb
-nejm,all,395,image_395.jpg,Lymphedema,Soft-tissue calcinosis
-nejm,all,396,image_396.jpg,Leprosy,Chromoblastomycosis
-nejm,all,397,image_397.jpg,Malignant Melanoma,Pectus excavatum
-nejm,all,398,image_398.jpg,Herpes,Tuberculosis
-nejm,all,399,image_399.jpg,Dermatitis,Fibrosing alopecia
-nejm,all,400,image_400.jpg,Canker sore,Ludwig’s angina
-nejm,all,401,image_401.jpg,Psoriasis,Nephrogenic fibrosing dermopathy
-nejm,all,402,image_402.jpg,Cancer,Hypoglossal nerve injury
-nejm,all,403,image_403.jpg,Pneumonia,Cystic echinococcosis
-nejm,all,404,image_404.jpg,Rheumatoid arthritis,Congestive heart failure
-nejm,all,405,image_405.jpg,Vitiligo,Scleroderma
-nejm,all,406,image_406.jpg,Melanoma,Corynebacterium minutissimum
-nejm,all,407,image_407.jpg,Pneumonia,Hydropneumothorax
-nejm,all,408,image_408.jpg,Fungus,Gout
-nejm,all,409,image_409.jpg,Psoriasis,Drug reaction with eosinophilia and systemic symptoms
-nejm,all,410,image_410.jpg,Rheumatoid arthritis,Subclavian vein thrombosis
-nejm,all,411,image_411.jpg,Cancer,Infantile hepatic hemangiomas
-nejm,all,412,image_412.jpg,Malaria,Histoplasma capsulatum
-nejm,all,413,image_413.jpg,Psoriasis,Cerebriform nevus sebaceous
-nejm,all,414,image_414.jpg,Cancer,Metastatic colon cancer
-nejm,all,415,image_415.jpg,Vitiligo,Vitiligo
-nejm,all,416,image_416.jpg,psoriasis,Carcinoid syndrome
-nejm,all,417,image_417.jpg,Hypertrichosis,Congenital melanocytic nevus
-nejm,all,418,image_418.jpg,Canker sore,Multiple endocrine neoplasia type 2B
-nejm,all,419,image_419.jpg,Cyst,Peripancreatic malignancy
-nejm,all,420,image_420.jpg,Cataract,Intraocular tumor
-nejm,all,421,image_421.jpg,Pneumonia,Cryptococcal meningitis
-nejm,all,422,image_422.jpg,Cancer,Angiotensin converting-enzyme inhibitor
-nejm,all,423,image_423.jpg,Bacterial infection,Plantar warts
-nejm,all,424,image_424.jpg,Psoriasis,Diabetes mellitus
-nejm,all,425,image_425.jpg,Cancer,Nodular lymphoid hyperplasia
-nejm,all,426,image_426.jpg,Cancer,Retropharyngeal abscess
-nejm,all,427,image_427.jpg,alopecia,Chloroquine
-nejm,all,428,image_428.jpg,Pityriasis versicolor,Diffuse cutaneous systemic sclerosis
-nejm,all,429,image_429.jpg,Appendicitis,Diabetes mellitus
-nejm,all,430,image_430.jpg,cancer,Leave the foreign object in place
-nejm,all,431,image_431.jpg,Deep vein thrombosis,Ergotism
-nejm,all,432,image_432.jpg,Pneumonia,Ankylosing spondylitis
-nejm,all,433,image_433.jpg,Varicose veins,Respiratory system
-nejm,all,434,image_434.jpg,Eczema,Harlequin color change
-nejm,all,435,image_435.jpg,Laryngitis,Tonsillar cancer
-nejm,all,436,image_436.jpg,Pneumonia,Ascending aortic aneurysm
-nejm,all,437,image_437.jpg,alopecia,Congenital nevus
-nejm,all,438,image_438.jpg,Bleeding,Vibrio vulnificus
-nejm,all,439,image_439.jpg,Dermatitis,Protease inhibitor
-nejm,all,440,image_440.jpg,Meningitis,Wernicke’s encephalopathy
-nejm,all,441,image_441.jpg,Pancreatitis,Superior mesenteric artery syndrome
-nejm,all,442,image_442.jpg,Canker sore,Mucocele
-nejm,all,443,image_443.jpg,Cancer,Varicella-zoster virus
-nejm,all,444,image_444.jpg,Hordeolum,Myasthenia gravis
-nejm,all,445,image_445.jpg,Pneumonia,Pleural perforation
-nejm,all,446,image_446.jpg,Abscess,Polymastia
-nejm,all,447,image_447.jpg,Psoriasis,Gout
-nejm,all,448,image_448.jpg,geographic tongue,Aspirin and intravenous immune globulin
-nejm,all,449,image_449.jpg,Oral cancer,Extranodal natural killer T-cell lymphoma
-nejm,all,450,image_450.jpg,Oral thrush,Celiac disease
-nejm,all,451,image_451.jpg,Candidiasis,Amyotrophic lateral sclerosis
-nejm,all,452,image_452.jpg,Acne,Uveoparotid fever
-nejm,all,453,image_453.jpg,Psoriasis,Anti-MDA5 dermatomyositis
-nejm,all,454,image_454.jpg,psoriasis,Cellulitis
-nejm,all,455,image_455.jpg,Pneumonia,Intraabdominal hernia
-nejm,all,456,image_456.jpg,Impetigo,Acute dacryocystitis
-nejm,all,457,image_457.jpg,Cataract,Anti-Hu antibody
-nejm,all,458,image_458.jpg,psoriasis,Crusted scabies
-nejm,all,459,image_459.jpg,Bacterial infection,Schistosoma hematobium
-nejm,all,460,image_460.jpg,Cervical spondylosis,Epiglottitis
-nejm,all,461,image_461.jpg,Eczema,Urticaria multiforme
-nejm,all,462,image_462.jpg,Psoriasis,Tetracycline
-nejm,all,463,image_463.jpg,Cerebral palsy,Alkaline phosphatase
-nejm,all,464,image_464.jpg,Acne,Neutrophilic eccrine hidradenitis
-nejm,all,465,image_465.jpg,Stroke,"Left hemiparesis, gaze deviated to the right"
-nejm,all,466,image_466.jpg,arthritis,Lead exposure
-nejm,all,467,image_467.jpg,Psoriasis,Necrolytic migratory erythema
-nejm,all,468,image_468.jpg,Psoriasis,Erythema ab igne
-nejm,all,469,image_469.jpg,psoriasis,Phototoxic dermatitis
-nejm,all,470,image_470.jpg,Esophageal cancer,Laryngeal candidiasis
-nejm,all,471,image_471.jpg,Osteoarthritis,Zenker's diverticulum
-nejm,all,472,image_472.jpg,Melanoma,Mondor’s disease
-nejm,all,473,image_473.jpg,Stroke,Posterior reversible encephalopathy syndrome
-nejm,all,474,image_474.jpg,Psoriasis,Systemic sclerosis
-nejm,all,475,image_475.jpg,Atrial fibrillation,"Hypocalcemia, hypophosphatemia, and hyperkalemia"
-nejm,all,476,image_476.jpg,Osteoarthritis,Legg–Calvé–Perthes disease
-nejm,all,477,image_477.jpg,psoriasis,Decompression sickness
-nejm,all,478,image_478.jpg,Psoriasis,Porphyria cutanea tarda
-nejm,all,479,image_479.jpg,Baldness,Graves' disease
-nejm,all,480,image_480.jpg,Vaginismus,Congenital adrenal hyperplasia
-nejm,all,481,image_481.jpg,dermatitis,Cutaneous metastases
-nejm,all,482,image_482.jpg,Abscess,Thromboangiitis obliterans
-nejm,all,483,image_483.jpg,Cataract,Cataract
-nejm,all,484,image_484.jpg,Ear infection,Atherosclerosis
-nejm,all,485,image_485.jpg,Pneumonia,Situs inversus totalis
-nejm,all,486,image_486.jpg,Diabetes,Hypertriglyceridemia
-nejm,all,487,image_487.jpg,Tumor,Obstructive parotitis
-nejm,all,488,image_488.jpg,Cancer,Ischemic colitis
-nejm,all,489,image_489.jpg,Lupus,Small-cell lung cancer
-nejm,all,490,image_490.jpg,Lymphoma,Strongyloides stercoralis
-nejm,all,491,image_491.jpg,Skin Cancer,Xylazine
-nejm,all,492,image_492.jpg,Pneumonia,Hodgkin's lymphoma
-nejm,all,493,image_493.jpg,Liver Cancer,Brucellosis
-nejm,all,494,image_494.jpg,Blepharitis,IgG4-related ophthalmic disease
-nejm,all,495,image_495.jpg,Oral thrush,Dermatomyositis
-nejm,all,496,image_496.jpg,Fungal infection,Curvularia alcornii
-nejm,all,497,image_497.jpg,Cervical spondylosis,Romberg's sign
-nejm,all,498,image_498.jpg,Cancer,Klebsiella rhinoscleromatis
-nejm,all,499,image_499.jpg,Candidiasis,Tissue plasminogen activator-associated angioedema
-nejm,all,500,image_500.jpg,Diabetes,Inferior hemifield loss
-nejm,all,501,image_501.jpg,Retinopathy,Infective endocarditis
-nejm,all,502,image_502.jpg,Lymphedema,Nephrogenic systemic fibrosis
-nejm,all,503,image_503.jpg,Onychomycosis,Splinter hemorrhages
-nejm,all,504,image_504.jpg,Eczema,Leprosy
-nejm,all,505,image_505.jpg,Lymphoma,Abscess
-nejm,all,506,image_506.jpg,Blepharitis,Dirofilaria repens infection
-nejm,all,507,image_507.jpg,Dementia,Paraneoplastic disorder
-nejm,all,508,image_508.jpg,Kidney stone,Perirenal extramedullary hematopoiesis
-nejm,all,509,image_509.jpg,psoriasis,Bulimia nervosa
-nejm,all,510,image_510.jpg,Molluscum contagiosum,Iododerma
-nejm,all,511,image_511.jpg,Cataract,Retinoblastoma
-nejm,all,512,image_512.jpg,Pneumonia,Perforation of a viscus
-nejm,all,513,image_513.jpg,Leprosy,Dermatomyositis
-nejm,all,514,image_514.jpg,Cancer,Lipomatosis
-nejm,all,515,image_515.jpg,Pox,Nevus comedonicus
-nejm,all,516,image_516.jpg,Throat infection,Uremic stomatitis
-nejm,all,517,image_517.jpg,arthritis,Systemic sclerosis
-nejm,all,518,image_518.jpg,psoriasis,Chronic venous stasis
-nejm,all,519,image_519.jpg,Allergic dermatitis,Sjögren's syndrome
-nejm,all,520,image_520.jpg,Cancer,Thyroglossal duct cyst
-nejm,all,521,image_521.jpg,Cancer,Wegener's granulomatosis
-nejm,all,522,image_522.jpg,dermatitis,Necrobiosis lipoidica
-nejm,all,523,image_523.jpg,Oral thrush,Lingual artery
-nejm,all,524,image_524.jpg,Stroke,Nocardia asteroides infection
-nejm,all,525,image_525.jpg,Rheumatoid arthritis,Achenbach’s syndrome
-nejm,all,526,image_526.jpg,Papilloma,Herpes vegetans
-nejm,all,527,image_527.jpg,Obesity,Thrombosis of the inferior vena cava
-nejm,all,528,image_528.jpg,Oral cancer,Human papillomavirus
-nejm,all,529,image_529.jpg,Retinopathy,Tay-Sachs disease
-nejm,all,530,image_530.jpg,Aortic stenosis,Intrathoracic localized obstruction
-nejm,all,531,image_531.jpg,Candidiasis,Thromboembolism
-nejm,all,532,image_532.jpg,Pneumonia,Pneumoperitoneum
-nejm,all,533,image_533.jpg,arthritis,Jaccoud’s arthropathy
-nejm,all,534,image_534.jpg,Cancer,Cytomegalovirus infection
-nejm,all,535,image_535.jpg,Pneumonia,Renal tubular acidosis
-nejm,all,536,image_536.jpg,Acanthosis nigricans,Zinc
-nejm,all,537,image_537.jpg,Burn,Cold agglutinins
-nejm,all,538,image_538.jpg,Enterobiasis,Enterobiasis
-nejm,all,539,image_539.jpg,Raynaud's disease,Digital ischemia
-nejm,all,540,image_540.jpg,Pneumonia,Croup
-nejm,all,541,image_541.jpg,Lupus,Disseminated cutaneous blastomycosis
-nejm,all,542,image_542.jpg,Acne,Frey's syndrome
-nejm,all,543,image_543.jpg,Cerebral edema,Cerebral cavernous malformations
-nejm,all,544,image_544.jpg,Throat infection,Counsel patient to stop smoking
-nejm,all,545,image_545.jpg,Herpes,Multiple myeloma
-nejm,all,546,image_546.jpg,Esophageal cancer,About 50% of the serum bilirubin is conjugated
-nejm,all,547,image_547.jpg,Pneumonia,Hampton’s hump
-nejm,all,548,image_548.jpg,Hemangioma,Cryoglobulinemic vasculitis
-nejm,all,549,image_549.jpg,Acne,Ectopic thyroid
-nejm,all,550,image_550.jpg,Pink eye,Acute angle-closure glaucoma
-nejm,all,551,image_551.jpg,Malaria,Plasmodium vivax
-nejm,all,552,image_552.jpg,psoriasis,Glucagonoma
-nejm,all,553,image_553.jpg,Nephritis,Erdheim–Chester disease
-nejm,all,554,image_554.jpg,Appendicitis,Splenic cyst
-nejm,all,555,image_555.jpg,Psoriasis,Tinea versicolor
-nejm,all,556,image_556.jpg,Lichen planus,Pellagra
-nejm,all,557,image_557.jpg,Lice,Pthirus pubis
-nejm,all,558,image_558.jpg,Pneumonia,Pulmonary alveolar microlithiasis
-nejm,all,559,image_559.jpg,Yellow nail syndrome,Pseudomonas aeruginosa infection
-nejm,all,560,image_560.jpg,Penile Cancer,Penile fracture
-nejm,all,561,image_561.jpg,Pancreatitis,Disseminated Mycobacterium avium–intracellulare infection
-nejm,all,562,image_562.jpg,Blepharitis,Erlotinib
-nejm,all,563,image_563.jpg,Esophageal cancer,Adenocarcinoma
-nejm,all,564,image_564.jpg,Cancer,Melanoma
-nejm,all,565,image_565.jpg,Abscess,Sister Mary Joseph's nodule
-nejm,all,566,image_566.jpg,Hepatitis,Fluorescent dye
-nejm,all,567,image_567.jpg,Pneumonia,Pulmonary embolism
-nejm,all,568,image_568.jpg,Fracture,Osgood–Schlatter disease
-nejm,all,569,image_569.jpg,Pneumonia,Pneumomediastinum
-nejm,all,570,image_570.jpg,Cataract,Prominent iris collarette
-nejm,all,571,image_571.jpg,Cancer,Malignant acanthosis nigricans
-nejm,all,572,image_572.jpg,Acne,Tuberous sclerosis
-nejm,all,573,image_573.jpg,diabetes,Elevated protein
-nejm,all,574,image_574.jpg,dermatitis,Malignant syphilis
-nejm,all,575,image_575.jpg,Cancer,Diphyllobothrium latum
-nejm,all,576,image_576.jpg,Lupus,Mycobacterium marinum
-nejm,all,577,image_577.jpg,Pneumonia,Left upper lobe
-nejm,all,578,image_578.jpg,Oral thrush,Herpes zoster
-nejm,all,579,image_579.jpg,Cataract,X-linked retinoschisis
-nejm,all,580,image_580.jpg,Cancer,Pneumocephalus
-nejm,all,581,image_581.jpg,Rheumatoid arthritis,Albright's hereditary osteodystrophy
-nejm,all,582,image_582.jpg,Osteoporosis,Fluorosis
-nejm,all,583,image_583.jpg,Pneumonia,Fusobacterium necrophorum
-nejm,all,584,image_584.jpg,Rheumatoid arthritis,Dupuyten's contracture
-nejm,all,585,image_585.jpg,Cataract,Wilson's disease
-nejm,all,586,image_586.jpg,Warts,Infective endocarditis
-nejm,all,587,image_587.jpg,Raynaud's disease,Cholesterol emboli
-nejm,all,588,image_588.jpg,Pneumonia,Oleothorax
-nejm,all,589,image_589.jpg,Osteoporosis,Slipped capital femoral epiphysis
-nejm,all,590,image_590.jpg,Tuberculosis,Chrysops fly
-nejm,all,591,image_591.jpg,Alzheimer,Diffuse melanosis cutis
-nejm,all,592,image_592.jpg,Gout,Cystine and triple phosphate (struvite) crystals
-nejm,all,593,image_593.jpg,Cancer,Herpes zoster
-nejm,all,594,image_594.jpg,Canker sore,Streptococcal pharyngitis
-nejm,all,595,image_595.jpg,Pneumonia,Substernal goiter
-nejm,all,596,image_596.jpg,Gynecomastia,Becker’s nevus
-nejm,all,597,image_597.jpg,Pneumonia,Paternal uniparental disomy 14 (UDP 14 pat) thoracic dysplasia
-nejm,all,598,image_598.jpg,Appendicitis,Small-bowel obstruction
-nejm,all,599,image_599.jpg,Cataract,Neonatal thyrotoxicosis
-nejm,all,600,image_600.jpg,periodontitis,Bulimia nervosa
-nejm,all,601,image_601.jpg,Encephalitis,Neurocysticercosis
-nejm,all,602,image_602.jpg,Cataract,Papilloma
-nejm,all,603,image_603.jpg,Genital warts,Fordyce's angiokeratomas
-nejm,all,604,image_604.jpg,Skin Cancer,Cutaneous diphtheria
-nejm,all,605,image_605.jpg,Esophagus,Enterobius vermicularis
-nejm,all,606,image_606.jpg,boil,Tumbu fly
-nejm,all,607,image_607.jpg,Herpes,Neonatal herpes simplex virus
-nejm,all,608,image_608.jpg,Psoriasis,Erythrasma
-nejm,all,609,image_609.jpg,Osteosarcoma,Bisphosphonates
-nejm,all,610,image_610.jpg,Acne,Livedo reticularis
-nejm,all,611,image_611.jpg,Pustular,Varicella
-nejm,all,612,image_612.jpg,Acne,Talaromyces marneffei
-nejm,all,613,image_613.jpg,Lichen planus,Leishmaniasis
-nejm,all,614,image_614.jpg,Eczema,Coxsackie virus type A16
-nejm,all,615,image_615.jpg,Meningitis,Hydatid cyst
-nejm,all,616,image_616.jpg,Genital warts,Vestibular papillomatosis
-nejm,all,617,image_617.jpg,Conjunctivitis,Dislocation of the lens
-nejm,all,618,image_618.jpg,Raynaud's disease,Raynaud's phenomenon
-nejm,all,619,image_619.jpg,Leprosy,Tungiasis
-nejm,all,620,image_620.jpg,Obesity,Caput Medusae
-nejm,all,621,image_621.jpg,Myocardial infarction,Left main stem
-nejm,all,622,image_622.jpg,Psoriasis,"Hand, foot, and mouth disease"
-nejm,all,623,image_623.jpg,Cancer,Cholesteatoma
-nejm,all,624,image_624.jpg,Cervical cancer,Gartner duct cyst
-nejm,all,625,image_625.jpg,Psoriasis,Palmar erythema of pregnancy
-nejm,all,626,image_626.jpg,Appendicitis,Mesenteric ischemia
-nejm,all,627,image_627.jpg,Bacterial infection,Cutaneous larva migrans
-nejm,all,628,image_628.jpg,Cataract,Ophthalmomyiasis
-nejm,all,629,image_629.jpg,Pneumonia,Left atrium
-nejm,all,630,image_630.jpg,Pneumonia,Tension pneumothorax
-nejm,all,631,image_631.jpg,Esophageal cancer,Nutcracker esophagus
-nejm,all,632,image_632.jpg,Meningitis,Uveal melanoma
-nejm,all,633,image_633.jpg,Retinal detachment,Proliferative diabetic retinopathy
-nejm,all,634,image_634.jpg,Atrial fibrillation,Hyperkalemia
-nejm,all,635,image_635.jpg,Stroke,Triatomine bug
-nejm,all,636,image_636.jpg,Pneumonia,Reexpansion pulmonary edema
-nejm,all,637,image_637.jpg,Fungal infection,Amelanotic melanoma
-nejm,all,638,image_638.jpg,Varicose veins,Eosinophilic fasciitis
-nejm,all,639,image_639.jpg,Appendicitis,Sugar
-nejm,all,640,image_640.jpg,Meningitis,Sickle cell disease
-nejm,all,641,image_641.jpg,Pneumonia,Emphysematous aortitis due to Clostridium septicum
-nejm,all,642,image_642.jpg,Psoriasis,Lung cancer
-nejm,all,643,image_643.jpg,Pemphigus,Herpes simplex virus infection
-nejm,all,644,image_644.jpg,Oral thrush,Palifermin
-nejm,all,645,image_645.jpg,Cancer,Radiation recall
-nejm,all,646,image_646.jpg,Lupus,Scurvy
-nejm,all,647,image_647.jpg,psoriasis,Keratoderma blennorrhagicum
-nejm,all,648,image_648.jpg,Psoriasis,Tinea faciei
-nejm,all,649,image_649.jpg,Oral thrush,Inflammatory bowel disease
-nejm,all,650,image_650.jpg,Pneumonia,Autosomal dominant polycystic kidney disease
-nejm,all,651,image_651.jpg,Pneumonia,Azygous vein
-nejm,all,652,image_652.jpg,Papulonecrotic pemphigoid,Subcorneal pustular dermatosis
-nejm,all,653,image_653.jpg,Cancer,Multiple myeloma
-nejm,all,654,image_654.jpg,periodontitis,Chronic lead poisoning
-nejm,all,655,image_655.jpg,Onychomycosis,Periungual fibroma
-nejm,all,656,image_656.jpg,Papulosis,Miliaria crystallina
-nejm,all,657,image_657.jpg,Cancer,Graves' disease
-nejm,all,658,image_658.jpg,Caries,Langerhans'-cell histiocytosis
-nejm,all,659,image_659.jpg,Leukemia,Gaucher’s disease
-nejm,all,660,image_660.jpg,psoriasis,Chemotherapy
-nejm,all,661,image_661.jpg,Oral thrush,Leukoplakia
-nejm,all,662,image_662.jpg,Anemia,Glucose-6-phosphate dehydrogenase deficiency
-nejm,all,663,image_663.jpg,Candidiasis,Verrucous carcinoma
-nejm,all,664,image_664.jpg,Eczema,Fusariosis
-nejm,all,665,image_665.jpg,Glaucoma,Hyphema
-nejm,all,666,image_666.jpg,Eczema,Herpes zoster
-nejm,all,667,image_667.jpg,Osteoporosis,Systemic sclerosis
-nejm,all,668,image_668.jpg,Appendicitis,Hirschsprung’s disease
-nejm,all,669,image_669.jpg,Melanoma,Seborrheic keratoses
-nejm,all,670,image_670.jpg,Lung Cancer,Sarcoidosis
-nejm,all,671,image_671.jpg,Pityriasis versicolor,Tinea capitis
-nejm,all,672,image_672.jpg,Pneumonia,Rheumatic heart disease
-nejm,all,673,image_673.jpg,Leukemia,Acute promyelocytic leukemia (APL)
-nejm,all,674,image_674.jpg,Melanoma,Malignant syphilis
-nejm,all,675,image_675.jpg,Navel,Endometrioma
-nejm,all,676,image_676.jpg,Penile cancer,Varicocele
-nejm,all,677,image_677.jpg,psoriasis,Keratoderma blenorrhagicum
-nejm,all,678,image_678.jpg,Pityriasis versicolor,Onchocerciasis
-nejm,all,679,image_679.jpg,Sinusitis,Intraocular lens dislocation
-nejm,all,680,image_680.jpg,Conjunctivitis,Neuroblastoma
-nejm,all,681,image_681.jpg,Allergy,Lyme disease
-nejm,all,682,image_682.jpg,Cataract,Silicone oil hyperoleon
-nejm,all,683,image_683.jpg,Atherosclerosis,Osteoporosis
-nejm,all,684,image_684.jpg,Fungal infection,Metastasis
-nejm,all,685,image_685.jpg,Cerebral edema,Neurocysticercosis
-nejm,all,686,image_686.jpg,Pneumonia,IgG4-related disease arteritis
-nejm,all,687,image_687.jpg,Pneumonia,Adenocarcinoma
-nejm,all,688,image_688.jpg,Osteoporosis,Diabetes mellitus
-nejm,all,689,image_689.jpg,Cushing's syndrome,Pemberton’s sign
-nejm,all,690,image_690.jpg,Kyphosis,Palsy of the long thoracic nerve
-nejm,all,691,image_691.jpg,Burn,Purpura fulminans
-nejm,all,692,image_692.jpg,Pneumonia,Diurese the patient and then obtain a repeat chest radiograph
-nejm,all,693,image_693.jpg,Psoriasis,Seborrheic dermatitis
-nejm,all,694,image_694.jpg,Pancreatitis,Antineutrophil cytoplasmic autoantibody
-nejm,all,695,image_695.jpg,Papulonodular,Eruptive xanthomas
-nejm,all,696,image_696.jpg,Cancer,Glomus tympanicum
-nejm,all,697,image_697.jpg,Cancer,Gastrointestinal amyloidosis
-nejm,all,698,image_698.jpg,Pneumonia,Plombage
-nejm,all,699,image_699.jpg,Eczema,Measles
-nejm,all,700,image_700.jpg,Genital warts,Linear IgA bullous dermatosis
-nejm,all,701,image_701.jpg,Laryngitis,Bilateral peritonsillar abscesses
-nejm,all,702,image_702.jpg,Leprosy,Sarcoidosis
-nejm,all,703,image_703.jpg,Pneumonia,Pulmonary embolism
-nejm,all,704,image_704.jpg,Cancer,Disseminated coccidioidomycosis
-nejm,all,705,image_705.jpg,Blepharitis,Amyloid purpura
-nejm,all,706,image_706.jpg,Acne,Tuberculosis
-nejm,all,707,image_707.jpg,Pneumonia,Lymphangioleiomyomatosis
-nejm,all,708,image_708.jpg,Caries,Cocaine
-nejm,all,709,image_709.jpg,Cerebral edema,Basilar artery aneurysm
-nejm,all,710,image_710.jpg,periodontitis,Lead poisoning
-nejm,all,711,image_711.jpg,atherosclerosis,Radial artery thrombosis
-nejm,all,712,image_712.jpg,arthritis,Gold
-nejm,all,713,image_713.jpg,Leprosy,Quadriceps tendon ruptures
-nejm,all,714,image_714.jpg,Appendicitis,Right ureterovesical calculus
-nejm,all,715,image_715.jpg,Cerebral palsy,Retroperitoneal hemorrhage
-nejm,all,716,image_716.jpg,Cataract,Myasthenia gravis
-nejm,all,717,image_717.jpg,dermatitis,Pyoderma gangrenosum
-nejm,all,718,image_718.jpg,Oral thrush,Median rhomboid glossitis
-nejm,all,719,image_719.jpg,Bacterial infection,Spider bite
-nejm,all,720,image_720.jpg,Appendicitis,Bowel infarction
-nejm,all,721,image_721.jpg,Diabetes,Narrow angle glaucoma
-nejm,all,722,image_722.jpg,Cancer,Pseudomelanosis duodeni
-nejm,all,723,image_723.jpg,Diabetes,Ocular myiasis
-nejm,all,724,image_724.jpg,Cancer,Colon cancer
-nejm,all,725,image_725.jpg,Gout,Cholesterol
-nejm,all,726,image_726.jpg,arthritis,Tripe palms
-nejm,all,727,image_727.jpg,Fracture,Fluoroquinolone antibiotic
-nejm,all,728,image_728.jpg,Malaria,Mitral-valve repair
-nejm,all,729,image_729.jpg,Pneumonia,Non–small-cell lung cancer
-nejm,all,730,image_730.jpg,Necrosis,Minocycline
-nejm,all,731,image_731.jpg,Pneumonia,Falciform ligament
-nejm,all,732,image_732.jpg,Nephritis,Chest imaging
-nejm,all,733,image_733.jpg,Melanoma,Lentigo maligna
-nejm,all,734,image_734.jpg,Candidiasis,Herpes zoster
-nejm,all,735,image_735.jpg,Uveitis,Tabes dorsalis
-nejm,all,736,image_736.jpg,Pneumonia,Chelation Therapy
-nejm,all,737,image_737.jpg,Appendicitis,Meckel's diverticulum
-nejm,all,738,image_738.jpg,Caries,Gingival melanoma
-nejm,all,739,image_739.jpg,Fungal infection,Gout
-nejm,all,740,image_740.jpg,Cancer,Penicillin
-nejm,all,741,image_741.jpg,Appendicitis,Hirschsprung’s disease
-nejm,all,742,image_742.jpg,Esophageal cancer,Diffuse esophageal spasm
-nejm,all,743,image_743.jpg,Atherosclerosis,Diffuse esophageal spasm
-nejm,all,744,image_744.jpg,Hypothyroidism,Superior vena caval obstruction
-nejm,all,745,image_745.jpg,Atrial fibrillation,Redundant mitral valve
-nejm,all,746,image_746.jpg,Pneumonia,Bezoar
-nejm,all,747,image_747.jpg,Oral cancer,Squamous-cell carcinoma
-nejm,all,748,image_748.jpg,Liver Cancer,Bowel ischemia
-nejm,all,749,image_749.jpg,Pneumonia,Pericardial metastases
-nejm,all,750,image_750.jpg,Pityriasis,Molluscum contagiosum
-nejm,all,751,image_751.jpg,Psoriasis,Scleromyxedema
-nejm,all,752,image_752.jpg,Eczema,Portal hypertension
-nejm,all,753,image_753.jpg,Leprosy,Neurofibromatosis
-nejm,all,754,image_754.jpg,Pneumonia,Paraesophageal hernia
-nejm,all,755,image_755.jpg,Canker sore,Pyogenic granuloma
-nejm,all,756,image_756.jpg,Pneumonia,Plasmacytoma
-nejm,all,757,image_757.jpg,Candidiasis,Pyostomatitis vegetans
-nejm,all,758,image_758.jpg,Liver Cancer,Echinococcosis
-nejm,all,759,image_759.jpg,Psoriasis,Malignancy
-nejm,all,760,image_760.jpg,Petechia,Blastic plasmacytoid dendritic-cell neoplasm
-nejm,all,761,image_761.jpg,spinal,Emphysematous pyelonephritis
-nejm,all,762,image_762.jpg,Acne,Syphilis
-nejm,all,763,image_763.jpg,Abscess,Congenital syphilis
-nejm,all,764,image_764.jpg,Osteosarcoma,Marrow hyperplasia
-nejm,all,765,image_765.jpg,Leukemia,Hairy-cell leukemia
-nejm,all,766,image_766.jpg,Pulmonary embolism,Right bronchial tree
-nejm,all,767,image_767.jpg,Oral cancer,Osteonecrosis
-nejm,all,768,image_768.jpg,Esophageal cancer,Killian’s triangle
-nejm,all,769,image_769.jpg,Asthma,Constrictive Pericarditis
-nejm,all,770,image_770.jpg,psoriasis,Amiodarone
-nejm,all,771,image_771.jpg,Psoriasis,Henoch-Schönlein purpura
-nejm,all,772,image_772.jpg,Cancer,Neurogenic megacolon
-nejm,all,773,image_773.jpg,Appendicitis,Bismuth Salicylate
-nejm,all,774,image_774.jpg,Skin Cancer,Bot fly
-nejm,all,775,image_775.jpg,Sinusitis,Tooth
-nejm,all,776,image_776.jpg,Bacterial infection,Chromoblastomycosis
-nejm,all,777,image_777.jpg,Appendicitis,Pylephlebitis
-nejm,all,778,image_778.jpg,cancer,Propofol
-nejm,all,779,image_779.jpg,Cerebral edema,Central pontine myelinolysis
-nejm,all,780,image_780.jpg,Appendicitis,Intussusception
-nejm,all,781,image_781.jpg,alopecia,Alopecia areata
-nejm,all,782,image_782.jpg,Cancer,Merkel-cell carcinoma
-nejm,all,783,image_783.jpg,Canker sore,Candida albicans infection
-nejm,all,784,image_784.jpg,Fungal infection,Keratoacanthoma
-nejm,all,785,image_785.jpg,Lymphoma,Laryngocele
-nejm,all,786,image_786.jpg,Acne,Peutz-Jeghers's syndrome
-nejm,all,787,image_787.jpg,Melanoma,Ecthyma gangrenosum
-nejm,all,788,image_788.jpg,Lupus,Intravascular lymphoma
-nejm,all,789,image_789.jpg,Cancer,Crusted scabies
-nejm,all,790,image_790.jpg,Pancreatitis,Larvae penetrate the lungs
-nejm,all,791,image_791.jpg,Bacterial conjunctivitis,Autoimmune keratitis
-nejm,all,792,image_792.jpg,Appendicitis,Enteric duplication cyst
-nejm,all,793,image_793.jpg,Throat infection,Hypoglossal nerve palsy
-nejm,all,794,image_794.jpg,periodontitis,Melanoma
-nejm,all,795,image_795.jpg,Rheumatoid arthritis,Voriconazole-induced periostitis
-nejm,all,796,image_796.jpg,Appendicitis,Emphysematous cholecystitis
-nejm,all,797,image_797.jpg,Gynecomastia,Bicalutamide
-nejm,all,798,image_798.jpg,Cancer,Neurofibromatosis type 2
-nejm,all,799,image_799.jpg,Psoriasis,Secondary syphilis
-nejm,all,800,image_800.jpg,Cancer,Cowden syndrome
-nejm,all,801,image_801.jpg,Eczema,Shiitake mushrooms
-nejm,all,802,image_802.jpg,Psoriasis,Graves' disease
-nejm,all,803,image_803.jpg,Cancer,Acute mesenteric ischemia
-nejm,all,804,image_804.jpg,Leprosy,Arsenic toxicity
-nejm,all,805,image_805.jpg,Pneumonia,Pectus excavatum
-nejm,all,806,image_806.jpg,Cerebral infarction,Nocardiosis
-nejm,all,807,image_807.jpg,Cataract,Laxative use
-nejm,all,808,image_808.jpg,Blepharitis,Dermatomyositis
-nejm,all,809,image_809.jpg,Blepharitis,EGFR inhibition
-nejm,all,810,image_810.jpg,Bunions,Keratoacanthoma
-nejm,all,811,image_811.jpg,Psoriasis,Tinea circinata
-nejm,all,812,image_812.jpg,Tonsillitis,Diphtheria
-nejm,all,813,image_813.jpg,Throat infection,Pernicious anemia
-nejm,all,814,image_814.jpg,Liver Cancer,Cirrhosis
-nejm,all,815,image_815.jpg,Acne,Angioedema
-nejm,all,816,image_816.jpg,Raynaud's disease,Chemotherapy
-nejm,all,817,image_817.jpg,Thyroid cancer,Obturator hernia
-nejm,all,818,image_818.jpg,Hemorrhoids,Takotsubo cardiomyopathy
-nejm,all,819,image_819.jpg,Conjunctivitis,Intravitreal antimicrobial injections
-nejm,all,820,image_820.jpg,Glaucoma,Herpes zoster ophthalmicus
-nejm,all,821,image_821.jpg,Psoriasis,Nephrogenic fibrosing dermopathy
-nejm,all,822,image_822.jpg,Rash,Cutaneous lupus
-nejm,all,823,image_823.jpg,Melanoma,Tinea nigra
-nejm,all,824,image_824.jpg,Stroke,Osmotic demyelination syndrome
-nejm,all,825,image_825.jpg,Pneumonia,Emphysematous hepatitis
-nejm,all,826,image_826.jpg,Genital warts,Bowenoid papulosis
-nejm,all,827,image_827.jpg,eczema,IgG and complement deposition at the dermis-epidermis junction
-nejm,all,828,image_828.jpg,Corneal Ulcer,Sjögren's syndrome
-nejm,all,829,image_829.jpg,Cataract,Herpes simplex virus infection
-nejm,all,830,image_830.jpg,eczema,Herpetic whitlow
-nejm,all,831,image_831.jpg,Raynaud's disease,Anticentromere antibody
-nejm,all,832,image_832.jpg,arthritis,Calcinosis
-nejm,all,833,image_833.jpg,Cancer,Retinal detachment
-nejm,all,834,image_834.jpg,Aneurysm,Binocular visual loss
-nejm,all,835,image_835.jpg,alopecia,Syphilitic alopecia
-nejm,all,836,image_836.jpg,Pneumonia,Constrictive pericarditis
-nejm,all,837,image_837.jpg,Cancer,Button magnets in the nasal cavity
-nejm,all,838,image_838.jpg,Staphylococcus aureus,Testing for bacterial and viral respiratory pathogens
-nejm,all,839,image_839.jpg,Cerebral edema,Bone marrow hyperplasia
-nejm,all,840,image_840.jpg,Genital warts,Condyloma acuminatum
-nejm,all,841,image_841.jpg,Appendicitis,Emphysematous pyelonephritis
-nejm,all,842,image_842.jpg,Fracture,Delay in surgical intervention >24 hours
-nejm,all,843,image_843.jpg,Liver Cancer,Pheochromocytoma
-nejm,all,844,image_844.jpg,Mycosis fungoides,Cryptococcus neoformans
-nejm,all,845,image_845.jpg,Skin tag,Lipodystrophy
-nejm,all,846,image_846.jpg,Bacterial infection,Transmission is associated with aerosolized contaminated soil exposure.
-nejm,all,847,image_847.jpg,Eczema,Zinc deficiency
-nejm,all,848,image_848.jpg,Onychomycosis,Psoriasis
-nejm,all,849,image_849.jpg,Papilloma,Cutaneous leishmaniasis
-nejm,all,850,image_850.jpg,Cataract,Retinal ischemia
-nejm,all,851,image_851.jpg,Papulonecrotic glycogen storage disease,Rat bite fever
-nejm,all,852,image_852.jpg,Bunions,Arterial insufficiency
-nejm,all,853,image_853.jpg,Glaucoma,Ochronosis
-nejm,all,854,image_854.jpg,bleeding,Adverse reaction to systemic antibiotics
-nejm,all,855,image_855.jpg,Eczema,Necrobiosis lipoidica diabeticorum
-nejm,all,856,image_856.jpg,Malignant tumor,Invasive ductal carcinoma
-nejm,all,857,image_857.jpg,Melanoma,Reactive perforating collagenosis
-nejm,all,858,image_858.jpg,Conjunctivitis,Skull fracture
-nejm,all,859,image_859.jpg,Oral thrush,Herpes zoster
-nejm,all,860,image_860.jpg,Psoriasis,Lichen planus
-nejm,all,861,image_861.jpg,Crohn's disease,Multiple endocrine neoplasia type 1
-nejm,all,862,image_862.jpg,Psoriasis,Necrolytic migratory erythema
-nejm,all,863,image_863.jpg,Pneumonia,Thoracic endometriosis
-nejm,all,864,image_864.jpg,Varicose veins,Lipoatrophy
-nejm,all,865,image_865.jpg,Melanoma,Wound culture
-nejm,all,866,image_866.jpg,Cataract,Necrotizing anterior scleritis
-nejm,all,867,image_867.jpg,Blepharitis,Lymphoma
-nejm,all,868,image_868.jpg,Cataract,Carotid cavernous fistula
-nejm,all,869,image_869.jpg,Eczema,Henoch-Schönlein purpura
-nejm,all,870,image_870.jpg,Infection,Acral lentiginous melanoma
-nejm,all,871,image_871.jpg,Cancer,Doxorubicin
-nejm,all,872,image_872.jpg,Psoriasis,Generalized granuloma annulare
-nejm,all,873,image_873.jpg,Atrial fibrillation,Arrhythmogenic right ventricular cardiomyopathy
-nejm,all,874,image_874.jpg,Pneumonia,Tuberculosis
-nejm,all,875,image_875.jpg,Eczema,Amoxicillin rash in infectious mononucleosis
-nejm,all,876,image_876.jpg,Lymphedema,Baker's cyst
-nejm,all,877,image_877.jpg,Meningitis,Arachnoid cyst
-nejm,all,878,image_878.jpg,Lymphoma,Naegleria fowleri
-nejm,all,879,image_879.jpg,Bacterial infection,Strongyloides stercoralis
-nejm,all,880,image_880.jpg,Pneumonia,Duodenal atresia
-nejm,all,881,image_881.jpg,Cancer,Tympanic hyperectasis
-nejm,all,882,image_882.jpg,Papulonodular,Disseminated varicella infection
-nejm,all,883,image_883.jpg,arthritis,Ehlers-Danlos syndrome
-nejm,all,884,image_884.jpg,Eczema,Bedbug bites
-nejm,all,885,image_885.jpg,Lung cancer,Actinomycosis
-nejm,all,886,image_886.jpg,Pneumonia,Cardiac tamponade
-nejm,all,887,image_887.jpg,Cataract,Ectopia lentis
-nejm,all,888,image_888.jpg,Pneumothorax,Polysomnography
-nejm,all,889,image_889.jpg,Cancer,Monosodium urate
-nejm,all,890,image_890.jpg,Bunions,Cholesterol embolization
-nejm,all,891,image_891.jpg,Pneumonia,Giant Coronary Aneurysm
-nejm,all,892,image_892.jpg,Eczema,Creatine kinase
-nejm,all,893,image_893.jpg,Cancer,Kaposi’s sarcoma
-nejm,all,894,image_894.jpg,NailFungus,Zidovudine
-nejm,all,895,image_895.jpg,Erythema,Hemophilia A
-nejm,all,896,image_896.jpg,Malaria,Capnocytophaga canimorsus
-nejm,all,897,image_897.jpg,Pneumonia,Idiopathic pulmonary fibrosis
-nejm,all,898,image_898.jpg,cardiomyopathy,Superior vena cava syndrome
-nejm,all,899,image_899.jpg,hematoma,Gout nodulosis
-nejm,all,900,image_900.jpg,Cataract,Orbital metastasis
-nejm,all,901,image_901.jpg,Candidiasis,Herpetic glossitis
-nejm,all,902,image_902.jpg,Rash,Fracture of the temporal bone
-nejm,all,903,image_903.jpg,Bunions,Extrapulmonary manifestation of tuberculosis
-nejm,all,904,image_904.jpg,Retinopathy,Papilledema
-nejm,all,905,image_905.jpg,Corneal Ulcer,Intraocular parasite infection
-nejm,all,906,image_906.jpg,Pneumonia,Voriconazole
-nejm,all,907,image_907.jpg,Psoriasis,Porphyria cutanea tarda
-nejm,all,908,image_908.jpg,Malaria,Plasmodium vivax
-nejm,all,909,image_909.jpg,Atrial fibrillation,Left anterior descending artery
-nejm,all,910,image_910.jpg,Anemia,Lead poisoning
-nejm,all,911,image_911.jpg,Glaucoma,Symblepharon
-nejm,all,912,image_912.jpg,Cancer,Pelvic spleen
-nejm,all,913,image_913.jpg,Periodontitis,COPD
-nejm,all,914,image_914.jpg,Lymphoma,Granulomatous amebic encephalitis
-nejm,all,915,image_915.jpg,Onychomycosis,Tuberous sclerosis
-nejm,all,916,image_916.jpg,Lymphedema,Familial multiple lipomatosis
-nejm,all,917,image_917.jpg,Atrial fibrillation,Uremic pericarditis
-nejm,all,918,image_918.jpg,Lupus,Cold agglutinin disease
-nejm,all,919,image_919.jpg,arthritis,Calciphylaxis
-nejm,all,920,image_920.jpg,Vitiligo,Pigmentary mosaicism
-nejm,all,921,image_921.jpg,cancer,Mycoplasma pneumoniae-associated mucositis
-nejm,all,922,image_922.jpg,Fungal infection,Malignant melanoma
-nejm,all,923,image_923.jpg,Cervical spondylosis,Cervical spondyloarthropathy
-nejm,all,924,image_924.jpg,Pneumonia,Chronic eosinophilic pneumonia
-nejm,all,925,image_925.jpg,Onychomycosis,Yellow-nail syndrome
-nejm,all,926,image_926.jpg,Eczema,Streptococcal cellulitis with lymphangitis
-nejm,all,927,image_927.jpg,Cancer,Lepromatous Leprosy
-nejm,all,928,image_928.jpg,goiter,Ectopic thyroid
-nejm,all,929,image_929.jpg,Psoriasis,Leukemia cutis
-nejm,all,930,image_930.jpg,Caries,Pituitary tumor
-nejm,all,931,image_931.jpg,Ganglion,Coronary angiography
-nejm,all,932,image_932.jpg,Herpes,Secondary syphilis
-nejm,all,933,image_933.jpg,Pneumonia,Pneumopericardium
-nejm,all,934,image_934.jpg,Stroke,Stroke
-nejm,all,935,image_935.jpg,Dermatitis,Porphyria cutanea tarda
-nejm,all,936,image_936.jpg,Osteosarcoma,Synovial chondromatosis
-nejm,all,937,image_937.jpg,Psoriasis,Endocarditis
-nejm,all,938,image_938.jpg,Herpes,Bacterial dermatitis
-nejm,all,939,image_939.jpg,alopecia,Hypothyroidism
-nejm,all,940,image_940.jpg,Rheumatoid arthritis,Diabetes mellitus
-nejm,all,941,image_941.jpg,Cancer,Acute esophageal necrosis
-nejm,all,942,image_942.jpg,Stroke,Chelation therapy
-nejm,all,943,image_943.jpg,Pneumonia,Diaphragmatic rupture
-nejm,all,944,image_944.jpg,Cancer,Placenta increta
-nejm,all,945,image_945.jpg,Lichen simplex chronicus,Erythema ab igne
-nejm,all,946,image_946.jpg,Psoriasis,Erythromelalgia
-nejm,all,947,image_947.jpg,Lichen planus,Pearly penile papules
-nejm,all,1,image_1.jpg,"B: Hand, foot, and mouth disease","Hand, foot, and mouth disease"
-nejm,all,2,image_2.jpg,D: Lyme disease,Tularemia
-nejm,all,3,image_3.jpg,D: Lichen planus,Dermatomyositis
-nejm,all,4,image_4.jpg,D: Retropharyngeal abscess,Epiglottitis
-nejm,all,5,image_5.jpg,B: Food allergy,Frey’s syndrome
-nejm,all,6,image_6.jpg,A: Uniocular blindness,Hemiplegia
-nejm,all,7,image_7.jpg,D: Pericardial effusion,Paraesophageal hernia
-nejm,all,8,image_8.jpg,C: Meckel's diverticulitis,Pneumatosis intestinalis
-nejm,all,9,image_9.jpg,B: Separation of the pupil,Separation of the iris
-nejm,all,10,image_10.jpg,D: Polycystic liver disease,Polycystic liver disease
-nejm,all,11,image_11.jpg,B: Lepromatous leprosy,Lepromatous leprosy
-nejm,all,12,image_12.jpg,E: Miliary tuberculosis,Chondroblastic osteosarcoma
-nejm,all,13,image_13.jpg,A: Pseudoclubbing,Pseudoclubbing
-nejm,all,14,image_14.jpg,C: Primary hyperoxaluria,Primary hyperoxaluria
-nejm,all,15,image_15.jpg,E: Small bowel obstruction,Cecal volvulus
-nejm,all,16,image_16.jpg,E: Varicella,Varicella
-nejm,all,17,image_17.jpg,C: Middle cerebral artery stroke,Metronidazole-associated encephalopathy
-nejm,all,18,image_18.jpg,B: Knife-cut ulcers from Crohn’s disease,Knife-cut ulcers from Crohn’s disease
-nejm,all,19,image_19.jpg,B: Left fourth cranial nerve palsy,Right sixth cranial nerve palsy
-nejm,all,20,image_20.jpg,B: Punctate palmoplantar keratoderma,Punctate palmoplantar keratoderma
-nejm,all,21,image_21.jpg,C: Choroideremia,Coloboma
-nejm,all,22,image_22.jpg,C: Scleroderma,Chemotherapy
-nejm,all,23,image_23.jpg,D: Multiple liver metastases,Multiple biliary hamartomas
-nejm,all,24,image_24.jpg,E: Urticaria pigmentosa,Graft-versus-host disease
-nejm,all,25,image_25.jpg,A: Blastomycosis,Celiac disease
-nejm,all,26,image_26.jpg,D: Pyogenic granuloma,Amelanotic melanoma
-nejm,all,27,image_27.jpg,C,Thrombotic thrombocytopenic purpura
-nejm,all,28,image_28.jpg,A: Intracranial hemorrhage,Meningioma
-nejm,all,29,image_29.jpg,D: Inguinal hernia,Metastatic inguinal lymphadenopathy
-nejm,all,30,image_30.jpg,E: Conjunctival melanoma,Minocycline-induced pigmentation
-nejm,all,31,image_31.jpg,B: Psoriasis,Scabies
 nejm,all,32,image_32.jpg,Fibrous dysplasia,Osteopetrosis
-nejm,all,33,image_33.jpg,D: Lipoid pneumonia,Desquamative interstitial pneumonia
-nejm,all,34,image_34.jpg,A: Calciphylaxis,Waldenstrom's macroglobulinemia
-nejm,all,35,image_35.jpg,E: Cutaneous leishmaniasis,Esophagogastric bypass
-nejm,all,36,image_36.jpg,C: Larva currens from Strongyloides,Larva currens from Strongyloides
-nejm,all,37,image_37.jpg,B: Emphysematous pyelonephritis,Duodenal perforation
+nejm,all,33,image_33.jpg,Diffuse alveolar hemorrhage,Desquamative interstitial pneumonia
+nejm,all,34,image_34.jpg,Calciphylaxis,Waldenstrom's macroglobulinemia
+nejm,all,35,image_35.jpg,Cutaneous leishmaniasis,Esophagogastric bypass
+nejm,all,36,image_36.jpg,Larva currens from Strongyloides,Larva currens from Strongyloides
+nejm,all,37,image_37.jpg,Emphysematous pyelonephritis,Duodenal perforation
 nejm,all,38,image_38.jpg,Eclampsia,Adrenal mass
-nejm,all,39,image_39.jpg,A: Epidermolysis bullosa,Hereditary hemorrhagic telangiectasia
-nejm,all,40,image_40.jpg,A: Early cataract,Amiodarone-induced vortex keratopathy
-nejm,all,41,image_41.jpg,E: Primary central nervous system lymphoma,Metastatic adenocarcinoma
-nejm,all,42,image_42.jpg,D: Malaria,Babesiosis
-nejm,all,43,image_43.jpg,D: Keratoconjunctivitis sicca,Vernal keratoconjunctivitis
-nejm,all,44,image_44.jpg,C: Psoriasis,Psoriasis
-nejm,all,45,image_45.jpg,C: Age-related macular degeneration,Hydroxychloroquine toxicity
-nejm,all,46,image_46.jpg,D: Torus palatinus,Torus palatinus
-nejm,all,47,image_47.jpg,C: Levetiracetam,Dexamethasone
-nejm,all,48,image_48.jpg,A: Diaphragmatic hernia,Acute pancreatitis
-nejm,all,49,image_49.jpg,B: Scrofula,Bleeding into a thyroid nodule
-nejm,all,50,image_50.jpg,D: Pyogenic granuloma,Pyogenic granuloma
-nejm,all,51,image_51.jpg,D: Osteoporosis,Assault
-nejm,all,52,image_52.jpg,D: Tinea versicolor,Tuberculoid leprosy
-nejm,all,53,image_53.jpg,C: Thymoma,Vein-graft aneurysms
-nejm,all,54,image_54.jpg,B: Cornea verticillata,Iris atrophy
-nejm,all,55,image_55.jpg,C: Iron deficiency,Iron deficiency
-nejm,all,56,image_56.jpg,B: Staphylococcal scalded skin syndrome,Leprosy
-nejm,all,57,image_57.jpg,C: Lichen planus,Hypercholesterolemia
-nejm,all,58,image_58.jpg,A: Chronic kidney disease,Chronic kidney disease
-nejm,all,59,image_59.jpg,E: Achalasia,Achalasia
-nejm,all,60,image_60.jpg,C: Ocular toxoplasmosis,Malignant hypertension
-nejm,all,61,image_61.jpg,D: Kaposi's sarcoma,Cryptococcosis
-nejm,all,62,image_62.jpg,E: Web neck,Lisch nodules
-nejm,all,63,image_63.jpg,C: Systemic sclerosis,Acromegaly
-nejm,all,64,image_64.jpg,C: Left-sided superior vena cava,Left-sided superior vena cava
-nejm,all,65,image_65.jpg,A: Blastomyces dermatitidis,Blastomyces dermatitidis
-nejm,all,66,image_66.jpg,A: Infectious perichondritis,Relapsing polychondritis
-nejm,all,67,image_67.jpg,B: Scrofula,Scrofula
-nejm,all,68,image_68.jpg,B: Odontoid fracture (dens fracture),Traumatic spondylolisthesis of the axis (hangman’s fracture)
-nejm,all,69,image_69.jpg,C: Getting bitten by a sandfly,Gardening
-nejm,all,70,image_70.jpg,C: Hematoma,Melanoma
-nejm,all,71,image_71.jpg,C: Cutaneous anthrax,Actinomycosis
-nejm,all,72,image_72.jpg,D,Itraconazole
-nejm,all,73,image_73.jpg,B: Chiari I malformation,Chiari I malformation
-nejm,all,74,image_74.jpg,D: Smoker’s melanosis,Primary adrenal insufficiency (Addison’s disease)
-nejm,all,75,image_75.jpg,C: Herpes zoster,Herpes zoster
-nejm,all,76,image_76.jpg,C: Conjunctival hemorrhage,Melanoma
-nejm,all,77,image_77.jpg,A: Retinoblastoma,Fungal endophthalmitis
-nejm,all,78,image_78.jpg,D: Tinea corporis,Urticaria
-nejm,all,79,image_79.jpg,D: Gastrospenic fistulization,Gastrospenic fistulization
-nejm,all,80,image_80.jpg,C: Dentinogenesis imperfecta,Neonatal hyperbilirubinemia
-nejm,all,81,image_81.jpg,D: Lichen planus,Lichen planus
-nejm,all,82,image_82.jpg,B: Hydrocele,Inguinal hernia
-nejm,all,83,image_83.jpg,C: Hematoma,Insulin-induced lipohypertrophy
-nejm,all,84,image_84.jpg,E: Scheduled nebulized bronchodilators,Cessation of nitrofurantoin
-nejm,all,85,image_85.jpg,C: Erythema annulare,Fixed drug eruption
-nejm,all,86,image_86.jpg,A: Superior vena cava syndrome,Giant right atrium
-nejm,all,87,image_87.jpg,E: Rhinophyma,Lupus pernio
-nejm,all,88,image_88.jpg,E: Von Hippel-Lindau disease,Von Hippel-Lindau disease
-nejm,all,89,image_89.jpg,C: Furunculosis,Myiasis
-nejm,all,90,image_90.jpg,E: Left testicular torsion,Left testicular torsion
-nejm,all,91,image_91.jpg,B: Neoplasm,Pulmonary hypertension
-nejm,all,92,image_92.jpg,E,Metastasis of colorectal cancer
-nejm,all,93,image_93.jpg,E: Staphylococcus epidermidis,Mycobacterium marinum
-nejm,all,94,image_94.jpg,A: Mucocele,Syphilitic gumma
-nejm,all,95,image_95.jpg,D: Osteopetrosis,Gaucher's disease
-nejm,all,96,image_96.jpg,C: Renal artery infarction,Cholesterol crystal embolization
-nejm,all,97,image_97.jpg,E: Condyloma acuminatum,Pearly penile papules
-nejm,all,98,image_98.jpg,E: Takayasu arteritis,Polyarteritis nodosa
-nejm,all,99,image_99.jpg,C: Sarcoidosis,End-stage renal disease
-nejm,all,100,image_100.jpg,B: Abscess,Abscess
-nejm,all,101,image_101.jpg,B: Eczema herpeticum,Eczema herpeticum
-nejm,all,102,image_102.jpg,A: Cold agglutinin syndrome,Cold agglutinin syndrome
-nejm,all,103,image_103.jpg,C: Hidradenitis suppurativa,Scrotal calcinosis
-nejm,all,104,image_104.jpg,D: Abdominal aortic aneurysm,Takayasu’s arteritis
-nejm,all,105,image_105.jpg,D: Ectopic gallbladder,Gallbladder volvulus
-nejm,all,106,image_106.jpg,E: Vesicolithiasis,Bladder diverticula
-nejm,all,107,image_107.jpg,E: Pancreatic adenocarcinoma with gastric invasion,Gastrogastric intussusception
-nejm,all,108,image_108.jpg,D: Pneumatosis cystoides coli,Pneumatosis cystoides coli
-nejm,all,109,image_109.jpg,A: Prompt coronary revascularization,Pericardiocentesis
-nejm,all,110,image_110.jpg,B: Palmoplantar psoriasis,Poststreptococcal pustulosis
-nejm,all,111,image_111.jpg,C: Osteoarthritis,Osteoarthritis
-nejm,all,112,image_112.jpg,C: Palatine tonsillitis,Antrochoanal polyp
-nejm,all,113,image_113.jpg,B: Filariasis,Trypanosomiasis
-nejm,all,114,image_114.jpg,E: Hepatic cyst rupture,Emphysematous cholecystitis
-nejm,all,115,image_115.jpg,D: Peutz-Jeghers syndrome,Peutz-Jeghers syndrome
-nejm,all,116,image_116.jpg,E: Tuberculous lymphadenitis,Chronic granulomatous disease
-nejm,all,117,image_117.jpg,B: Myelodysplastic syndrome,Decompensated cirrhosis
-nejm,all,118,image_118.jpg,A: Gastric bypass,Gastric bypass
-nejm,all,119,image_119.jpg,B: Erythema multiforme,Sweet’s syndrome
-nejm,all,120,image_120.jpg,C: Type III hypersensitivity reaction,Type III hypersensitivity reaction
-nejm,all,121,image_121.jpg,D: Sulfonylurea,Alpha-glucosidase inhibitor
-nejm,all,122,image_122.jpg,B: Glioblastoma multiforme,Thrombosed intracranial aneurysm
-nejm,all,123,image_123.jpg,B: Leber hereditary optic neuropathy,Multiple sclerosis
-nejm,all,124,image_124.jpg,B: Angioneurotic edema,Ludwig's angina
-nejm,all,125,image_125.jpg,D: Tinea corporis,Syphilis
-nejm,all,126,image_126.jpg,E: Retinal vein thrombosis,Malignant hypertension
-nejm,all,127,image_127.jpg,C: Praziquantel,Praziquantel
-nejm,all,128,image_128.jpg,E: Pruritic urticarial papules and plaques of pregnancy (PUPPP),Pemphigoid gestationis
-nejm,all,129,image_129.jpg,A: Basal-cell carcinoma,Squamous-cell carcinoma
-nejm,all,130,image_130.jpg,E: Small-bowel volvulus,Small-bowel volvulus
-nejm,all,131,image_131.jpg,D: Toxic epidermal necrolysis,Toxic shock syndrome
-nejm,all,132,image_132.jpg,E: Tracheal perforation,Epiglottitis
-nejm,all,133,image_133.jpg,E: Psoriasis,Chemotherapy treatment
-nejm,all,134,image_134.jpg,D: Middle cerebral artery dissection,Air embolism
-nejm,all,135,image_135.jpg,C: Vitamin A deficiency,Vitamin A deficiency
-nejm,all,136,image_136.jpg,C: Herpes simplex,Anthrax
-nejm,all,137,image_137.jpg,A: Bronchial polyposis,Eosinophilic bronchitis
-nejm,all,138,image_138.jpg,E: MYC,JAK2
-nejm,all,139,image_139.jpg,C: Osteosarcoma,Scleroderma
-nejm,all,140,image_140.jpg,B: Bladder perforation,Emphysematous prostatitis
-nejm,all,141,image_141.jpg,C: Organophosphates,Nitrous oxide
-nejm,all,142,image_142.jpg,A: Closed-angle glaucoma,Malignant hypertension
-nejm,all,143,image_143.jpg,C: Crohn’s disease,Actinomycosis
-nejm,all,144,image_144.jpg,D: Small-bowel obstruction,Sigmoid volvulus
-nejm,all,145,image_145.jpg,D: Gastric pneumatosis,Gastric pneumatosis
-nejm,all,146,image_146.jpg,B: Pinguecula,Conjunctival squamous-cell carcinoma
-nejm,all,147,image_147.jpg,D: Herpes gestationis,Herpes gestationis
-nejm,all,148,image_148.jpg,C: Dyshidrotic eczema,Aquagenic keratoderma
-nejm,all,149,image_149.jpg,C: Keloid,Scrotal calcinosis
-nejm,all,150,image_150.jpg,E: Subglottic stenosis in granulomatosis with polyangiitis,Carcinoma
-nejm,all,151,image_151.jpg,D: Diabetic retinopathy,Lipemia retinalis
-nejm,all,152,image_152.jpg,C: Lead poisoning,Lead poisoning
-nejm,all,153,image_153.jpg,C: Macrolides,Tetracyclines
-nejm,all,154,image_154.jpg,E,Thoracic endometriosis
-nejm,all,155,image_155.jpg,C: Calcium oxalate,Calcium phosphate
-nejm,all,156,image_156.jpg,B: Corneal ulcer,Keratoconus
-nejm,all,157,image_157.jpg,A: Gout,Gout
-nejm,all,158,image_158.jpg,C: Left hypoglossal nerve,Left hypoglossal nerve
-nejm,all,159,image_159.jpg,A: Erythema gyratum repens,Tinea imbricata
-nejm,all,160,image_160.jpg,C: Mosquito,Mosquito
-nejm,all,161,image_161.jpg,D: Self-flagellation,Treatment with bleomycin
-nejm,all,162,image_162.jpg,C: Langerhans-cell histiocytosis,Langerhans-cell histiocytosis
-nejm,all,163,image_163.jpg,E: Toxoplasmosis,Cholesterol embolism
-nejm,all,164,image_164.jpg,D: Onychomycosis,Squamous-cell carcinoma
-nejm,all,165,image_165.jpg,A: Focal segmental glomerulosclerosis,Renal cryptococcosis
-nejm,all,166,image_166.jpg,B: Ingrown toenail,Tungiasis
-nejm,all,167,image_167.jpg,C: Gout,Coronary artery disease
-nejm,all,168,image_168.jpg,D: Liver abscess,Liver abscess
-nejm,all,169,image_169.jpg,C: Interlabial cyst,Hydrocolpos
-nejm,all,170,image_170.jpg,D: Hemianopia,Hemiparesis
-nejm,all,171,image_171.jpg,B: Keratoderma,Keratoderma
-nejm,all,172,image_172.jpg,B: Acute promyelocytic leukemia,Parvovirus B19 infection
-nejm,all,173,image_173.jpg,A: Takayasu's arteritis,Polyarteritis nodosa
-nejm,all,174,image_174.jpg,D: Intestinal malrotation,Pyloric stenosis
-nejm,all,175,image_175.jpg,A: HIV IgG antibody,HIV nucleic acid test
-nejm,all,176,image_176.jpg,A: Urate,Oxalate
-nejm,all,177,image_177.jpg,C: Guttate psoriasis,Pemphigus vulgaris
-nejm,all,178,image_178.jpg,C: Plasmodium falciparum,Trypanosoma brucei
-nejm,all,179,image_179.jpg,D: Cholesterol Embolism,Drug-Eluting Bead Embolism
-nejm,all,180,image_180.jpg,D: Toxocara canis,Dirofilaria repens
-nejm,all,181,image_181.jpg,A: Carcinoma of the tongue,Giant-cell arteritis
-nejm,all,182,image_182.jpg,D: Spinous process avulsion,Atlanto-occipital dislocation
-nejm,all,183,image_183.jpg,B: Cutaneous anthrax,Chickenpox
-nejm,all,184,image_184.jpg,D: Zenker’s diverticulum,Bronchoesophageal fistula
-nejm,all,185,image_185.jpg,E: Williams syndrome,Turner syndrome
-nejm,all,186,image_186.jpg,C: Paget's disease,Paget's disease
-nejm,all,187,image_187.jpg,C: Squamous-cell carcinoma,Squamous-cell carcinoma
-nejm,all,188,image_188.jpg,C: Calcium hydroxyapatite deposition disease,Mycobacterial tenosynovitis due to Mycobacterium avium complex
-nejm,all,189,image_189.jpg,A: Lipoma,Calcinos
-nejm,all,190,image_190.jpg,E: Sialolith,Lipoma
-nejm,all,191,image_191.jpg,D: Familial hypercholesterolemia,Kawasaki's disease
-nejm,all,192,image_192.jpg,D: Multiple bacterial abscesses,Multiple bacterial abscesses
-nejm,all,193,image_193.jpg,C: Hidradenitis suppurativa,Hidradenitis suppurativa
-nejm,all,194,image_194.jpg,C: Thyroglobulin antibodies,Thyrotropin receptor antibodies
-nejm,all,195,image_195.jpg,C: Retained suture,Loa loa
-nejm,all,196,image_196.jpg,D: Pneumopericardium,Pneumopericardium
-nejm,all,197,image_197.jpg,E: Erythema marginatum,Erythema marginatum
-nejm,all,198,image_198.jpg,D: Serpentine supravenous hyperpigmentation,Serpentine supravenous hyperpigmentation
-nejm,all,199,image_199.jpg,D: Psoriasis,Tinea
-nejm,all,200,image_200.jpg,C: Argyll Robertson pupil,Light-near dissociation
-nejm,all,201,image_201.jpg,E: Supernumerary rib,Supernumerary rib
-nejm,all,202,image_202.jpg,A: Polychondritis,Polychondritis
-nejm,all,203,image_203.jpg,E: Multiple myeloma,Hemophagocytosis of sickle cells
-nejm,all,204,image_204.jpg,C: Cushing's syndrome,Hypogonadism
-nejm,all,205,image_205.jpg,E: Pericardial effusion,Esophageal diverticulum
-nejm,all,206,image_206.jpg,C: Hidradinitis suppurativa,Pseudoxanthoma elasticum
-nejm,all,207,image_207.jpg,C: Hereditary hemorrhagic telangiectasia,Hereditary hemorrhagic telangiectasia
-nejm,all,208,image_208.jpg,E: Pulmonary and tricuspid valves,Aortic and mitral valves
-nejm,all,209,image_209.jpg,D: Osteoarthritis,Albright's hereditary osteodystrophy
-nejm,all,210,image_210.jpg,D: Herpetic whitlow,Polyarteritis nodosa
-nejm,all,211,image_211.jpg,C: Osteogenesis imperfecta,Osteogenesis imperfecta
-nejm,all,212,image_212.jpg,D: Benign intracranial hypertension,Normal-pressure hydrocephalus
-nejm,all,213,image_213.jpg,A: Elevated opening pressure,Elevated opening pressure
-nejm,all,214,image_214.jpg,A: Addison's disease,Insulin resistance
-nejm,all,215,image_215.jpg,D: Filariasis,Electrocution
-nejm,all,216,image_216.jpg,C: Myxoid sarcoma,Cysticercosis
-nejm,all,217,image_217.jpg,A: Acute hemorrhagic conjunctivitis,Leptospirosis
-nejm,all,218,image_218.jpg,C: Necrobiosis lipoidica diabeticorum,Ischemic gangrene
-nejm,all,219,image_219.jpg,E: Paget's disease,Carcinoma en cuirasse
-nejm,all,220,image_220.jpg,B: Herpetic whitlow,Scabies
-nejm,all,221,image_221.jpg,C: Ground-glass opacity,Air bronchogram
-nejm,all,222,image_222.jpg,B: Echinococcal cysts,Echinococcal cysts
-nejm,all,223,image_223.jpg,D: Chondrocalcinosis,Chondrocalcinosis
-nejm,all,224,image_224.jpg,B: Myocarditis,Stenosis of the left anterior descending artery
-nejm,all,225,image_225.jpg,C: Keratosis follicularis,Papillomatosis cutis lymphostatica
-nejm,all,226,image_226.jpg,A: Ovarian torsion,Fallopian tube torsion
-nejm,all,227,image_227.jpg,A: Rhinophyma,Rhinophyma
-nejm,all,228,image_228.jpg,A: Chalazion,Dermoid
-nejm,all,229,image_229.jpg,E: Toxic epidermal necrolysis,Erythrodermic psoriasis
-nejm,all,230,image_230.jpg,B: Pinguecula,Prolapse of orbital fat
-nejm,all,231,image_231.jpg,B: Poland syndrome,Poland syndrome
-nejm,all,232,image_232.jpg,E: Lingua villosa nigra,Lingua villosa nigra
-nejm,all,233,image_233.jpg,E: Pericardium,Intercostal muscle
-nejm,all,234,image_234.jpg,A: Gastric bezoar,Gastric cancer
-nejm,all,235,image_235.jpg,A: Anabolic steroid use,Somatotropic pituitary adenoma
-nejm,all,236,image_236.jpg,D: Parvovirus B19,Treponema pallidum
-nejm,all,237,image_237.jpg,A: Gingival candidiasis,Leukemic infiltration of the gingiva
-nejm,all,238,image_238.jpg,B: Necrobiosis lipoidica diabeticorum,Necrolytic migratory erythema
-nejm,all,239,image_239.jpg,C: Closed-angle glaucoma,Waldenström’s macroglobulinemia
-nejm,all,240,image_240.jpg,C: Avascular necrosis of the hip,Open-book fracture
-nejm,all,241,image_241.jpg,A: Tinea barbae,Tinea barbae
-nejm,all,242,image_242.jpg,C: Paronychia,Herpetic whitlow
-nejm,all,243,image_243.jpg,A: Uterine fibroid,Urinary retention
-nejm,all,244,image_244.jpg,D: Pneumothorax,Pneumothorax
-nejm,all,245,image_245.jpg,E: Persistent pupillary membranes,Persistent pupillary membranes
-nejm,all,246,image_246.jpg,A: Odontogenic cutaneous fistula,Odontogenic cutaneous fistula
-nejm,all,247,image_247.jpg,D: Lipodermatosclerosis,Superficial thrombophlebitis
-nejm,all,248,image_248.jpg,D: Molluscum contagiosum,Molluscum contagiosum
-nejm,all,249,image_249.jpg,A: Cutaneous leishmaniasis,Cutaneous leishmaniasis
-nejm,all,250,image_250.jpg,A: Behcet's syndrome,Giant-cell arteritis
-nejm,all,251,image_251.jpg,D: Overuse from manual labor,Antisynthetase syndrome
-nejm,all,252,image_252.jpg,D: Nummular eczema,Nummular eczema
-nejm,all,253,image_253.jpg,B: Cellulitis,Acute lymphangitis
-nejm,all,254,image_254.jpg,A: Cavernous sinus thrombosis,Rheumatoid arthritis
-nejm,all,255,image_255.jpg,E: Tuberculosis of the tongue,Sublingual epidermoid cyst
-nejm,all,256,image_256.jpg,D: Reiter syndrome,Sarcoidosis
-nejm,all,257,image_257.jpg,B: Herpes simplex,Syphilis
-nejm,all,258,image_258.jpg,"B: Small coins (e.g., a penny)",Foreign bodies that have been present for longer than 24 hours
-nejm,all,259,image_259.jpg,D: Electrical alternans,Cardiac allograft
-nejm,all,260,image_260.jpg,C: Phlegmasia cerulea dolens,Phlegmasia cerulea dolens
-nejm,all,261,image_261.jpg,D: Mumps,Measles
-nejm,all,262,image_262.jpg,C: Herpetic keratitis,Vernal conjunctivitis
-nejm,all,263,image_263.jpg,E: Pericardial space,Left ventricle
-nejm,all,264,image_264.jpg,B: Bilirubin,Bilirubin
-nejm,all,265,image_265.jpg,A: Acromegaly,Eisenmenger's syndrome
-nejm,all,266,image_266.jpg,C: Medullary sponge kidney,Page kidney
-nejm,all,267,image_267.jpg,A: Gastric outlet obstruction,Ulcerative colitis
-nejm,all,268,image_268.jpg,A: Geographic tongue,Geographic tongue
-nejm,all,269,image_269.jpg,C: Myelofibrosis,Bone marrow necrosis
-nejm,all,270,image_270.jpg,D: Permethrin,Permethrin
-nejm,all,271,image_271.jpg,A: Cushing's syndrome,Hypothyroidism
-nejm,all,272,image_272.jpg,C: Glaucoma,Preeclampsia
-nejm,all,273,image_273.jpg,C: Pneumatosis cystoides intestinalis,Intestinal lipomatosis
-nejm,all,274,image_274.jpg,B: Hypertensive retinopathy,Cholesterol emboli
-nejm,all,275,image_275.jpg,A: Aphthous stomatitis,Herpes zoster
-nejm,all,276,image_276.jpg,C: Sporotrichosis,Sporotrichosis
-nejm,all,277,image_277.jpg,B: Diabetic retinopathy,Central retinal artery occlusion
-nejm,all,278,image_278.jpg,E: Hematometrocolpos,Hematometrocolpos
-nejm,all,279,image_279.jpg,E: Systemic lupus erythematosus,Superior vena cava syndrome
-nejm,all,280,image_280.jpg,D: Myeloma,Cirrhosis
-nejm,all,281,image_281.jpg,D: Ménétrier’s disease,Ménétrier’s disease
-nejm,all,282,image_282.jpg,E: Pseudothrombocytosis due to red cell fragments,Pseudothrombocytosis due to red cell fragments
-nejm,all,283,image_283.jpg,A: Anterior uveitis,Carotid cavernous sinus fistula
-nejm,all,284,image_284.jpg,B: Bronchiectasis,Plastic bronchitis
-nejm,all,285,image_285.jpg,B: Hernia,Intraabdominal cancer
-nejm,all,286,image_286.jpg,B: Blepharitis,Rosacea
-nejm,all,287,image_287.jpg,A: Abdominal aortic aneurysm,Urachal mucinous cystic tumor
-nejm,all,288,image_288.jpg,D: Quadriplegia,Quadriplegia
-nejm,all,289,image_289.jpg,E: Temporal arteritis,Marfan’s syndrome
-nejm,all,290,image_290.jpg,C: Infectious mononucleosis,Sclerosing sialadenitis
-nejm,all,291,image_291.jpg,E: Cardiac amyloidosis,Angiosarcoma
-nejm,all,292,image_292.jpg,C,Chronic venous insufficiency
-nejm,all,293,image_293.jpg,D: Retrocuspid papillae,Torus mandibularis
-nejm,all,294,image_294.jpg,A: Dermoid cyst,Spindle-cell sarcoma
-nejm,all,295,image_295.jpg,C: Stomach,Stomach
-nejm,all,296,image_296.jpg,D: Cogan’s syndrome,Cogan’s syndrome
-nejm,all,297,image_297.jpg,A: Racemic epinephrine,Ipratropium
-nejm,all,298,image_298.jpg,E: Pustular psoriasis,Eruptive xanthomas
-nejm,all,299,image_299.jpg,D: Sialolithiasis,Iodide-associated sialadenitis
-nejm,all,300,image_300.jpg,E: Tuberculous peritonitis,Encapsulating peritoneal sclerosis
-nejm,all,301,image_301.jpg,E: Red-cell transketolase,Calcitonin
-nejm,all,302,image_302.jpg,C: Paget’s disease,Primary hypertrophic osteoarthropathy
-nejm,all,303,image_303.jpg,E: Langerhans cell histiocytosis,Congenital cytomegalovirus infection
-nejm,all,304,image_304.jpg,E: Left anterior descending artery occlusion,Right coronary artery occlusion
-nejm,all,305,image_305.jpg,C: Zenker’s Diverticulum,Tracheal agenesis with bronchoesophageal fistula
-nejm,all,306,image_306.jpg,C: Anti-tissue transglutaminase antibody,Angiotensin-converting enzyme
-nejm,all,307,image_307.jpg,D: Shingles,Neurofibromatosis
-nejm,all,308,image_308.jpg,A: Measles,Systemic lupus erythematosus
-nejm,all,309,image_309.jpg,E: Nasal septal abscess,Granulomatosis with polyangiitis
-nejm,all,310,image_310.jpg,A: Cisplatin overdose,Ethylene glycol poisoning
-nejm,all,311,image_311.jpg,A: Ascariasis,Ascariasis
-nejm,all,312,image_312.jpg,C: Adenovirus,Group A streptococcus
-nejm,all,313,image_313.jpg,D: Retinoblastoma,Shaken-baby syndrome
-nejm,all,314,image_314.jpg,A: Bullous impetigo,Exanthematous pustulosis
-nejm,all,315,image_315.jpg,E: Scarlet fever,Rubella
-nejm,all,316,image_316.jpg,D: Tinea manuum,Cutaneous leishmaniasis
-nejm,all,317,image_317.jpg,D: Radiation dermatitis,Thrombotic vasculopathy
-nejm,all,318,image_318.jpg,E: Scalded skin syndrome,Herpes simplex virus infection
-nejm,all,319,image_319.jpg,C: Barrett's esophagus,Eosinophilic esophagitis
-nejm,all,320,image_320.jpg,E: Periodontal abscess,Prevertebral air
-nejm,all,321,image_321.jpg,C: Chickens,Cats
-nejm,all,322,image_322.jpg,E: Portal hypertension,Histoplasmosis
-nejm,all,323,image_323.jpg,B: Ascariasis,Paragonimiasis
-nejm,all,324,image_324.jpg,D: Fibromuscular dysplasia,Fibromuscular dysplasia
-nejm,all,325,image_325.jpg,A: Condylomata acuminata,Condylomata lata
-nejm,all,326,image_326.jpg,D: Osteopetrosis,Adrenal insufficiency
-nejm,all,327,image_327.jpg,E: Vitamin B12 deficiency,Vitamin B12 deficiency
-nejm,all,328,image_328.jpg,C: Ostraceous psoriasis,Ostraceous psoriasis
-nejm,all,329,image_329.jpg,D: Condyloma acuminatum,Squamous-cell carcinoma
-nejm,all,330,image_330.jpg,D: Bilateral adrenal hyperplasia,Primary adrenal lymphoma
-nejm,all,331,image_331.jpg,A: Spider angioma,Spider angioma
-nejm,all,332,image_332.jpg,E: Yaws,Actinomycetoma
-nejm,all,333,image_333.jpg,D: Malignant melanoma,Halo nevus
-nejm,all,334,image_334.jpg,B: Lupus pernio,Amiodarone-induced skin discoloration
-nejm,all,335,image_335.jpg,B: Scurvy,Leukemia
-nejm,all,336,image_336.jpg,A: Babesiosis,Tickborne relapsing fever
-nejm,all,337,image_337.jpg,C: Erythema gyratum repens,Erythema gyratum repens
-nejm,all,338,image_338.jpg,B: Acute arterial insufficiency,Deep venous thrombosis
-nejm,all,339,image_339.jpg,C: Mycoplasmal pneumonia,Bordetella pertussis
-nejm,all,340,image_340.jpg,B: Chronic laxative use,Ingestion of a heavy metal
-nejm,all,341,image_341.jpg,E: Tophaceous gout,Tophaceous gout
-nejm,all,342,image_342.jpg,C: Intussusception,Internal hernia
-nejm,all,343,image_343.jpg,B: Colocolonic intussusception,Colocolonic intussusception
-nejm,all,344,image_344.jpg,C: Heme pigment,Cholesterol crystals
-nejm,all,345,image_345.jpg,D: Pulmonary-artery dissection,Pulmonary-artery dissection
-nejm,all,346,image_346.jpg,C,Beta-thalassemia
-nejm,all,347,image_347.jpg,"C: Consumption of undercooked, infected fish","Consumption of undercooked, infected beef"
-nejm,all,348,image_348.jpg,D: Pemphigus vulgaris,Neutrophilic dermatosis
-nejm,all,349,image_349.jpg,C: Ferritin,Alkaline phosphatase
-nejm,all,350,image_350.jpg,D: Ogilvie’s syndrome,Ogilvie’s syndrome
-nejm,all,351,image_351.jpg,B: Melanoma,Toxoplasmosis
-nejm,all,352,image_352.jpg,C: Ochronosis,Fluorouracil side effect
-nejm,all,353,image_353.jpg,D: Furuncular myiasis,Furuncular myiasis
-nejm,all,354,image_354.jpg,B: Paget's disease,Sarcoidosis
-nejm,all,355,image_355.jpg,A: Herpes simplex keratitis,Radial keratotomy
-nejm,all,356,image_356.jpg,C: Nephrostomy tube,Uterine perforation
-nejm,all,357,image_357.jpg,E: Hashimoto’s encephalitis,Creutzfeld-Jakob disease
+nejm,all,39,image_39.jpg,Peutz-Jeghers syndrome,Hereditary hemorrhagic telangiectasia
+nejm,all,40,image_40.jpg,Early cataract,Amiodarone-induced vortex keratopathy
+nejm,all,41,image_41.jpg,Primary central nervous system lymphoma,Metastatic adenocarcinoma
+nejm,all,42,image_42.jpg,Malaria,Babesiosis
+nejm,all,43,image_43.jpg,Blepharitis,Vernal keratoconjunctivitis
+nejm,all,44,image_44.jpg,Psoriasis,Psoriasis
+nejm,all,45,image_45.jpg,Age-related macular degeneration,Hydroxychloroquine toxicity
+nejm,all,46,image_46.jpg,Torus palatinus,Torus palatinus
+nejm,all,47,image_47.jpg,Temozolomide,Dexamethasone
+nejm,all,48,image_48.jpg,Diaphragmatic hernia,Acute pancreatitis
+nejm,all,49,image_49.jpg,Scrofula,Bleeding into a thyroid nodule
+nejm,all,50,image_50.jpg,Pyogenic granuloma,Pyogenic granuloma
+nejm,all,51,image_51.jpg,Osteoporosis,Assault
+nejm,all,52,image_52.jpg,Erythema multiforme,Tuberculoid leprosy
+nejm,all,53,image_53.jpg,Vein-graft aneurysms,Vein-graft aneurysms
+nejm,all,54,image_54.jpg,Cornea verticillata,Iris atrophy
+nejm,all,55,image_55.jpg,Pseudohypoparathyroidism,Iron deficiency
+nejm,all,56,image_56.jpg,Staphylococcal scalded skin syndrome,Leprosy
+nejm,all,57,image_57.jpg,Pompe's disease,Hypercholesterolemia
+nejm,all,58,image_58.jpg,Systemic infection,Chronic kidney disease
+nejm,all,59,image_59.jpg,Achalasia,Achalasia
+nejm,all,60,image_60.jpg,Ocular toxoplasmosis,Malignant hypertension
+nejm,all,61,image_61.jpg,Kaposi's sarcoma,Cryptococcosis
+nejm,all,62,image_62.jpg,Web neck,Lisch nodules
+nejm,all,63,image_63.jpg,Systemic sclerosis,Acromegaly
+nejm,all,64,image_64.jpg,Left-sided superior vena cava,Left-sided superior vena cava
+nejm,all,65,image_65.jpg,Blastomyces dermatitidis,Blastomyces dermatitidis
+nejm,all,66,image_66.jpg,Relapsing polychondritis,Relapsing polychondritis
+nejm,all,67,image_67.jpg,Scrofula,Scrofula
+nejm,all,68,image_68.jpg,Odontoid fracture (dens fracture),Traumatic spondylolisthesis of the axis (hangman’s fracture)
+nejm,all,69,image_69.jpg,Getting bitten by a sandfly,Gardening
+nejm,all,70,image_70.jpg,Hematoma,Melanoma
+nejm,all,71,image_71.jpg,Cutaneous anthrax,Actinomycosis
+nejm,all,72,image_72.jpg,Itraconazole,Itraconazole
+nejm,all,73,image_73.jpg,Chiari I malformation,Chiari I malformation
+nejm,all,74,image_74.jpg,Smoker's melanosis,Primary adrenal insufficiency (Addison’s disease)
+nejm,all,75,image_75.jpg,Superficial pyoderma,Herpes zoster
+nejm,all,76,image_76.jpg,Conjunctival hemorrhage,Melanoma
+nejm,all,77,image_77.jpg,Retinoblastoma,Fungal endophthalmitis
+nejm,all,78,image_78.jpg,Psoriasis,Urticaria
+nejm,all,79,image_79.jpg,Gastrospenic fistulization,Gastrospenic fistulization
+nejm,all,80,image_80.jpg,Dentinogenesis imperfecta,Neonatal hyperbilirubinemia
+nejm,all,81,image_81.jpg,Drug eruption,Lichen planus
+nejm,all,82,image_82.jpg,Inguinal hernia,Inguinal hernia
+nejm,all,83,image_83.jpg,Abscess,Insulin-induced lipohypertrophy
+nejm,all,84,image_84.jpg,Scheduled nebulized bronchodilators,Cessation of nitrofurantoin
+nejm,all,85,image_85.jpg,Erythema annulare,Fixed drug eruption
+nejm,all,86,image_86.jpg,Superior vena cava syndrome,Giant right atrium
+nejm,all,87,image_87.jpg,Rhinophyma,Lupus pernio
+nejm,all,88,image_88.jpg,Von Hippel-Lindau disease,Von Hippel-Lindau disease
+nejm,all,89,image_89.jpg,Furunculosis,Myiasis
+nejm,all,90,image_90.jpg,Isolated right hydrocele,Left testicular torsion
+nejm,all,91,image_91.jpg,Pulmonary hypertension,Pulmonary hypertension
+nejm,all,92,image_92.jpg,Gingival hyperplasia secondary to chemotherapy,Metastasis of colorectal cancer
+nejm,all,93,image_93.jpg,Erysipelothrix rhusiopathiae,Mycobacterium marinum
+nejm,all,94,image_94.jpg,Mucocele,Syphilitic gumma
+nejm,all,95,image_95.jpg,Osteopetrosis,Gaucher's disease
+nejm,all,96,image_96.jpg,Ischemic acute tubular necrosis,Cholesterol crystal embolization
+nejm,all,97,image_97.jpg,Condyloma acuminatum,Pearly penile papules
+nejm,all,98,image_98.jpg,Takayasu arteritis,Polyarteritis nodosa
+nejm,all,99,image_99.jpg,Sarcoidosis,End-stage renal disease
+nejm,all,100,image_100.jpg,Abscess,Abscess
+nejm,all,101,image_101.jpg,Impetigo,Eczema herpeticum
+nejm,all,102,image_102.jpg,Cold agglutinin syndrome,Cold agglutinin syndrome
+nejm,all,103,image_103.jpg,Epidermoid cysts,Scrotal calcinosis
+nejm,all,104,image_104.jpg,Abdominal aortic aneurysm,Takayasu’s arteritis
+nejm,all,105,image_105.jpg,Cholangitis,Gallbladder volvulus
+nejm,all,106,image_106.jpg,Vesicolithiasis,Bladder diverticula
+nejm,all,107,image_107.jpg,Acute necrotizing pancreatitis,Gastrogastric intussusception
+nejm,all,108,image_108.jpg,Diverticulosis,Pneumatosis cystoides coli
+nejm,all,109,image_109.jpg,Prompt coronary revascularization,Pericardiocentesis
+nejm,all,110,image_110.jpg,Scabies,Poststreptococcal pustulosis
+nejm,all,111,image_111.jpg,Psoriatic arthropathy,Osteoarthritis
+nejm,all,112,image_112.jpg,Palatine tonsillitis,Antrochoanal polyp
+nejm,all,113,image_113.jpg,Leishmaniasis,Trypanosomiasis
+nejm,all,114,image_114.jpg,Emphysematous cholecystitis,Emphysematous cholecystitis
+nejm,all,115,image_115.jpg,Peutz-Jeghers syndrome,Peutz-Jeghers syndrome
+nejm,all,116,image_116.jpg,Burkitt's lymphoma,Chronic granulomatous disease
+nejm,all,117,image_117.jpg,Myelodysplastic syndrome,Decompensated cirrhosis
+nejm,all,118,image_118.jpg,Liposuction,Gastric bypass
+nejm,all,119,image_119.jpg,Drug eruption,Sweet’s syndrome
+nejm,all,120,image_120.jpg,Type III hypersensitivity reaction,Type III hypersensitivity reaction
+nejm,all,121,image_121.jpg,Biguanide,Alpha-glucosidase inhibitor
+nejm,all,122,image_122.jpg,Glioblastoma multiforme,Thrombosed intracranial aneurysm
+nejm,all,123,image_123.jpg,Retinal detachment,Multiple sclerosis
+nejm,all,124,image_124.jpg,Angioneurotic edema,Ludwig's angina
+nejm,all,125,image_125.jpg,Tinea corporis,Syphilis
+nejm,all,126,image_126.jpg,Cytomegalovirus retinitis,Malignant hypertension
+nejm,all,127,image_127.jpg,Praziquantel,Praziquantel
+nejm,all,128,image_128.jpg,PUPPP,Pemphigoid gestationis
+nejm,all,129,image_129.jpg,Basal-cell carcinoma,Squamous-cell carcinoma
+nejm,all,130,image_130.jpg,Small-bowel volvulus,Small-bowel volvulus
+nejm,all,131,image_131.jpg,Scalded skin syndrome,Toxic shock syndrome
+nejm,all,132,image_132.jpg,Epiglottitis,Epiglottitis
+nejm,all,133,image_133.jpg,Chronic renal failure,Chemotherapy treatment
+nejm,all,134,image_134.jpg,Middle cerebral artery dissection,Air embolism
+nejm,all,135,image_135.jpg,Vitamin A deficiency,Vitamin A deficiency
+nejm,all,136,image_136.jpg,Herpes simplex,Anthrax
+nejm,all,137,image_137.jpg,Bronchial polyposis,Eosinophilic bronchitis
+nejm,all,138,image_138.jpg,BCR-ABL1,JAK2
+nejm,all,139,image_139.jpg,Osteosarcoma,Scleroderma
+nejm,all,140,image_140.jpg,Colovesical fistula,Emphysematous prostatitis
+nejm,all,141,image_141.jpg,Copper,Nitrous oxide
+nejm,all,142,image_142.jpg,Closed-angle glaucoma,Malignant hypertension
+nejm,all,143,image_143.jpg,Crohn’s disease,Actinomycosis
+nejm,all,144,image_144.jpg,Small-bowel obstruction,Sigmoid volvulus
+nejm,all,145,image_145.jpg,Gastric pneumatosis,Gastric pneumatosis
+nejm,all,146,image_146.jpg,Pyogenic granuloma,Conjunctival squamous-cell carcinoma
+nejm,all,147,image_147.jpg,Neonatal gonorrhea,Herpes gestationis
+nejm,all,148,image_148.jpg,Dyshidrotic eczema,Aquagenic keratoderma
+nejm,all,149,image_149.jpg,Keloid,Scrotal calcinosis
+nejm,all,150,image_150.jpg,Subglottic stenosis in granulomatosis with polyangiitis,Carcinoma
+nejm,all,151,image_151.jpg,Diabetic retinopathy,Lipemia retinalis
+nejm,all,152,image_152.jpg,Lead poisoning,Lead poisoning
+nejm,all,153,image_153.jpg,Tetracyclines,Tetracyclines
+nejm,all,154,image_154.jpg,Recurrent pulmonary emboli,Thoracic endometriosis
+nejm,all,155,image_155.jpg,Calcium oxalate,Calcium phosphate
+nejm,all,156,image_156.jpg,Corneal ulcer,Keratoconus
+nejm,all,157,image_157.jpg,Gout,Gout
+nejm,all,158,image_158.jpg,Right hypoglossal nerve,Left hypoglossal nerve
+nejm,all,159,image_159.jpg,Erythema gyratum repens,Tinea imbricata
+nejm,all,160,image_160.jpg,Mosquito,Mosquito
+nejm,all,161,image_161.jpg,Self-flagellation,Treatment with bleomycin
+nejm,all,162,image_162.jpg,Congenital rubella syndrome,Langerhans-cell histiocytosis
+nejm,all,163,image_163.jpg,Central retinal vein occlusion,Cholesterol embolism
+nejm,all,164,image_164.jpg,Onychomycosis,Squamous-cell carcinoma
+nejm,all,165,image_165.jpg,Focal segmental glomerulosclerosis,Renal cryptococcosis
+nejm,all,166,image_166.jpg,Tungiasis,Tungiasis
+nejm,all,167,image_167.jpg,Gout,Coronary artery disease
+nejm,all,168,image_168.jpg,Liver abscess,Liver abscess
+nejm,all,169,image_169.jpg,Interlabial cyst,Hydrocolpos
+nejm,all,170,image_170.jpg,Hemianopia,Hemiparesis
+nejm,all,171,image_171.jpg,Keratoderma,Keratoderma
+nejm,all,172,image_172.jpg,Acute promyelocytic leukemia,Parvovirus B19 infection
+nejm,all,173,image_173.jpg,Takayasu's arteritis,Polyarteritis nodosa
+nejm,all,174,image_174.jpg,Intestinal malrotation,Pyloric stenosis
+nejm,all,175,image_175.jpg,HIV IgG antibody,HIV nucleic acid test
+nejm,all,176,image_176.jpg,Urate,Oxalate
+nejm,all,177,image_177.jpg,Guttate psoriasis,Pemphigus vulgaris
+nejm,all,178,image_178.jpg,Plasmodium falciparum,Trypanosoma brucei
+nejm,all,179,image_179.jpg,Cholesterol Embolism,Drug-Eluting Bead Embolism
+nejm,all,180,image_180.jpg,Toxocara canis,Dirofilaria repens
+nejm,all,181,image_181.jpg,Carcinoma of the tongue,Giant-cell arteritis
+nejm,all,182,image_182.jpg,Atlanto-axial subluxation,Atlanto-occipital dislocation
+nejm,all,183,image_183.jpg,Brown recluse spider bite,Chickenpox
+nejm,all,184,image_184.jpg,Zenker’s diverticulum,Bronchoesophageal fistula
+nejm,all,185,image_185.jpg,Williams syndrome,Turner syndrome
+nejm,all,186,image_186.jpg,Paget's disease,Paget's disease
+nejm,all,187,image_187.jpg,Squamous-cell carcinoma,Squamous-cell carcinoma
+nejm,all,188,image_188.jpg,Calcium hydroxyapatite deposition disease,Mycobacterial tenosynovitis due to Mycobacterium avium complex
+nejm,all,189,image_189.jpg,Lipoma,Calcinos
+nejm,all,190,image_190.jpg,Mucocele,Lipoma
+nejm,all,191,image_191.jpg,Familial hypercholesterolemia,Kawasaki's disease
+nejm,all,192,image_192.jpg,Pulmonary silicosis,Multiple bacterial abscesses
+nejm,all,193,image_193.jpg,Hidradenitis suppurativa,Hidradenitis suppurativa
+nejm,all,194,image_194.jpg,C-peptide,Thyrotropin receptor antibodies
+nejm,all,195,image_195.jpg,Retained suture,Loa loa
+nejm,all,196,image_196.jpg,Pneumopericardium,Pneumopericardium
+nejm,all,197,image_197.jpg,Erythema marginatum,Erythema marginatum
+nejm,all,198,image_198.jpg,Serpentine supravenous hyperpigmentation,Serpentine supravenous hyperpigmentation
+nejm,all,199,image_199.jpg,Psoriasis,Tinea
+nejm,all,200,image_200.jpg,Argyll Robertson pupil,Light-near dissociation
+nejm,all,201,image_201.jpg,Supernumerary rib,Supernumerary rib
+nejm,all,202,image_202.jpg,Polychondritis,Polychondritis
+nejm,all,203,image_203.jpg,Hemophagocytosis of sickle cells,Hemophagocytosis of sickle cells
+nejm,all,204,image_204.jpg,Cushing's syndrome,Hypogonadism
+nejm,all,205,image_205.jpg,Pericardial effusion,Esophageal diverticulum
+nejm,all,206,image_206.jpg,Hidradinitis suppurativa,Pseudoxanthoma elasticum
+nejm,all,207,image_207.jpg,Hereditary hemorrhagic telangiectasia,Hereditary hemorrhagic telangiectasia
+nejm,all,208,image_208.jpg,Pulmonary and mitral valves,Aortic and mitral valves
+nejm,all,209,image_209.jpg,Osteoarthritis,Albright's hereditary osteodystrophy
+nejm,all,210,image_210.jpg,Arterial embolism,Polyarteritis nodosa
+nejm,all,211,image_211.jpg,Osteogenesis imperfecta,Osteogenesis imperfecta
+nejm,all,212,image_212.jpg,Normal-pressure hydrocephalus,Normal-pressure hydrocephalus
+nejm,all,213,image_213.jpg,Elevated opening pressure,Elevated opening pressure
+nejm,all,214,image_214.jpg,Addison's disease,Insulin resistance
+nejm,all,215,image_215.jpg,Lymphangitis,Electrocution
+nejm,all,216,image_216.jpg,Myxoid sarcoma,Cysticercosis
+nejm,all,217,image_217.jpg,Acute hemorrhagic conjunctivitis,Leptospirosis
+nejm,all,218,image_218.jpg,Necrobiosis lipoidica diabeticorum,Ischemic gangrene
+nejm,all,219,image_219.jpg,Carcinoma en cuirasse,Carcinoma en cuirasse
+nejm,all,220,image_220.jpg,Herpetic whitlow,Scabies
+nejm,all,221,image_221.jpg,Ground-glass opacity,Air bronchogram
+nejm,all,222,image_222.jpg,Lipomas,Echinococcal cysts
+nejm,all,223,image_223.jpg,Rickets,Chondrocalcinosis
+nejm,all,224,image_224.jpg,Myocarditis,Stenosis of the left anterior descending artery
+nejm,all,225,image_225.jpg,Papillomatosis cutis lymphostatica,Papillomatosis cutis lymphostatica
+nejm,all,226,image_226.jpg,Ovarian torsion,Fallopian tube torsion
+nejm,all,227,image_227.jpg,Rhinophyma,Rhinophyma
+nejm,all,228,image_228.jpg,Chalazion,Dermoid
+nejm,all,229,image_229.jpg,Toxic epidermal necrolysis,Erythrodermic psoriasis
+nejm,all,230,image_230.jpg,Prolapse of orbital fat,Prolapse of orbital fat
+nejm,all,231,image_231.jpg,Ehlers-Danlos syndrome,Poland syndrome
+nejm,all,232,image_232.jpg,Lingua villosa nigra,Lingua villosa nigra
+nejm,all,233,image_233.jpg,Interventricular septum,Intercostal muscle
+nejm,all,234,image_234.jpg,Gastric bezoar,Gastric cancer
+nejm,all,235,image_235.jpg,Anabolic steroid use,Somatotropic pituitary adenoma
+nejm,all,236,image_236.jpg,Parvovirus B19,Treponema pallidum
+nejm,all,237,image_237.jpg,Gingival candidiasis,Leukemic infiltration of the gingiva
+nejm,all,238,image_238.jpg,Necrobiosis lipoidica diabeticorum,Necrolytic migratory erythema
+nejm,all,239,image_239.jpg,Closed-angle glaucoma,Waldenström’s macroglobulinemia
+nejm,all,240,image_240.jpg,Femoral head fracture,Open-book fracture
+nejm,all,241,image_241.jpg,Tinea barbae,Tinea barbae
+nejm,all,242,image_242.jpg,Paronychia,Herpetic whitlow
+nejm,all,243,image_243.jpg,Uterine fibroid,Urinary retention
+nejm,all,244,image_244.jpg,Pneumothorax,Pneumothorax
+nejm,all,245,image_245.jpg,Persistent hyperplastic primary vitreous,Persistent pupillary membranes
+nejm,all,246,image_246.jpg,Odontogenic cutaneous fistula,Odontogenic cutaneous fistula
+nejm,all,247,image_247.jpg,Lipodermatosclerosis,Superficial thrombophlebitis
+nejm,all,248,image_248.jpg,Verruca vulgaris,Molluscum contagiosum
+nejm,all,249,image_249.jpg,Cutaneous leishmaniasis,Cutaneous leishmaniasis
+nejm,all,250,image_250.jpg,Behcet's syndrome,Giant-cell arteritis
+nejm,all,251,image_251.jpg,Psoriasis,Antisynthetase syndrome
+nejm,all,252,image_252.jpg,Nummular eczema,Nummular eczema
+nejm,all,253,image_253.jpg,Superficial thrombophlebitis,Acute lymphangitis
+nejm,all,254,image_254.jpg,Cavernous sinus thrombosis,Rheumatoid arthritis
+nejm,all,255,image_255.jpg,Sublingual epidermoid cyst,Sublingual epidermoid cyst
+nejm,all,256,image_256.jpg,Reiter syndrome,Sarcoidosis
+nejm,all,257,image_257.jpg,Herpes simplex,Syphilis
+nejm,all,258,image_258.jpg,"Small coins (e.g., a penny)",Foreign bodies that have been present for longer than 24 hours
+nejm,all,259,image_259.jpg,Electrical alternans,Cardiac allograft
+nejm,all,260,image_260.jpg,Phlegmasia cerulea dolens,Phlegmasia cerulea dolens
+nejm,all,261,image_261.jpg,Scarlet fever,Measles
+nejm,all,262,image_262.jpg,Herpetic keratitis,Vernal conjunctivitis
+nejm,all,263,image_263.jpg,Pericardial space,Left ventricle
+nejm,all,264,image_264.jpg,Bacterial gram stain and culture,Bilirubin
+nejm,all,265,image_265.jpg,Acromegaly,Eisenmenger's syndrome
+nejm,all,266,image_266.jpg,Polycystic kidney disease,Page kidney
+nejm,all,267,image_267.jpg,Gastric outlet obstruction,Ulcerative colitis
+nejm,all,268,image_268.jpg,Geographic tongue,Geographic tongue
+nejm,all,269,image_269.jpg,Bone marrow necrosis,Bone marrow necrosis
+nejm,all,270,image_270.jpg,Permethrin,Permethrin
+nejm,all,271,image_271.jpg,Cushing's syndrome,Hypothyroidism
+nejm,all,272,image_272.jpg,Glaucoma,Preeclampsia
+nejm,all,273,image_273.jpg,Pneumatosis cystoides intestinalis,Intestinal lipomatosis
+nejm,all,274,image_274.jpg,Diabetic retinopathy,Cholesterol emboli
+nejm,all,275,image_275.jpg,Aphthous stomatitis,Herpes zoster
+nejm,all,276,image_276.jpg,Sporotrichosis,Sporotrichosis
+nejm,all,277,image_277.jpg,Diabetic retinopathy,Central retinal artery occlusion
+nejm,all,278,image_278.jpg,Hematometrocolpos,Hematometrocolpos
+nejm,all,279,image_279.jpg,Systemic lupus erythematosus,Superior vena cava syndrome
+nejm,all,280,image_280.jpg,Myeloma,Cirrhosis
+nejm,all,281,image_281.jpg,Ménétrier’s disease,Ménétrier’s disease
+nejm,all,282,image_282.jpg,Pseudothrombocytopenia due to plate clumping associated with EDTA,Pseudothrombocytosis due to red cell fragments
+nejm,all,283,image_283.jpg,Anterior uveitis,Carotid cavernous sinus fistula
+nejm,all,284,image_284.jpg,Plastic bronchitis,Plastic bronchitis
+nejm,all,285,image_285.jpg,Hernia,Intraabdominal cancer
+nejm,all,286,image_286.jpg,Anterior uveitis,Rosacea
+nejm,all,287,image_287.jpg,Abdominal aortic aneurysm,Urachal mucinous cystic tumor
+nejm,all,288,image_288.jpg,Quadriplegia,Quadriplegia
+nejm,all,289,image_289.jpg,Temporal arteritis,Marfan’s syndrome
+nejm,all,290,image_290.jpg,Sclerosing sialadenitis,Sclerosing sialadenitis
+nejm,all,291,image_291.jpg,Cardiac amyloidosis,Angiosarcoma
+nejm,all,292,image_292.jpg,Chronic venous insufficiency,Chronic venous insufficiency
+nejm,all,293,image_293.jpg,Parulis,Torus mandibularis
+nejm,all,294,image_294.jpg,Dermoid cyst,Spindle-cell sarcoma
+nejm,all,295,image_295.jpg,Spleen,Stomach
+nejm,all,296,image_296.jpg,Syphilis,Cogan’s syndrome
+nejm,all,297,image_297.jpg,Salbutamol,Ipratropium
+nejm,all,298,image_298.jpg,Pustular psoriasis,Eruptive xanthomas
+nejm,all,299,image_299.jpg,Sialolithiasis,Iodide-associated sialadenitis
+nejm,all,300,image_300.jpg,Peritoneal carcinomatosis,Encapsulating peritoneal sclerosis
+nejm,all,301,image_301.jpg,Beta2-microglobulin,Calcitonin
+nejm,all,302,image_302.jpg,Paget’s disease,Primary hypertrophic osteoarthropathy
+nejm,all,303,image_303.jpg,Ecthyma gangrenosum,Congenital cytomegalovirus infection
+nejm,all,304,image_304.jpg,Left anterior descending artery occlusion,Right coronary artery occlusion
+nejm,all,305,image_305.jpg,Zenker’s Diverticulum,Tracheal agenesis with bronchoesophageal fistula
+nejm,all,306,image_306.jpg,Prolactin,Angiotensin-converting enzyme
+nejm,all,307,image_307.jpg,Shingles,Neurofibromatosis
+nejm,all,308,image_308.jpg,Measles,Systemic lupus erythematosus
+nejm,all,309,image_309.jpg,Chronic sinusitis,Granulomatosis with polyangiitis
+nejm,all,310,image_310.jpg,Cisplatin overdose,Ethylene glycol poisoning
+nejm,all,311,image_311.jpg,Strongyloidiasis,Ascariasis
+nejm,all,312,image_312.jpg,Epstein-Barr virus,Group A streptococcus
+nejm,all,313,image_313.jpg,Retinoblastoma,Shaken-baby syndrome
+nejm,all,314,image_314.jpg,Exfoliative dermatitis,Exanthematous pustulosis
+nejm,all,315,image_315.jpg,Scarlet fever,Rubella
+nejm,all,316,image_316.jpg,Tropical pyoderma,Cutaneous leishmaniasis
+nejm,all,317,image_317.jpg,Thrombotic vasculopathy,Thrombotic vasculopathy
+nejm,all,318,image_318.jpg,Scalded skin syndrome,Herpes simplex virus infection
+nejm,all,319,image_319.jpg,Plummer Vinson syndrome,Eosinophilic esophagitis
+nejm,all,320,image_320.jpg,Pharyngeal foreign body,Prevertebral air
+nejm,all,321,image_321.jpg,Cows,Cats
+nejm,all,322,image_322.jpg,Portal hypertension,Histoplasmosis
+nejm,all,323,image_323.jpg,Paragonimiasis,Paragonimiasis
+nejm,all,324,image_324.jpg,Arteriovenous malformation,Fibromuscular dysplasia
+nejm,all,325,image_325.jpg,Condylomata acuminata,Condylomata lata
+nejm,all,326,image_326.jpg,Paget's disease,Adrenal insufficiency
+nejm,all,327,image_327.jpg,Vitamin B12 deficiency,Vitamin B12 deficiency
+nejm,all,328,image_328.jpg,Ostraceous psoriasis,Ostraceous psoriasis
+nejm,all,329,image_329.jpg,Condyloma acuminatum,Squamous-cell carcinoma
+nejm,all,330,image_330.jpg,Renal cell carcinoma metastases,Primary adrenal lymphoma
+nejm,all,331,image_331.jpg,Spider angioma,Spider angioma
+nejm,all,332,image_332.jpg,Kaposi’s sarcoma,Actinomycetoma
+nejm,all,333,image_333.jpg,Malignant melanoma,Halo nevus
+nejm,all,334,image_334.jpg,Lupus pernio,Amiodarone-induced skin discoloration
+nejm,all,335,image_335.jpg,Scurvy,Leukemia
+nejm,all,336,image_336.jpg,Babesiosis,Tickborne relapsing fever
+nejm,all,337,image_337.jpg,Erythema gyratum repens,Erythema gyratum repens
+nejm,all,338,image_338.jpg,Thromboangiitis obliterans,Deep venous thrombosis
+nejm,all,339,image_339.jpg,Mycoplasmal pneumonia,Bordetella pertussis
+nejm,all,340,image_340.jpg,Hyperparathyroidism,Ingestion of a heavy metal
+nejm,all,341,image_341.jpg,Tophaceous gout,Tophaceous gout
+nejm,all,342,image_342.jpg,Intussusception,Internal hernia
+nejm,all,343,image_343.jpg,Colonic pseudo-obstruction,Colocolonic intussusception
+nejm,all,344,image_344.jpg,Cholesterol crystals,Cholesterol crystals
+nejm,all,345,image_345.jpg,Pulmonary-artery dissection,Pulmonary-artery dissection
+nejm,all,346,image_346.jpg,Sarcoidosis,Beta-thalassemia
+nejm,all,347,image_347.jpg,"Consumption of undercooked, infected fish","Consumption of undercooked, infected beef"
+nejm,all,348,image_348.jpg,Pemphigus vulgaris,Neutrophilic dermatosis
+nejm,all,349,image_349.jpg,Ferritin,Alkaline phosphatase
+nejm,all,350,image_350.jpg,Ogilvie’s syndrome,Ogilvie’s syndrome
+nejm,all,351,image_351.jpg,Toxoplasmosis,Toxoplasmosis
+nejm,all,352,image_352.jpg,Ochronosis,Fluorouracil side effect
+nejm,all,353,image_353.jpg,Epidermoid cyst,Furuncular myiasis
+nejm,all,354,image_354.jpg,Paget's disease,Sarcoidosis
+nejm,all,355,image_355.jpg,Herpes simplex keratitis,Radial keratotomy
+nejm,all,356,image_356.jpg,Nephrostomy tube,Uterine perforation
+nejm,all,357,image_357.jpg,Hashimoto’s encephalitis,Creutzfeld-Jakob disease
 nejm,all,358,image_358.jpg,Pneumoconiosis,Tobacco
-nejm,all,359,image_359.jpg,D: Osteomalacia with fracture,Metastatic lung cancer
-nejm,all,360,image_360.jpg,B: Mastitis,Radiation-induced angiosarcoma
-nejm,all,361,image_361.jpg,D: Polymorphic eruption of pregnancy,Atopic eruption of pregnancy
-nejm,all,362,image_362.jpg,C: Niacin,Niacin
-nejm,all,363,image_363.jpg,D: Microangiopathic hemolytic anemia,Spur-cell hemolytic anemia
-nejm,all,364,image_364.jpg,A: Cutaneous larva migrans,Cutaneous larva migrans
-nejm,all,365,image_365.jpg,A: Herpes simplex virus infection,Treponema pallidum infection
-nejm,all,366,image_366.jpg,A: Insect bite,Insect bite
-nejm,all,367,image_367.jpg,B: Diaphragm,Diaphragm
-nejm,all,368,image_368.jpg,D: Pulmonary embolism,Lung herniation
-nejm,all,369,image_369.jpg,A: Congenital adrenal hyperplasia,Spinal dysraphism
-nejm,all,370,image_370.jpg,D: Reactive hyperemia of heart failure,Infant harlequin syndrome
-nejm,all,371,image_371.jpg,C: Cleft jaw,Mandibular fracture
-nejm,all,372,image_372.jpg,D: Panniculitis,Panniculitis
-nejm,all,373,image_373.jpg,A: Peutz–Jeghers syndrome,Peutz–Jeghers syndrome
-nejm,all,374,image_374.jpg,D: Candida,Secondary syphilis
-nejm,all,375,image_375.jpg,C: Osborn wave,Osborn wave
-nejm,all,376,image_376.jpg,B: Staphylococcal scalded skin,Staphylococcal scalded skin
-nejm,all,377,image_377.jpg,C: Familial partial lipodystrophy of the Dunnigan type,Insulin lipohypertrophy
-nejm,all,378,image_378.jpg,C: Tinea capitis,Actinic granuloma
-nejm,all,379,image_379.jpg,E: Pineal cyst,Cystic echinococcosis
-nejm,all,380,image_380.jpg,A: Alcohol dependency,Alcohol dependency
-nejm,all,381,image_381.jpg,D: Multiple iris nevi,Lisch nodules
-nejm,all,382,image_382.jpg,C: Manganese,Zinc
-nejm,all,383,image_383.jpg,A: Thrombocytosis,Eosinophilia
-nejm,all,384,image_384.jpg,C: Lupus retinal vasculitis,Antiphospholipid syndrome
-nejm,all,385,image_385.jpg,E: Subdural hematoma,Epidural hematoma
-nejm,all,386,image_386.jpg,C: Pancreatic phlegmon,Trichobezoar
-nejm,all,387,image_387.jpg,C: Osteitis fibrosa cystica,Osteomalacia
-nejm,all,388,image_388.jpg,E: Brown recluse spider bites,Lymphoma
-nejm,all,389,image_389.jpg,E: Testing the function of the facial nerve,Bone scan
-nejm,all,390,image_390.jpg,E: Thyroid cancer,Gastric cancer
-nejm,all,391,image_391.jpg,C: Pyoderma gangrenosum,Malakoplakia
-nejm,all,392,image_392.jpg,D: Prolactinoma,Prolactinoma
-nejm,all,393,image_393.jpg,C: Systemic lupus erythematosus,Systemic lupus erythematosus
-nejm,all,394,image_394.jpg,A: Hemorrhagic episcleritis,Traumatic bleb
-nejm,all,395,image_395.jpg,E: Calciphylaxis,Soft-tissue calcinosis
-nejm,all,396,image_396.jpg,A: Verruca vulgaris,Chromoblastomycosis
-nejm,all,397,image_397.jpg,B: Pectus arcuatum,Pectus excavatum
-nejm,all,398,image_398.jpg,D: Sarcoidosis,Tuberculosis
-nejm,all,399,image_399.jpg,B: Androgenic alopecia,Fibrosing alopecia
-nejm,all,400,image_400.jpg,C: Ludwig’s angina,Ludwig’s angina
-nejm,all,401,image_401.jpg,D: Scleroderma,Nephrogenic fibrosing dermopathy
-nejm,all,402,image_402.jpg,C: Lingual carcinoma,Hypoglossal nerve injury
-nejm,all,403,image_403.jpg,E: Cystic echinococcosis,Cystic echinococcosis
-nejm,all,404,image_404.jpg,E: Scleroderma,Congestive heart failure
-nejm,all,405,image_405.jpg,B: Vitiligo,Scleroderma
-nejm,all,406,image_406.jpg,C: Malassezia furfur,Corynebacterium minutissimum
-nejm,all,407,image_407.jpg,C: Hydropneumothorax,Hydropneumothorax
-nejm,all,408,image_408.jpg,C: Gout,Gout
-nejm,all,409,image_409.jpg,E: Stevens-Johnson syndrome/toxic epidermal necrolysis,Drug reaction with eosinophilia and systemic symptoms
-nejm,all,410,image_410.jpg,D: Raynaud disease,Subclavian vein thrombosis
-nejm,all,411,image_411.jpg,B: Pyogenic liver abscess,Infantile hepatic hemangiomas
-nejm,all,412,image_412.jpg,C: Cryptococcus neoformans,Histoplasma capsulatum
-nejm,all,413,image_413.jpg,A: Cerebriform nevus sebaceous,Cerebriform nevus sebaceous
-nejm,all,414,image_414.jpg,A: Upper gastrointestinal bleed,Metastatic colon cancer
-nejm,all,415,image_415.jpg,E: Vitiligo,Vitiligo
-nejm,all,416,image_416.jpg,E: Rosacea,Carcinoid syndrome
-nejm,all,417,image_417.jpg,C: Neurofibromatosis,Congenital melanocytic nevus
-nejm,all,418,image_418.jpg,C: Tuberous sclerosis,Multiple endocrine neoplasia type 2B
-nejm,all,419,image_419.jpg,C: Scrofula,Peripancreatic malignancy
-nejm,all,420,image_420.jpg,B: Immature cataract,Intraocular tumor
-nejm,all,421,image_421.jpg,B: Cryptococcal meningitis,Cryptococcal meningitis
-nejm,all,422,image_422.jpg,D: Angiotensin converting-enzyme inhibitor,Angiotensin converting-enzyme inhibitor
-nejm,all,423,image_423.jpg,B: Calluses,Plantar warts
-nejm,all,424,image_424.jpg,A: Acromegaly,Diabetes mellitus
-nejm,all,425,image_425.jpg,C: Celiac disease,Nodular lymphoid hyperplasia
-nejm,all,426,image_426.jpg,C: Retropharyngeal abscess,Retropharyngeal abscess
-nejm,all,427,image_427.jpg,C: Danazol,Chloroquine
-nejm,all,428,image_428.jpg,B: Leprosy,Diffuse cutaneous systemic sclerosis
-nejm,all,429,image_429.jpg,B: Chronic constipation,Diabetes mellitus
-nejm,all,430,image_430.jpg,E: Intubate the patient to ensure airway patency,Leave the foreign object in place
-nejm,all,431,image_431.jpg,E: Thromboangiitis obliterans,Ergotism
-nejm,all,432,image_432.jpg,D: Osteopetrosis,Ankylosing spondylitis
-nejm,all,433,image_433.jpg,C: Hematopoietic system,Respiratory system
-nejm,all,434,image_434.jpg,E: Staphylococcal pyoderma,Harlequin color change
-nejm,all,435,image_435.jpg,E: Benign tonsillar hypertrophy,Tonsillar cancer
-nejm,all,436,image_436.jpg,C: Ascending aortic aneurysm,Ascending aortic aneurysm
-nejm,all,437,image_437.jpg,A: Congenital nevus,Congenital nevus
-nejm,all,438,image_438.jpg,D: Vibrio vulnificus,Vibrio vulnificus
-nejm,all,439,image_439.jpg,C: Glucocorticoid,Protease inhibitor
-nejm,all,440,image_440.jpg,C: Wernicke’s encephalopathy,Wernicke’s encephalopathy
-nejm,all,441,image_441.jpg,A: Chronic mesenteric ischemia,Superior mesenteric artery syndrome
-nejm,all,442,image_442.jpg,C: Mucocele,Mucocele
-nejm,all,443,image_443.jpg,A: Herpes simplex virus,Varicella-zoster virus
-nejm,all,444,image_444.jpg,E: Myasthenia gravis,Myasthenia gravis
-nejm,all,445,image_445.jpg,C,Pleural perforation
-nejm,all,446,image_446.jpg,E: Lactational mastitis,Polymastia
-nejm,all,447,image_447.jpg,D: Scabies,Gout
-nejm,all,448,image_448.jpg,C: Penicillin or azithromycin,Aspirin and intravenous immune globulin
-nejm,all,449,image_449.jpg,B: Glucocorticoid induced ulceration,Extranodal natural killer T-cell lymphoma
-nejm,all,450,image_450.jpg,A: Amyloidosis,Celiac disease
-nejm,all,451,image_451.jpg,C: Pellagra,Amyotrophic lateral sclerosis
-nejm,all,452,image_452.jpg,D: Serum sickness,Uveoparotid fever
-nejm,all,453,image_453.jpg,C: Pyoderma gangrenosum,Anti-MDA5 dermatomyositis
-nejm,all,454,image_454.jpg,B: Recurrent breast cancer,Cellulitis
-nejm,all,455,image_455.jpg,E: Trichobezoar,Intraabdominal hernia
-nejm,all,456,image_456.jpg,B: Gonococcal conjunctivitis,Acute dacryocystitis
-nejm,all,457,image_457.jpg,E: Anti-Hu antibody,Anti-Hu antibody
-nejm,all,458,image_458.jpg,A: Crusted scabies,Crusted scabies
-nejm,all,459,image_459.jpg,A: Balantidium coli,Schistosoma hematobium
-nejm,all,460,image_460.jpg,B: Atlantoaxial dislocation,Epiglottitis
-nejm,all,461,image_461.jpg,A: Erythema multiforme,Urticaria multiforme
-nejm,all,462,image_462.jpg,A: Antihistamine,Tetracycline
-nejm,all,463,image_463.jpg,C: Cortisol,Alkaline phosphatase
-nejm,all,464,image_464.jpg,E: Neutrophilic eccrine hidradenitis,Neutrophilic eccrine hidradenitis
-nejm,all,465,image_465.jpg,"E: Right hemiparesis, gaze deviated to the right","Left hemiparesis, gaze deviated to the right"
-nejm,all,466,image_466.jpg,D: Systemic sclerosis,Lead exposure
-nejm,all,467,image_467.jpg,E: Necrolytic migratory erythema,Necrolytic migratory erythema
-nejm,all,468,image_468.jpg,E: Livedo reticularis,Erythema ab igne
-nejm,all,469,image_469.jpg,A: Lupus pernio,Phototoxic dermatitis
-nejm,all,470,image_470.jpg,C: Laryngeal papillomatosis,Laryngeal candidiasis
-nejm,all,471,image_471.jpg,A: Achalasia,Zenker's diverticulum
-nejm,all,472,image_472.jpg,E: Paget-Schroetter disease,Mondor’s disease
-nejm,all,473,image_473.jpg,D: Posterior reversible encephalopathy syndrome,Posterior reversible encephalopathy syndrome
-nejm,all,474,image_474.jpg,D: Rheumatoid arthritis,Systemic sclerosis
-nejm,all,475,image_475.jpg,"D: Hypercalcemia, hypophosphatemia, and hyperkalemia","Hypocalcemia, hypophosphatemia, and hyperkalemia"
-nejm,all,476,image_476.jpg,E: Slipped capital femoral epiphysis,Legg–Calvé–Perthes disease
-nejm,all,477,image_477.jpg,D: Phylum Porifera contact dermatitis,Decompression sickness
-nejm,all,478,image_478.jpg,A: Buruli ulcers,Porphyria cutanea tarda
-nejm,all,479,image_479.jpg,C: Hashimoto's thyroiditis,Graves' disease
-nejm,all,480,image_480.jpg,B: Hypospadias with cryptorchidism,Congenital adrenal hyperplasia
-nejm,all,481,image_481.jpg,A: Herpes zoster,Cutaneous metastases
-nejm,all,482,image_482.jpg,A: Thromboangiitis obliterans,Thromboangiitis obliterans
-nejm,all,483,image_483.jpg,A: Cataract,Cataract
-nejm,all,484,image_484.jpg,A: Atherosclerosis,Atherosclerosis
-nejm,all,485,image_485.jpg,A: Tuberculosis,Situs inversus totalis
-nejm,all,486,image_486.jpg,B: Hypertensive retinopathy,Hypertriglyceridemia
-nejm,all,487,image_487.jpg,D: Obstructive parotitis,Obstructive parotitis
-nejm,all,488,image_488.jpg,D: Chronic constipation,Ischemic colitis
-nejm,all,489,image_489.jpg,A: Neurofibromatosis,Small-cell lung cancer
-nejm,all,490,image_490.jpg,A: Taenia solium,Strongyloides stercoralis
-nejm,all,491,image_491.jpg,C: Methamphetamine,Xylazine
-nejm,all,492,image_492.jpg,D: Small-cell lung cancer,Hodgkin's lymphoma
-nejm,all,493,image_493.jpg,E: Perinephritic abscess,Brucellosis
-nejm,all,494,image_494.jpg,A: IgG4-related ophthalmic disease,IgG4-related ophthalmic disease
-nejm,all,495,image_495.jpg,D: Periodontitis,Dermatomyositis
-nejm,all,496,image_496.jpg,B: Aspergillus fumigatus,Curvularia alcornii
-nejm,all,497,image_497.jpg,A: Bulbar palsy,Romberg's sign
-nejm,all,498,image_498.jpg,B: Mycobacterium leprae,Klebsiella rhinoscleromatis
-nejm,all,499,image_499.jpg,E: Melkersson-Rosenthal syndrome,Tissue plasminogen activator-associated angioedema
-nejm,all,500,image_500.jpg,B: Temporal quadrantanopsia,Inferior hemifield loss
-nejm,all,501,image_501.jpg,A: Infective endocarditis,Infective endocarditis
-nejm,all,502,image_502.jpg,E: Uremic frost,Nephrogenic systemic fibrosis
-nejm,all,503,image_503.jpg,B: Splinter hemorrhages,Splinter hemorrhages
-nejm,all,504,image_504.jpg,D: Pityriasis rosea,Leprosy
-nejm,all,505,image_505.jpg,B: Baker's cyst,Abscess
-nejm,all,506,image_506.jpg,B: Pyogenic granuloma,Dirofilaria repens infection
-nejm,all,507,image_507.jpg,D: Acromegaly,Paraneoplastic disorder
-nejm,all,508,image_508.jpg,C: Angiomyolipoma,Perirenal extramedullary hematopoiesis
-nejm,all,509,image_509.jpg,D: Marfan's syndrome,Bulimia nervosa
-nejm,all,510,image_510.jpg,D: Chromomycosis,Iododerma
-nejm,all,511,image_511.jpg,A: Cataract,Retinoblastoma
-nejm,all,512,image_512.jpg,C: Intestinal obstruction,Perforation of a viscus
-nejm,all,513,image_513.jpg,E: Psoriasis,Dermatomyositis
-nejm,all,514,image_514.jpg,A: Acromegaly,Lipomatosis
-nejm,all,515,image_515.jpg,D: Perforating folliculitis,Nevus comedonicus
-nejm,all,516,image_516.jpg,D: Candidiasis,Uremic stomatitis
-nejm,all,517,image_517.jpg,A: Osgood-Schlatter disease,Systemic sclerosis
-nejm,all,518,image_518.jpg,C: Necrobiosis lipoidica,Chronic venous stasis
-nejm,all,519,image_519.jpg,A: Angioedema,Sjögren's syndrome
-nejm,all,520,image_520.jpg,A: Pharyngeal abscess,Thyroglossal duct cyst
-nejm,all,521,image_521.jpg,D: Sarcoidosis,Wegener's granulomatosis
-nejm,all,522,image_522.jpg,D: Necrobiosis lipoidica,Necrobiosis lipoidica
-nejm,all,523,image_523.jpg,E: Lingual artery,Lingual artery
-nejm,all,524,image_524.jpg,B: Cerebral toxoplasmosis,Nocardia asteroides infection
-nejm,all,525,image_525.jpg,D: Raynaud syndrome,Achenbach’s syndrome
-nejm,all,526,image_526.jpg,D: Herpes vegetans,Herpes vegetans
-nejm,all,527,image_527.jpg,B: Cushing's syndrome,Thrombosis of the inferior vena cava
-nejm,all,528,image_528.jpg,A: Human papillomavirus,Human papillomavirus
-nejm,all,529,image_529.jpg,E: Tay-Sachs disease,Tay-Sachs disease
-nejm,all,530,image_530.jpg,D: Restrictive lung disease,Intrathoracic localized obstruction
-nejm,all,531,image_531.jpg,C: Hematoma,Thromboembolism
-nejm,all,532,image_532.jpg,B: Colonic volvulus,Pneumoperitoneum
-nejm,all,533,image_533.jpg,A: Heberden’s nodes,Jaccoud’s arthropathy
-nejm,all,534,image_534.jpg,E: Eosinophilic ulcer,Cytomegalovirus infection
-nejm,all,535,image_535.jpg,E: Paget's disease,Renal tubular acidosis
-nejm,all,536,image_536.jpg,D: Vitamin C,Zinc
-nejm,all,537,image_537.jpg,B: Methemoglobinemia,Cold agglutinins
-nejm,all,538,image_538.jpg,D: Strongyloidiasis,Enterobiasis
-nejm,all,539,image_539.jpg,E,Digital ischemia
-nejm,all,540,image_540.jpg,C: Laryngomalacia,Croup
-nejm,all,541,image_541.jpg,D: Disseminated cutaneous blastomycosis,Disseminated cutaneous blastomycosis
-nejm,all,542,image_542.jpg,B: Otitis externa,Frey's syndrome
-nejm,all,543,image_543.jpg,C: Hemorrhagic cerebral metastasis,Cerebral cavernous malformations
-nejm,all,544,image_544.jpg,D: Prescribe nystatin,Counsel patient to stop smoking
-nejm,all,545,image_545.jpg,A: Leukocytoclastic vasculitis,Multiple myeloma
-nejm,all,546,image_546.jpg,B: Defect in glucuronidation leading to hyperbilirubinemia,About 50% of the serum bilirubin is conjugated
-nejm,all,547,image_547.jpg,B: Hampton’s hump,Hampton’s hump
-nejm,all,548,image_548.jpg,B: Cryoglobulinemic vasculitis,Cryoglobulinemic vasculitis
-nejm,all,549,image_549.jpg,D: Lipoma,Ectopic thyroid
-nejm,all,550,image_550.jpg,A: Acute conjunctivitis,Acute angle-closure glaucoma
-nejm,all,551,image_551.jpg,D: Plasmodium vivax,Plasmodium vivax
-nejm,all,552,image_552.jpg,D: Vasoactive intestinal peptide-secreting tumor (vipoma),Glucagonoma
-nejm,all,553,image_553.jpg,C: Langerhans cell histiocytosis,Erdheim–Chester disease
-nejm,all,554,image_554.jpg,B: Gastric bezoar,Splenic cyst
-nejm,all,555,image_555.jpg,A: Tinea versicolor,Tinea versicolor
-nejm,all,556,image_556.jpg,B: Pellagra,Pellagra
-nejm,all,557,image_557.jpg,B: Pediculus humanus capitis,Pthirus pubis
-nejm,all,558,image_558.jpg,D: Idiopathic pulmonary fibrosis,Pulmonary alveolar microlithiasis
-nejm,all,559,image_559.jpg,B: Hyperbilirubinemia,Pseudomonas aeruginosa infection
-nejm,all,560,image_560.jpg,A: Penile contusion,Penile fracture
-nejm,all,561,image_561.jpg,E: Multicentric Castleman’s disease,Disseminated Mycobacterium avium–intracellulare infection
-nejm,all,562,image_562.jpg,E: Psoralen,Erlotinib
-nejm,all,563,image_563.jpg,C: Dieulafoy's lesion,Adenocarcinoma
-nejm,all,564,image_564.jpg,E: Melanoma,Melanoma
-nejm,all,565,image_565.jpg,B: Umbilical hernia,Sister Mary Joseph's nodule
-nejm,all,566,image_566.jpg,A: Fluorescent dye,Fluorescent dye
-nejm,all,567,image_567.jpg,E: Sarcoidosis,Pulmonary embolism
-nejm,all,568,image_568.jpg,D: Osteomyelitis of the proximal tibia,Osgood–Schlatter disease
-nejm,all,569,image_569.jpg,C: Pneumomediastinum,Pneumomediastinum
-nejm,all,570,image_570.jpg,C: Coloboma of the iris,Prominent iris collarette
-nejm,all,571,image_571.jpg,D: Pellagra (Vitamin B3 deficiency),Malignant acanthosis nigricans
-nejm,all,572,image_572.jpg,C: Rosacea,Tuberous sclerosis
-nejm,all,573,image_573.jpg,A: Bilirubin elevation,Elevated protein
-nejm,all,574,image_574.jpg,D: Malignant syphilis,Malignant syphilis
-nejm,all,575,image_575.jpg,E: Trichuris trichiura,Diphyllobothrium latum
-nejm,all,576,image_576.jpg,C: Syphilis,Mycobacterium marinum
-nejm,all,577,image_577.jpg,B: Left upper lobe,Left upper lobe
-nejm,all,578,image_578.jpg,A: Candidiasis,Herpes zoster
-nejm,all,579,image_579.jpg,E: Familial exudative vitreoretinopathy,X-linked retinoschisis
-nejm,all,580,image_580.jpg,A: Paget's disease,Pneumocephalus
-nejm,all,581,image_581.jpg,B: Hallux valgus,Albright's hereditary osteodystrophy
-nejm,all,582,image_582.jpg,C: Fluorosis,Fluorosis
-nejm,all,583,image_583.jpg,D: Fusobacterium necrophorum,Fusobacterium necrophorum
-nejm,all,584,image_584.jpg,A: Carpal tunnel syndrome,Dupuyten's contracture
-nejm,all,585,image_585.jpg,A: Arcus senilis,Wilson's disease
-nejm,all,586,image_586.jpg,A: Systemic lupus erythematosus,Infective endocarditis
-nejm,all,587,image_587.jpg,B: Raynaud phenomenon,Cholesterol emboli
-nejm,all,588,image_588.jpg,C: Calcified empyema,Oleothorax
-nejm,all,589,image_589.jpg,E: Slipped capital femoral epiphysis,Slipped capital femoral epiphysis
-nejm,all,590,image_590.jpg,B: Mosquito,Chrysops fly
-nejm,all,591,image_591.jpg,B: Smoker’s melanosis,Diffuse melanosis cutis
-nejm,all,592,image_592.jpg,A: Calcium oxalate and triple phosphate (struvite) crystals,Cystine and triple phosphate (struvite) crystals
-nejm,all,593,image_593.jpg,B: Cicatricial pemphigoid,Herpes zoster
-nejm,all,594,image_594.jpg,"C: Hand, foot, and mouth disease",Streptococcal pharyngitis
-nejm,all,595,image_595.jpg,C: Pneumothorax,Substernal goiter
-nejm,all,596,image_596.jpg,D: Neurofibromatosis,Becker’s nevus
-nejm,all,597,image_597.jpg,D,Paternal uniparental disomy 14 (UDP 14 pat) thoracic dysplasia
-nejm,all,598,image_598.jpg,C: Mesenteric ischemia,Small-bowel obstruction
-nejm,all,599,image_599.jpg,B: Fetal alcohol syndrome,Neonatal thyrotoxicosis
-nejm,all,600,image_600.jpg,D: Ludwig's angina,Bulimia nervosa
-nejm,all,601,image_601.jpg,E: Neurocysticercosis,Neurocysticercosis
-nejm,all,602,image_602.jpg,C: Pterygium,Papilloma
-nejm,all,603,image_603.jpg,B: Fordyce's angiokeratomas,Fordyce's angiokeratomas
-nejm,all,604,image_604.jpg,C: Martorell ulcer,Cutaneous diphtheria
-nejm,all,605,image_605.jpg,D: Ascaris lumbricoides,Enterobius vermicularis
-nejm,all,606,image_606.jpg,D: Human botfly,Tumbu fly
-nejm,all,607,image_607.jpg,D: Neonatal herpes simplex virus,Neonatal herpes simplex virus
-nejm,all,608,image_608.jpg,E: Tinea versicolor,Erythrasma
-nejm,all,609,image_609.jpg,E: Bisphosphonates,Bisphosphonates
-nejm,all,610,image_610.jpg,D: Livedo reticularis,Livedo reticularis
-nejm,all,611,image_611.jpg,E: Varicella,Varicella
-nejm,all,612,image_612.jpg,D: Talaromyces marneffei,Talaromyces marneffei
-nejm,all,613,image_613.jpg,C: Syphilis,Leishmaniasis
-nejm,all,614,image_614.jpg,D: Herpes simplex virus type 1,Coxsackie virus type A16
-nejm,all,615,image_615.jpg,A: Retrobulbar abscess,Hydatid cyst
-nejm,all,616,image_616.jpg,C: Condyloma acuminatum,Vestibular papillomatosis
-nejm,all,617,image_617.jpg,D: Episcleritis,Dislocation of the lens
-nejm,all,618,image_618.jpg,E: Raynaud's phenomenon,Raynaud's phenomenon
-nejm,all,619,image_619.jpg,D: Tungiasis,Tungiasis
-nejm,all,620,image_620.jpg,B: Filariasis,Caput Medusae
-nejm,all,621,image_621.jpg,A: Left anterior descending,Left main stem
-nejm,all,622,image_622.jpg,D: Kawasaki disease,"Hand, foot, and mouth disease"
-nejm,all,623,image_623.jpg,B: Auditory polyp,Cholesteatoma
-nejm,all,624,image_624.jpg,C: Bartholin gland cyst,Gartner duct cyst
-nejm,all,625,image_625.jpg,D: Polymorphic eruption of pregnancy,Palmar erythema of pregnancy
-nejm,all,626,image_626.jpg,D: Mesenteric ischemia,Mesenteric ischemia
-nejm,all,627,image_627.jpg,A: Cutaneous larva migrans,Cutaneous larva migrans
-nejm,all,628,image_628.jpg,C: Bacterial conjunctivitis,Ophthalmomyiasis
-nejm,all,629,image_629.jpg,D: Right atrium,Left atrium
-nejm,all,630,image_630.jpg,D: Tension pneumothorax,Tension pneumothorax
-nejm,all,631,image_631.jpg,C: Esophageal web,Nutcracker esophagus
-nejm,all,632,image_632.jpg,D: Vitreous hemorrhage,Uveal melanoma
-nejm,all,633,image_633.jpg,B: Proliferative diabetic retinopathy,Proliferative diabetic retinopathy
-nejm,all,634,image_634.jpg,B: Hyperkalemia,Hyperkalemia
-nejm,all,635,image_635.jpg,C: Ixodes tick,Triatomine bug
-nejm,all,636,image_636.jpg,C: Acute respiratory distress syndrome,Reexpansion pulmonary edema
-nejm,all,637,image_637.jpg,D: Pyogenic granuloma,Amelanotic melanoma
-nejm,all,638,image_638.jpg,D: Scleroderma,Eosinophilic fasciitis
-nejm,all,639,image_639.jpg,B: Flour,Sugar
-nejm,all,640,image_640.jpg,A: Calvarial osteomyelitis,Sickle cell disease
-nejm,all,641,image_641.jpg,E: Tuberculous aortitis,Emphysematous aortitis due to Clostridium septicum
-nejm,all,642,image_642.jpg,A: Cutaneous larva migrans,Lung cancer
-nejm,all,643,image_643.jpg,D: Stevens-Johnson syndrome,Herpes simplex virus infection
-nejm,all,644,image_644.jpg,C: Lithium,Palifermin
-nejm,all,645,image_645.jpg,A: Radiation recall,Radiation recall
-nejm,all,646,image_646.jpg,D: Rocky mountain spotted fever,Scurvy
-nejm,all,647,image_647.jpg,C: Psoriasis,Keratoderma blennorrhagicum
-nejm,all,648,image_648.jpg,B: Granuloma annulare,Tinea faciei
-nejm,all,649,image_649.jpg,A: Herpes simplex infection,Inflammatory bowel disease
-nejm,all,650,image_650.jpg,C,Autosomal dominant polycystic kidney disease
-nejm,all,651,image_651.jpg,A: Pulmonary embolism,Azygous vein
-nejm,all,652,image_652.jpg,D: Pustular rosacea,Subcorneal pustular dermatosis
-nejm,all,653,image_653.jpg,D: Paget’s disease,Multiple myeloma
-nejm,all,654,image_654.jpg,B: Chronic lead poisoning,Chronic lead poisoning
-nejm,all,655,image_655.jpg,C: Cutaneous horn,Periungual fibroma
-nejm,all,656,image_656.jpg,D: Miliaria crystallina,Miliaria crystallina
-nejm,all,657,image_657.jpg,C: Superior vena cava obstruction,Graves' disease
-nejm,all,658,image_658.jpg,D: Paget's disease of bone,Langerhans'-cell histiocytosis
-nejm,all,659,image_659.jpg,A: Chronic lymphocytic leukemia,Gaucher’s disease
-nejm,all,660,image_660.jpg,D: Psoriasis,Chemotherapy
-nejm,all,661,image_661.jpg,C: Oral candidiasis,Leukoplakia
-nejm,all,662,image_662.jpg,E: Thalassemia minor,Glucose-6-phosphate dehydrogenase deficiency
-nejm,all,663,image_663.jpg,C: Invasive mucormycosis,Verrucous carcinoma
-nejm,all,664,image_664.jpg,E,Fusariosis
-nejm,all,665,image_665.jpg,A: Hyphema,Hyphema
-nejm,all,666,image_666.jpg,C: Herpes zoster,Herpes zoster
-nejm,all,667,image_667.jpg,C: Sarcoidosis,Systemic sclerosis
-nejm,all,668,image_668.jpg,D: Duodenal atresia,Hirschsprung’s disease
-nejm,all,669,image_669.jpg,A: Melanocytic nevi,Seborrheic keratoses
-nejm,all,670,image_670.jpg,B: Non-small-cell lung cancer,Sarcoidosis
-nejm,all,671,image_671.jpg,C: Tinea capitis,Tinea capitis
-nejm,all,672,image_672.jpg,D: Rheumatic heart disease,Rheumatic heart disease
-nejm,all,673,image_673.jpg,D: Acute lymphocytic leukemia (ALL),Acute promyelocytic leukemia (APL)
-nejm,all,674,image_674.jpg,B: Erythema gyratum repens,Malignant syphilis
-nejm,all,675,image_675.jpg,D: Umbilical hernia,Endometrioma
-nejm,all,676,image_676.jpg,C: Testicular torsion,Varicocele
-nejm,all,677,image_677.jpg,B: Palmoplantar keratoderma,Keratoderma blenorrhagicum
-nejm,all,678,image_678.jpg,A: Erythema ab igne,Onchocerciasis
-nejm,all,679,image_679.jpg,A: Orbital wall fracture,Intraocular lens dislocation
-nejm,all,680,image_680.jpg,E: von Willebrand's disease,Neuroblastoma
-nejm,all,681,image_681.jpg,D: Periocular atopic dermatitis,Lyme disease
-nejm,all,682,image_682.jpg,B: Ghost cell glaucoma,Silicone oil hyperoleon
-nejm,all,683,image_683.jpg,D: Takayasu's arteritis,Osteoporosis
-nejm,all,684,image_684.jpg,B: Onychomycosis,Metastasis
-nejm,all,685,image_685.jpg,C: Neurocysticercosis,Neurocysticercosis
-nejm,all,686,image_686.jpg,D: Giant cell arteritis,IgG4-related disease arteritis
-nejm,all,687,image_687.jpg,A: Nocardiosis,Adenocarcinoma
-nejm,all,688,image_688.jpg,D: Paget's disease,Diabetes mellitus
-nejm,all,689,image_689.jpg,A: Grave’s sign,Pemberton’s sign
-nejm,all,690,image_690.jpg,E: Scapular subluxation,Palsy of the long thoracic nerve
-nejm,all,691,image_691.jpg,C: Purpura fulminans,Purpura fulminans
-nejm,all,692,image_692.jpg,B,Diurese the patient and then obtain a repeat chest radiograph
-nejm,all,693,image_693.jpg,C: Rosacea,Seborrheic dermatitis
-nejm,all,694,image_694.jpg,C: Helicobacter pylori stool antigen,Antineutrophil cytoplasmic autoantibody
-nejm,all,695,image_695.jpg,D: Molluscum contagiosum,Eruptive xanthomas
-nejm,all,696,image_696.jpg,C: Cholesteatoma,Glomus tympanicum
-nejm,all,697,image_697.jpg,D: Crohn’s disease,Gastrointestinal amyloidosis
-nejm,all,698,image_698.jpg,A: Aspergillosis,Plombage
-nejm,all,699,image_699.jpg,D: Stevens-Johnson syndrome,Measles
-nejm,all,700,image_700.jpg,E: Bullous impetigo,Linear IgA bullous dermatosis
-nejm,all,701,image_701.jpg,D: Bilateral peritonsillar abscesses,Bilateral peritonsillar abscesses
-nejm,all,702,image_702.jpg,C: Granuloma annulare,Sarcoidosis
-nejm,all,703,image_703.jpg,B: Pneumonia,Pulmonary embolism
-nejm,all,704,image_704.jpg,B: Lingual tuberculosis,Disseminated coccidioidomycosis
-nejm,all,705,image_705.jpg,D: Amyloid purpura,Amyloid purpura
-nejm,all,706,image_706.jpg,B: Mumps,Tuberculosis
-nejm,all,707,image_707.jpg,B: Pneumocystis pneumonia,Lymphangioleiomyomatosis
+nejm,all,359,image_359.jpg,Osteomalacia with fracture,Metastatic lung cancer
+nejm,all,360,image_360.jpg,Mastitis,Radiation-induced angiosarcoma
+nejm,all,361,image_361.jpg,Polymorphic eruption of pregnancy,Atopic eruption of pregnancy
+nejm,all,362,image_362.jpg,Niacin,Niacin
+nejm,all,363,image_363.jpg,Spur-cell hemolytic anemia,Spur-cell hemolytic anemia
+nejm,all,364,image_364.jpg,Cutaneous larva migrans,Cutaneous larva migrans
+nejm,all,365,image_365.jpg,Herpes simplex virus infection,Treponema pallidum infection
+nejm,all,366,image_366.jpg,Insect bite,Insect bite
+nejm,all,367,image_367.jpg,Diaphragm,Diaphragm
+nejm,all,368,image_368.jpg,Lung cancer,Lung herniation
+nejm,all,369,image_369.jpg,Congenital adrenal hyperplasia,Spinal dysraphism
+nejm,all,370,image_370.jpg,Reactive hyperemia of heart failure,Infant harlequin syndrome
+nejm,all,371,image_371.jpg,Cleft jaw,Mandibular fracture
+nejm,all,372,image_372.jpg,Panniculitis,Panniculitis
+nejm,all,373,image_373.jpg,Crohn’s disease,Peutz–Jeghers syndrome
+nejm,all,374,image_374.jpg,Ludwig's angina,Secondary syphilis
+nejm,all,375,image_375.jpg,Inverted Q wave,Osborn wave
+nejm,all,376,image_376.jpg,Staphylococcal scalded skin,Staphylococcal scalded skin
+nejm,all,377,image_377.jpg,Divarication of the rectus abdominis,Insulin lipohypertrophy
+nejm,all,378,image_378.jpg,Tinea capitis,Actinic granuloma
+nejm,all,379,image_379.jpg,Pineal cyst,Cystic echinococcosis
+nejm,all,380,image_380.jpg,Alcohol dependency,Alcohol dependency
+nejm,all,381,image_381.jpg,Brushfield spots,Lisch nodules
+nejm,all,382,image_382.jpg,Zinc,Zinc
+nejm,all,383,image_383.jpg,Thrombocytosis,Eosinophilia
+nejm,all,384,image_384.jpg,Susac's syndrome,Antiphospholipid syndrome
+nejm,all,385,image_385.jpg,Subdural hematoma,Epidural hematoma
+nejm,all,386,image_386.jpg,Pancreatic phlegmon,Trichobezoar
+nejm,all,387,image_387.jpg,Paget's disease,Osteomalacia
+nejm,all,388,image_388.jpg,Brown recluse spider bites,Lymphoma
+nejm,all,389,image_389.jpg,Testing the function of the facial nerve,Bone scan
+nejm,all,390,image_390.jpg,Thyroid cancer,Gastric cancer
+nejm,all,391,image_391.jpg,Pyoderma gangrenosum,Malakoplakia
+nejm,all,392,image_392.jpg,Prolactinoma,Prolactinoma
+nejm,all,393,image_393.jpg,Systemic lupus erythematosus,Systemic lupus erythematosus
+nejm,all,394,image_394.jpg,Intravitreal hemorrhage,Traumatic bleb
+nejm,all,395,image_395.jpg,Calciphylaxis,Soft-tissue calcinosis
+nejm,all,396,image_396.jpg,Verruca vulgaris,Chromoblastomycosis
+nejm,all,397,image_397.jpg,Pectus excavatum,Pectus excavatum
+nejm,all,398,image_398.jpg,Sarcoidosis,Tuberculosis
+nejm,all,399,image_399.jpg,Androgenic alopecia,Fibrosing alopecia
+nejm,all,400,image_400.jpg,Ludwig’s angina,Ludwig’s angina
+nejm,all,401,image_401.jpg,Scleroderma,Nephrogenic fibrosing dermopathy
+nejm,all,402,image_402.jpg,Lingual carcinoma,Hypoglossal nerve injury
+nejm,all,403,image_403.jpg,Primary hepatic carcinoma,Cystic echinococcosis
+nejm,all,404,image_404.jpg,Scleroderma,Congestive heart failure
+nejm,all,405,image_405.jpg,Vitiligo,Scleroderma
+nejm,all,406,image_406.jpg,Candida albicans,Corynebacterium minutissimum
+nejm,all,407,image_407.jpg,Hydropneumothorax,Hydropneumothorax
+nejm,all,408,image_408.jpg,Calcium pyrophosphate deposition disease,Gout
+nejm,all,409,image_409.jpg,Stevens-Johnson syndrome/toxic epidermal necrolysis,Drug reaction with eosinophilia and systemic symptoms
+nejm,all,410,image_410.jpg,Raynaud disease,Subclavian vein thrombosis
+nejm,all,411,image_411.jpg,Hepatocellular carcinoma,Infantile hepatic hemangiomas
+nejm,all,412,image_412.jpg,Cryptococcus neoformans,Histoplasma capsulatum
+nejm,all,413,image_413.jpg,Cerebriform nevus sebaceous,Cerebriform nevus sebaceous
+nejm,all,414,image_414.jpg,Dubin-Johnson syndrome,Metastatic colon cancer
+nejm,all,415,image_415.jpg,Vitiligo,Vitiligo
+nejm,all,416,image_416.jpg,Rosacea,Carcinoid syndrome
+nejm,all,417,image_417.jpg,Epidermal nevus syndrome,Congenital melanocytic nevus
+nejm,all,418,image_418.jpg,Tuberous sclerosis,Multiple endocrine neoplasia type 2B
+nejm,all,419,image_419.jpg,Scrofula,Peripancreatic malignancy
+nejm,all,420,image_420.jpg,Immature cataract,Intraocular tumor
+nejm,all,421,image_421.jpg,Cryptococcal meningitis,Cryptococcal meningitis
+nejm,all,422,image_422.jpg,Diuretic,Angiotensin converting-enzyme inhibitor
+nejm,all,423,image_423.jpg,Plantar warts,Plantar warts
+nejm,all,424,image_424.jpg,Acromegaly,Diabetes mellitus
+nejm,all,425,image_425.jpg,Familial adenomatous polyposis,Nodular lymphoid hyperplasia
+nejm,all,426,image_426.jpg,Submandibular space infection (Ludwig's angina),Retropharyngeal abscess
+nejm,all,427,image_427.jpg,Carbamazepine,Chloroquine
+nejm,all,428,image_428.jpg,Leprosy,Diffuse cutaneous systemic sclerosis
+nejm,all,429,image_429.jpg,Chronic constipation,Diabetes mellitus
+nejm,all,430,image_430.jpg,Intubate the patient to ensure airway patency,Leave the foreign object in place
+nejm,all,431,image_431.jpg,Thromboangiitis obliterans,Ergotism
+nejm,all,432,image_432.jpg,Osteopetrosis,Ankylosing spondylitis
+nejm,all,433,image_433.jpg,Hematopoietic system,Respiratory system
+nejm,all,434,image_434.jpg,Collodion baby,Harlequin color change
+nejm,all,435,image_435.jpg,Benign tonsillar hypertrophy,Tonsillar cancer
+nejm,all,436,image_436.jpg,Acute pulmonary embolism,Ascending aortic aneurysm
+nejm,all,437,image_437.jpg,Congenital nevus,Congenital nevus
+nejm,all,438,image_438.jpg,Vibrio vulnificus,Vibrio vulnificus
+nejm,all,439,image_439.jpg,Glucocorticoid,Protease inhibitor
+nejm,all,440,image_440.jpg,Multiple sclerosis,Wernicke’s encephalopathy
+nejm,all,441,image_441.jpg,Superior mesenteric artery syndrome,Superior mesenteric artery syndrome
+nejm,all,442,image_442.jpg,Mucocele,Mucocele
+nejm,all,443,image_443.jpg,Herpes simplex virus,Varicella-zoster virus
+nejm,all,444,image_444.jpg,Horner’s syndrome,Myasthenia gravis
+nejm,all,445,image_445.jpg,Pleural perforation,Pleural perforation
+nejm,all,446,image_446.jpg,Hidradenitis suppurativa,Polymastia
+nejm,all,447,image_447.jpg,Scabies,Gout
+nejm,all,448,image_448.jpg,Penicillin or azithromycin,Aspirin and intravenous immune globulin
+nejm,all,449,image_449.jpg,Necrotizing sialometaplasia,Extranodal natural killer T-cell lymphoma
+nejm,all,450,image_450.jpg,Kawasaki disease,Celiac disease
+nejm,all,451,image_451.jpg,Pellagra,Amyotrophic lateral sclerosis
+nejm,all,452,image_452.jpg,Serum sickness,Uveoparotid fever
+nejm,all,453,image_453.jpg,Pyoderma gangrenosum,Anti-MDA5 dermatomyositis
+nejm,all,454,image_454.jpg,Recurrent breast cancer,Cellulitis
+nejm,all,455,image_455.jpg,Acute mesenteric ischemia,Intraabdominal hernia
+nejm,all,456,image_456.jpg,Acute dacryocystitis,Acute dacryocystitis
+nejm,all,457,image_457.jpg,Anti-Hu antibody,Anti-Hu antibody
+nejm,all,458,image_458.jpg,Crusted scabies,Crusted scabies
+nejm,all,459,image_459.jpg,Trichomonas vaginalis,Schistosoma hematobium
+nejm,all,460,image_460.jpg,Atlantoaxial dislocation,Epiglottitis
+nejm,all,461,image_461.jpg,Erythema multiforme,Urticaria multiforme
+nejm,all,462,image_462.jpg,Antihistamine,Tetracycline
+nejm,all,463,image_463.jpg,Cortisol,Alkaline phosphatase
+nejm,all,464,image_464.jpg,Neutrophilic eccrine hidradenitis,Neutrophilic eccrine hidradenitis
+nejm,all,465,image_465.jpg,"Right hemiparesis, gaze deviated to the right","Left hemiparesis, gaze deviated to the right"
+nejm,all,466,image_466.jpg,Systemic sclerosis,Lead exposure
+nejm,all,467,image_467.jpg,Necrolytic migratory erythema,Necrolytic migratory erythema
+nejm,all,468,image_468.jpg,Livedo reticularis,Erythema ab igne
+nejm,all,469,image_469.jpg,Lupus pernio,Phototoxic dermatitis
+nejm,all,470,image_470.jpg,Laryngeal papillomatosis,Laryngeal candidiasis
+nejm,all,471,image_471.jpg,Zenker's diverticulum,Zenker's diverticulum
+nejm,all,472,image_472.jpg,Paget-Schroetter disease,Mondor’s disease
+nejm,all,473,image_473.jpg,Posterior reversible encephalopathy syndrome,Posterior reversible encephalopathy syndrome
+nejm,all,474,image_474.jpg,Gout,Systemic sclerosis
+nejm,all,475,image_475.jpg,"Hypocalcemia, hypophosphatemia, and hyperkalemia","Hypocalcemia, hypophosphatemia, and hyperkalemia"
+nejm,all,476,image_476.jpg,Legg–Calvé–Perthes disease,Legg–Calvé–Perthes disease
+nejm,all,477,image_477.jpg,Phylum Porifera contact dermatitis,Decompression sickness
+nejm,all,478,image_478.jpg,Porphyria cutanea tarda,Porphyria cutanea tarda
+nejm,all,479,image_479.jpg,Hashimoto's thyroiditis,Graves' disease
+nejm,all,480,image_480.jpg,Hypospadias with cryptorchidism,Congenital adrenal hyperplasia
+nejm,all,481,image_481.jpg,Herpes zoster,Cutaneous metastases
+nejm,all,482,image_482.jpg,Thromboangiitis obliterans,Thromboangiitis obliterans
+nejm,all,483,image_483.jpg,Cataract,Cataract
+nejm,all,484,image_484.jpg,Atherosclerosis,Atherosclerosis
+nejm,all,485,image_485.jpg,Sarcoidosis,Situs inversus totalis
+nejm,all,486,image_486.jpg,Hypertensive retinopathy,Hypertriglyceridemia
+nejm,all,487,image_487.jpg,Peritonsillar abscess,Obstructive parotitis
+nejm,all,488,image_488.jpg,Ischemic colitis,Ischemic colitis
+nejm,all,489,image_489.jpg,Disseminated leishmaniasis,Small-cell lung cancer
+nejm,all,490,image_490.jpg,Taenia solium,Strongyloides stercoralis
+nejm,all,491,image_491.jpg,Xylazine,Xylazine
+nejm,all,492,image_492.jpg,Small-cell lung cancer,Hodgkin's lymphoma
+nejm,all,493,image_493.jpg,Perinephritic abscess,Brucellosis
+nejm,all,494,image_494.jpg,Thyroid eye disease,IgG4-related ophthalmic disease
+nejm,all,495,image_495.jpg,Periodontitis,Dermatomyositis
+nejm,all,496,image_496.jpg,Aspergillus fumigatus,Curvularia alcornii
+nejm,all,497,image_497.jpg,Bulbar palsy,Romberg's sign
+nejm,all,498,image_498.jpg,Mycobacterium leprae,Klebsiella rhinoscleromatis
+nejm,all,499,image_499.jpg,Melkersson-Rosenthal syndrome,Tissue plasminogen activator-associated angioedema
+nejm,all,500,image_500.jpg,Temporal quadrantanopsia,Inferior hemifield loss
+nejm,all,501,image_501.jpg,Syphilis,Infective endocarditis
+nejm,all,502,image_502.jpg,Calciphylaxis,Nephrogenic systemic fibrosis
+nejm,all,503,image_503.jpg,Ungal melanoma,Splinter hemorrhages
+nejm,all,504,image_504.jpg,Pityriasis rosea,Leprosy
+nejm,all,505,image_505.jpg,Baker's cyst,Abscess
+nejm,all,506,image_506.jpg,Pyogenic granuloma,Dirofilaria repens infection
+nejm,all,507,image_507.jpg,Porphyria cutanea tarda,Paraneoplastic disorder
+nejm,all,508,image_508.jpg,Angiomyolipoma,Perirenal extramedullary hematopoiesis
+nejm,all,509,image_509.jpg,Marfan's syndrome,Bulimia nervosa
+nejm,all,510,image_510.jpg,Chromomycosis,Iododerma
+nejm,all,511,image_511.jpg,Cataract,Retinoblastoma
+nejm,all,512,image_512.jpg,Intestinal obstruction,Perforation of a viscus
+nejm,all,513,image_513.jpg,Psoriasis,Dermatomyositis
+nejm,all,514,image_514.jpg,Acromegaly,Lipomatosis
+nejm,all,515,image_515.jpg,Perforating folliculitis,Nevus comedonicus
+nejm,all,516,image_516.jpg,Candidiasis,Uremic stomatitis
+nejm,all,517,image_517.jpg,Paget's disease,Systemic sclerosis
+nejm,all,518,image_518.jpg,Psoriasis,Chronic venous stasis
+nejm,all,519,image_519.jpg,Angioedema,Sjögren's syndrome
+nejm,all,520,image_520.jpg,Thyroglossal duct cyst,Thyroglossal duct cyst
+nejm,all,521,image_521.jpg,Polychondritis,Wegener's granulomatosis
+nejm,all,522,image_522.jpg,Necrobiosis lipoidica,Necrobiosis lipoidica
+nejm,all,523,image_523.jpg,Lingual artery,Lingual artery
+nejm,all,524,image_524.jpg,Cerebral toxoplasmosis,Nocardia asteroides infection
+nejm,all,525,image_525.jpg,Raynaud syndrome,Achenbach’s syndrome
+nejm,all,526,image_526.jpg,Chancroid,Herpes vegetans
+nejm,all,527,image_527.jpg,Cushing's syndrome,Thrombosis of the inferior vena cava
+nejm,all,528,image_528.jpg,Verrucous carcinoma,Human papillomavirus
+nejm,all,529,image_529.jpg,Tay-Sachs disease,Tay-Sachs disease
+nejm,all,530,image_530.jpg,Restrictive lung disease,Intrathoracic localized obstruction
+nejm,all,531,image_531.jpg,Hereditary angioedema,Thromboembolism
+nejm,all,532,image_532.jpg,Pneumoperitoneum,Pneumoperitoneum
+nejm,all,533,image_533.jpg,Heberden’s nodes,Jaccoud’s arthropathy
+nejm,all,534,image_534.jpg,Cytomegalovirus infection,Cytomegalovirus infection
+nejm,all,535,image_535.jpg,Paget's disease,Renal tubular acidosis
+nejm,all,536,image_536.jpg,Thiamine,Zinc
+nejm,all,537,image_537.jpg,Scleroderma,Cold agglutinins
+nejm,all,538,image_538.jpg,Trichuriasis,Enterobiasis
+nejm,all,539,image_539.jpg,Digital ischemia,Digital ischemia
+nejm,all,540,image_540.jpg,Croup,Croup
+nejm,all,541,image_541.jpg,Disseminated cutaneous blastomycosis,Disseminated cutaneous blastomycosis
+nejm,all,542,image_542.jpg,Otitis externa,Frey's syndrome
+nejm,all,543,image_543.jpg,Hemorrhagic cerebral metastasis,Cerebral cavernous malformations
+nejm,all,544,image_544.jpg,Prescribe nystatin,Counsel patient to stop smoking
+nejm,all,545,image_545.jpg,Leukocytoclastic vasculitis,Multiple myeloma
+nejm,all,546,image_546.jpg,Defect in glucuronidation leading to hyperbilirubinemia,About 50% of the serum bilirubin is conjugated
+nejm,all,547,image_547.jpg,Hampton’s hump,Hampton’s hump
+nejm,all,548,image_548.jpg,Cryoglobulinemic vasculitis,Cryoglobulinemic vasculitis
+nejm,all,549,image_549.jpg,Lipoma,Ectopic thyroid
+nejm,all,550,image_550.jpg,Acute conjunctivitis,Acute angle-closure glaucoma
+nejm,all,551,image_551.jpg,Plasmodium vivax,Plasmodium vivax
+nejm,all,552,image_552.jpg,Somatostatinoma,Glucagonoma
+nejm,all,553,image_553.jpg,Langerhans cell histiocytosis,Erdheim–Chester disease
+nejm,all,554,image_554.jpg,Gastric bezoar,Splenic cyst
+nejm,all,555,image_555.jpg,Tinea versicolor,Tinea versicolor
+nejm,all,556,image_556.jpg,Cobalamin (vitamin B12) deficiency,Pellagra
+nejm,all,557,image_557.jpg,Pediculus humanus capitis,Pthirus pubis
+nejm,all,558,image_558.jpg,Pulmonary edema,Pulmonary alveolar microlithiasis
+nejm,all,559,image_559.jpg,Hyperbilirubinemia,Pseudomonas aeruginosa infection
+nejm,all,560,image_560.jpg,Penile contusion,Penile fracture
+nejm,all,561,image_561.jpg,HIV-associated diffuse large B-cell lymphoma,Disseminated Mycobacterium avium–intracellulare infection
+nejm,all,562,image_562.jpg,Psoralen,Erlotinib
+nejm,all,563,image_563.jpg,Dieulafoy's lesion,Adenocarcinoma
+nejm,all,564,image_564.jpg,Melanoma,Melanoma
+nejm,all,565,image_565.jpg,Umbilical hernia,Sister Mary Joseph's nodule
+nejm,all,566,image_566.jpg,Fluorescent dye,Fluorescent dye
+nejm,all,567,image_567.jpg,Pulmonary embolism,Pulmonary embolism
+nejm,all,568,image_568.jpg,Osteomyelitis of the proximal tibia,Osgood–Schlatter disease
+nejm,all,569,image_569.jpg,Pneumomediastinum,Pneumomediastinum
+nejm,all,570,image_570.jpg,Aniridia,Prominent iris collarette
+nejm,all,571,image_571.jpg,Pemphigus vegetans,Malignant acanthosis nigricans
+nejm,all,572,image_572.jpg,Rhinophyma,Tuberous sclerosis
+nejm,all,573,image_573.jpg,Bilirubin elevation,Elevated protein
+nejm,all,574,image_574.jpg,Norwegian scabies,Malignant syphilis
+nejm,all,575,image_575.jpg,Trichuris trichiura,Diphyllobothrium latum
+nejm,all,576,image_576.jpg,Herpes simplex virus infection,Mycobacterium marinum
+nejm,all,577,image_577.jpg,Right lower lobe,Left upper lobe
+nejm,all,578,image_578.jpg,Candidiasis,Herpes zoster
+nejm,all,579,image_579.jpg,Familial exudative vitreoretinopathy,X-linked retinoschisis
+nejm,all,580,image_580.jpg,Paget's disease,Pneumocephalus
+nejm,all,581,image_581.jpg,Hallux valgus,Albright's hereditary osteodystrophy
+nejm,all,582,image_582.jpg,Fluorosis,Fluorosis
+nejm,all,583,image_583.jpg,Staphylococcus aureus,Fusobacterium necrophorum
+nejm,all,584,image_584.jpg,Dupuyten's contracture,Dupuyten's contracture
+nejm,all,585,image_585.jpg,Keratoconus,Wilson's disease
+nejm,all,586,image_586.jpg,Antiphospholipid syndrome,Infective endocarditis
+nejm,all,587,image_587.jpg,Raynaud phenomenon,Cholesterol emboli
+nejm,all,588,image_588.jpg,Non-small-cell lung cancer,Oleothorax
+nejm,all,589,image_589.jpg,Legg-Calve-Perthes disease,Slipped capital femoral epiphysis
+nejm,all,590,image_590.jpg,Mosquito,Chrysops fly
+nejm,all,591,image_591.jpg,Smoker’s melanosis,Diffuse melanosis cutis
+nejm,all,592,image_592.jpg,Calcium oxalate and triple phosphate (struvite) crystals,Cystine and triple phosphate (struvite) crystals
+nejm,all,593,image_593.jpg,Cicatricial pemphigoid,Herpes zoster
+nejm,all,594,image_594.jpg,"Hand, foot, and mouth disease",Streptococcal pharyngitis
+nejm,all,595,image_595.jpg,Pneumothorax,Substernal goiter
+nejm,all,596,image_596.jpg,Speckled lentiginous nevus,Becker’s nevus
+nejm,all,597,image_597.jpg,Jeune syndrome asphyxiating thoracic dystrophy,Paternal uniparental disomy 14 (UDP 14 pat) thoracic dysplasia
+nejm,all,598,image_598.jpg,Cecal volvulus,Small-bowel obstruction
+nejm,all,599,image_599.jpg,Williams syndrome,Neonatal thyrotoxicosis
+nejm,all,600,image_600.jpg,Lichen planus,Bulimia nervosa
+nejm,all,601,image_601.jpg,Neurocysticercosis,Neurocysticercosis
+nejm,all,602,image_602.jpg,Pterygium,Papilloma
+nejm,all,603,image_603.jpg,Scabies,Fordyce's angiokeratomas
+nejm,all,604,image_604.jpg,Pyoderma gangrenosum,Cutaneous diphtheria
+nejm,all,605,image_605.jpg,Enterobius vermicularis,Enterobius vermicularis
+nejm,all,606,image_606.jpg,Human botfly,Tumbu fly
+nejm,all,607,image_607.jpg,Neonatal herpes simplex virus,Neonatal herpes simplex virus
+nejm,all,608,image_608.jpg,Tinea versicolor,Erythrasma
+nejm,all,609,image_609.jpg,Bisphosphonates,Bisphosphonates
+nejm,all,610,image_610.jpg,Telangiectasia,Livedo reticularis
+nejm,all,611,image_611.jpg,Varicella,Varicella
+nejm,all,612,image_612.jpg,Methicillin-resistant Staphylococcus aureus,Talaromyces marneffei
+nejm,all,613,image_613.jpg,Leprosy,Leishmaniasis
+nejm,all,614,image_614.jpg,Herpes simplex virus type 1,Coxsackie virus type A16
+nejm,all,615,image_615.jpg,Retrobulbar abscess,Hydatid cyst
+nejm,all,616,image_616.jpg,Condyloma acuminatum,Vestibular papillomatosis
+nejm,all,617,image_617.jpg,Episcleritis,Dislocation of the lens
+nejm,all,618,image_618.jpg,Raynaud's phenomenon,Raynaud's phenomenon
+nejm,all,619,image_619.jpg,Tungiasis,Tungiasis
+nejm,all,620,image_620.jpg,Caput Medusae,Caput Medusae
+nejm,all,621,image_621.jpg,Left anterior descending,Left main stem
+nejm,all,622,image_622.jpg,"Hand, foot, and mouth disease","Hand, foot, and mouth disease"
+nejm,all,623,image_623.jpg,Auditory polyp,Cholesteatoma
+nejm,all,624,image_624.jpg,Bartholin gland cyst,Gartner duct cyst
+nejm,all,625,image_625.jpg,Tinea manuum,Palmar erythema of pregnancy
+nejm,all,626,image_626.jpg,Portal vein thrombosis,Mesenteric ischemia
+nejm,all,627,image_627.jpg,Cutaneous larva migrans,Cutaneous larva migrans
+nejm,all,628,image_628.jpg,Superficial punctate keratitis,Ophthalmomyiasis
+nejm,all,629,image_629.jpg,Right ventricle,Left atrium
+nejm,all,630,image_630.jpg,Tension pneumothorax,Tension pneumothorax
+nejm,all,631,image_631.jpg,Esophageal web,Nutcracker esophagus
+nejm,all,632,image_632.jpg,T-cell lymphoma,Uveal melanoma
+nejm,all,633,image_633.jpg,Proliferative diabetic retinopathy,Proliferative diabetic retinopathy
+nejm,all,634,image_634.jpg,Right fascicular block,Hyperkalemia
+nejm,all,635,image_635.jpg,Anopheles mosquito,Triatomine bug
+nejm,all,636,image_636.jpg,Hemothorax,Reexpansion pulmonary edema
+nejm,all,637,image_637.jpg,Pyogenic granuloma,Amelanotic melanoma
+nejm,all,638,image_638.jpg,Scleroderma,Eosinophilic fasciitis
+nejm,all,639,image_639.jpg,Baking powder,Sugar
+nejm,all,640,image_640.jpg,Calvarial osteomyelitis,Sickle cell disease
+nejm,all,641,image_641.jpg,Pyogenic aortitis due to Salmonella enteritidis,Emphysematous aortitis due to Clostridium septicum
+nejm,all,642,image_642.jpg,Cutaneous larva migrans,Lung cancer
+nejm,all,643,image_643.jpg,Stevens-Johnson syndrome,Herpes simplex virus infection
+nejm,all,644,image_644.jpg,Lithium,Palifermin
+nejm,all,645,image_645.jpg,Radiation recall,Radiation recall
+nejm,all,646,image_646.jpg,Rocky mountain spotted fever,Scurvy
+nejm,all,647,image_647.jpg,Psoriasis,Keratoderma blennorrhagicum
+nejm,all,648,image_648.jpg,Granuloma annulare,Tinea faciei
+nejm,all,649,image_649.jpg,Herpes simplex infection,Inflammatory bowel disease
+nejm,all,650,image_650.jpg,Autosomal dominant polycystic kidney disease,Autosomal dominant polycystic kidney disease
+nejm,all,651,image_651.jpg,Pulmonary embolism,Azygous vein
+nejm,all,652,image_652.jpg,Pustular rosacea,Subcorneal pustular dermatosis
+nejm,all,653,image_653.jpg,Paget’s disease,Multiple myeloma
+nejm,all,654,image_654.jpg,Chronic lead poisoning,Chronic lead poisoning
+nejm,all,655,image_655.jpg,Cutaneous horn,Periungual fibroma
+nejm,all,656,image_656.jpg,Miliaria crystallina,Miliaria crystallina
+nejm,all,657,image_657.jpg,Graves' disease,Graves' disease
+nejm,all,658,image_658.jpg,Paget's disease of bone,Langerhans'-cell histiocytosis
+nejm,all,659,image_659.jpg,Chronic lymphocytic leukemia,Gaucher’s disease
+nejm,all,660,image_660.jpg,Psoriasis,Chemotherapy
+nejm,all,661,image_661.jpg,Oral candidiasis,Leukoplakia
+nejm,all,662,image_662.jpg,Thalassemia minor,Glucose-6-phosphate dehydrogenase deficiency
+nejm,all,663,image_663.jpg,Verrucous carcinoma,Verrucous carcinoma
+nejm,all,664,image_664.jpg,Erythema nodosum,Fusariosis
+nejm,all,665,image_665.jpg,Hyphema,Hyphema
+nejm,all,666,image_666.jpg,Cellulitis,Herpes zoster
+nejm,all,667,image_667.jpg,Sarcoidosis,Systemic sclerosis
+nejm,all,668,image_668.jpg,Duodenal atresia,Hirschsprung’s disease
+nejm,all,669,image_669.jpg,Melanocytic nevi,Seborrheic keratoses
+nejm,all,670,image_670.jpg,Non-small-cell lung cancer,Sarcoidosis
+nejm,all,671,image_671.jpg,Tinea capitis,Tinea capitis
+nejm,all,672,image_672.jpg,Rheumatic heart disease,Rheumatic heart disease
+nejm,all,673,image_673.jpg,Acute promyelocytic leukemia (APL),Acute promyelocytic leukemia (APL)
+nejm,all,674,image_674.jpg,Erythema gyratum repens,Malignant syphilis
+nejm,all,675,image_675.jpg,Omphalith,Endometrioma
+nejm,all,676,image_676.jpg,Varicocele,Varicocele
+nejm,all,677,image_677.jpg,Keratoderma blenorrhagicum,Keratoderma blenorrhagicum
+nejm,all,678,image_678.jpg,Erythema ab igne,Onchocerciasis
+nejm,all,679,image_679.jpg,Orbital wall fracture,Intraocular lens dislocation
+nejm,all,680,image_680.jpg,Neuroblastoma,Neuroblastoma
+nejm,all,681,image_681.jpg,Periorbital cellulitis,Lyme disease
+nejm,all,682,image_682.jpg,Ghost cell glaucoma,Silicone oil hyperoleon
+nejm,all,683,image_683.jpg,Takayasu's arteritis,Osteoporosis
+nejm,all,684,image_684.jpg,Onychomycosis,Metastasis
+nejm,all,685,image_685.jpg,Neurocysticercosis,Neurocysticercosis
+nejm,all,686,image_686.jpg,Coronary artery disease,IgG4-related disease arteritis
+nejm,all,687,image_687.jpg,Nocardiosis,Adenocarcinoma
+nejm,all,688,image_688.jpg,Ankylosing spondylitis,Diabetes mellitus
+nejm,all,689,image_689.jpg,Flemingo’s flush sign,Pemberton’s sign
+nejm,all,690,image_690.jpg,Scapular subluxation,Palsy of the long thoracic nerve
+nejm,all,691,image_691.jpg,Henloch-Schonlein purpura,Purpura fulminans
+nejm,all,692,image_692.jpg,Diurese the patient and then obtain a repeat chest radiograph,Diurese the patient and then obtain a repeat chest radiograph
+nejm,all,693,image_693.jpg,Rosacea,Seborrheic dermatitis
+nejm,all,694,image_694.jpg,Antineutrophil cytoplasmic autoantibody,Antineutrophil cytoplasmic autoantibody
+nejm,all,695,image_695.jpg,Molluscum contagiosum,Eruptive xanthomas
+nejm,all,696,image_696.jpg,Cholesteatoma,Glomus tympanicum
+nejm,all,697,image_697.jpg,Crohn’s disease,Gastrointestinal amyloidosis
+nejm,all,698,image_698.jpg,Aspergillosis,Plombage
+nejm,all,699,image_699.jpg,Polymorphous light eruption,Measles
+nejm,all,700,image_700.jpg,Bullous impetigo,Linear IgA bullous dermatosis
+nejm,all,701,image_701.jpg,Bilateral peritonsillar abscesses,Bilateral peritonsillar abscesses
+nejm,all,702,image_702.jpg,Granuloma annulare,Sarcoidosis
+nejm,all,703,image_703.jpg,Pneumothorax,Pulmonary embolism
+nejm,all,704,image_704.jpg,Lingual tuberculosis,Disseminated coccidioidomycosis
+nejm,all,705,image_705.jpg,Amyloid purpura,Amyloid purpura
+nejm,all,706,image_706.jpg,Cat scratch disease,Tuberculosis
+nejm,all,707,image_707.jpg,Lymphangioleiomyomatosis,Lymphangioleiomyomatosis
 nejm,all,708,image_708.jpg,Cocaine,Cocaine
-nejm,all,709,image_709.jpg,D: Glioma,Basilar artery aneurysm
-nejm,all,710,image_710.jpg,B: Bismuth poisoning,Lead poisoning
-nejm,all,711,image_711.jpg,A: Ulnar artery occlusion,Radial artery thrombosis
-nejm,all,712,image_712.jpg,C: Titanium,Gold
-nejm,all,713,image_713.jpg,E: Quadriceps tendon ruptures,Quadriceps tendon ruptures
-nejm,all,714,image_714.jpg,B: Right staghorn calculus,Right ureterovesical calculus
-nejm,all,715,image_715.jpg,D: Neonatal epididymitis,Retroperitoneal hemorrhage
-nejm,all,716,image_716.jpg,C: Benign essential blepharospasm,Myasthenia gravis
-nejm,all,717,image_717.jpg,D: Ecthyma gangrenosum,Pyoderma gangrenosum
-nejm,all,718,image_718.jpg,D: Median rhomboid glossitis,Median rhomboid glossitis
-nejm,all,719,image_719.jpg,C: Herpetic whitlow,Spider bite
-nejm,all,720,image_720.jpg,A: Bowel infarction,Bowel infarction
-nejm,all,721,image_721.jpg,C: Retinal vein occlusion,Narrow angle glaucoma
-nejm,all,722,image_722.jpg,B: Pseudomelanosis duodeni,Pseudomelanosis duodeni
-nejm,all,723,image_723.jpg,C: Macular degeneration,Ocular myiasis
-nejm,all,724,image_724.jpg,D: Osteosarcoma,Colon cancer
-nejm,all,725,image_725.jpg,D: Calcium pyrophosphate dihydrate,Cholesterol
-nejm,all,726,image_726.jpg,D: Palmoplantar keratoderma,Tripe palms
-nejm,all,727,image_727.jpg,C: Leukotriene receptor antagonist,Fluoroquinolone antibiotic
-nejm,all,728,image_728.jpg,A: Mitral-valve repair,Mitral-valve repair
-nejm,all,729,image_729.jpg,D: Histoplasmosis,Non–small-cell lung cancer
-nejm,all,730,image_730.jpg,C: Nitrofurantoin,Minocycline
-nejm,all,731,image_731.jpg,D: Falciform ligament,Falciform ligament
-nejm,all,732,image_732.jpg,E: Skin biopsy,Chest imaging
-nejm,all,733,image_733.jpg,B: Basal cell carcinoma,Lentigo maligna
-nejm,all,734,image_734.jpg,C: Herpes zoster,Herpes zoster
-nejm,all,735,image_735.jpg,E: Horner’s syndrome,Tabes dorsalis
-nejm,all,736,image_736.jpg,C: Hemodialysis,Chelation Therapy
-nejm,all,737,image_737.jpg,D: Pyloric outlet obstruction,Meckel's diverticulum
-nejm,all,738,image_738.jpg,B: Gingival melanoma,Gingival melanoma
-nejm,all,739,image_739.jpg,B: Gout,Gout
-nejm,all,740,image_740.jpg,D: Mastectomy,Penicillin
-nejm,all,741,image_741.jpg,E: Meconium ileus,Hirschsprung’s disease
-nejm,all,742,image_742.jpg,E: Esophageal carcinoma,Diffuse esophageal spasm
-nejm,all,743,image_743.jpg,C: Esophageal stricture,Diffuse esophageal spasm
-nejm,all,744,image_744.jpg,B: Cirrhosis,Superior vena caval obstruction
-nejm,all,745,image_745.jpg,E: Papillary fibroelastoma,Redundant mitral valve
-nejm,all,746,image_746.jpg,A: Bezoar,Bezoar
-nejm,all,747,image_747.jpg,D: Syphilitic chancre,Squamous-cell carcinoma
-nejm,all,748,image_748.jpg,D: Intra-abdominal abscess,Bowel ischemia
-nejm,all,749,image_749.jpg,A: Pericardial hydatid cysts,Pericardial metastases
-nejm,all,750,image_750.jpg,C: Papular acrodermatitis,Molluscum contagiosum
-nejm,all,751,image_751.jpg,C: Scleredema,Scleromyxedema
-nejm,all,752,image_752.jpg,C: Umbilical hernia,Portal hypertension
-nejm,all,753,image_753.jpg,E: Proteus syndrome,Neurofibromatosis
-nejm,all,754,image_754.jpg,D: Paraesophageal hernia,Paraesophageal hernia
-nejm,all,755,image_755.jpg,B: Cherry hemangioma,Pyogenic granuloma
-nejm,all,756,image_756.jpg,A: Meningioma,Plasmacytoma
-nejm,all,757,image_757.jpg,B: Herpetic geometric glossitis,Pyostomatitis vegetans
-nejm,all,758,image_758.jpg,D: Hepatocellular carcinoma,Echinococcosis
-nejm,all,759,image_759.jpg,B: Psoriasis,Malignancy
-nejm,all,760,image_760.jpg,E: Subacute cutaneous lupus erythematosus,Blastic plasmacytoid dendritic-cell neoplasm
-nejm,all,761,image_761.jpg,D: Emphysematous pyelonephritis,Emphysematous pyelonephritis
-nejm,all,762,image_762.jpg,A: Acne,Syphilis
-nejm,all,763,image_763.jpg,A: Infantile hemangioma,Congenital syphilis
-nejm,all,764,image_764.jpg,D: Polyostotic fibrous dysplasia,Marrow hyperplasia
-nejm,all,765,image_765.jpg,A: Hairy-cell leukemia,Hairy-cell leukemia
-nejm,all,766,image_766.jpg,B: Left bronchial tree,Right bronchial tree
-nejm,all,767,image_767.jpg,D: Accessory tooth,Osteonecrosis
-nejm,all,768,image_768.jpg,D: Killian-Jamieson’s triangle,Killian’s triangle
-nejm,all,769,image_769.jpg,C: Effusive-Constrictive Pericarditis,Constrictive Pericarditis
-nejm,all,770,image_770.jpg,E: Hydralazine,Amiodarone
-nejm,all,771,image_771.jpg,B: Henoch-Schönlein purpura,Henoch-Schönlein purpura
-nejm,all,772,image_772.jpg,B: Neurogenic megacolon,Neurogenic megacolon
-nejm,all,773,image_773.jpg,D: Magnesium hydroxide,Bismuth Salicylate
-nejm,all,774,image_774.jpg,A: Bot fly,Bot fly
-nejm,all,775,image_775.jpg,D: Rhinolith,Tooth
-nejm,all,776,image_776.jpg,D: Madura foot,Chromoblastomycosis
-nejm,all,777,image_777.jpg,A: Pancreatitis,Pylephlebitis
-nejm,all,778,image_778.jpg,D: Propofol,Propofol
-nejm,all,779,image_779.jpg,D: Pontine stroke,Central pontine myelinolysis
-nejm,all,780,image_780.jpg,B: Diverticulitis,Intussusception
-nejm,all,781,image_781.jpg,B: Androgenetic alopecia,Alopecia areata
-nejm,all,782,image_782.jpg,A: Basal-cell carcinoma,Merkel-cell carcinoma
-nejm,all,783,image_783.jpg,E: Candida albicans infection,Candida albicans infection
-nejm,all,784,image_784.jpg,A: Pilonidal sinus,Keratoacanthoma
-nejm,all,785,image_785.jpg,D: Scrofula,Laryngocele
-nejm,all,786,image_786.jpg,C: Peutz-Jeghers's syndrome,Peutz-Jeghers's syndrome
-nejm,all,787,image_787.jpg,D: Ecthyma gangrenosum,Ecthyma gangrenosum
-nejm,all,788,image_788.jpg,B: Cutaneous small vessel vasculitis,Intravascular lymphoma
-nejm,all,789,image_789.jpg,B: Crusted scabies,Crusted scabies
-nejm,all,790,image_790.jpg,D: Eggs hatch in the small intestine,Larvae penetrate the lungs
-nejm,all,791,image_791.jpg,D: Acanthamoeba keratitis,Autoimmune keratitis
-nejm,all,792,image_792.jpg,C: Pancreatic pseudocyst,Enteric duplication cyst
-nejm,all,793,image_793.jpg,B: Atrophic glossitis,Hypoglossal nerve palsy
-nejm,all,794,image_794.jpg,D: Melanoma,Melanoma
-nejm,all,795,image_795.jpg,D: Voriconazole-induced periostitis,Voriconazole-induced periostitis
-nejm,all,796,image_796.jpg,E,Emphysematous cholecystitis
-nejm,all,797,image_797.jpg,A: Bicalutamide,Bicalutamide
-nejm,all,798,image_798.jpg,C: Neurofibromatosis type 1,Neurofibromatosis type 2
-nejm,all,799,image_799.jpg,B: Hand foot and mouth disease,Secondary syphilis
-nejm,all,800,image_800.jpg,D: Peutz-Jeghers syndrome,Cowden syndrome
-nejm,all,801,image_801.jpg,D: Toxicodendron radicans (poison ivy),Shiitake mushrooms
-nejm,all,802,image_802.jpg,C: Graves' disease,Graves' disease
-nejm,all,803,image_803.jpg,D: Ulcerative colitis,Acute mesenteric ischemia
-nejm,all,804,image_804.jpg,D: Lead toxicity,Arsenic toxicity
-nejm,all,805,image_805.jpg,B: Ankylosing spondylitis,Pectus excavatum
-nejm,all,806,image_806.jpg,B: Listeriosis,Nocardiosis
-nejm,all,807,image_807.jpg,D: Metastatic melanoma,Laxative use
-nejm,all,808,image_808.jpg,D: Facial trauma,Dermatomyositis
-nejm,all,809,image_809.jpg,B: Dermatomyositis,EGFR inhibition
-nejm,all,810,image_810.jpg,A: Amelanotic melanoma,Keratoacanthoma
-nejm,all,811,image_811.jpg,E: Tinea circinata,Tinea circinata
-nejm,all,812,image_812.jpg,D: Rheumatic fever,Diphtheria
-nejm,all,813,image_813.jpg,A: Oral lichen planus,Pernicious anemia
-nejm,all,814,image_814.jpg,D: Hepatocellular carcinoma,Cirrhosis
-nejm,all,815,image_815.jpg,A: Angioedema,Angioedema
-nejm,all,816,image_816.jpg,C: Metastatic disease of the nail bed,Chemotherapy
-nejm,all,817,image_817.jpg,D: Obturator hernia,Obturator hernia
-nejm,all,818,image_818.jpg,C: Ventricular aneurysm,Takotsubo cardiomyopathy
-nejm,all,819,image_819.jpg,D: Topical antimicrobial drops,Intravitreal antimicrobial injections
-nejm,all,820,image_820.jpg,D: Herpes zoster ophthalmicus,Herpes zoster ophthalmicus
-nejm,all,821,image_821.jpg,B: Nephrogenic fibrosing dermopathy,Nephrogenic fibrosing dermopathy
-nejm,all,822,image_822.jpg,D: Rosacea,Cutaneous lupus
-nejm,all,823,image_823.jpg,D: Tinea nigra,Tinea nigra
-nejm,all,824,image_824.jpg,E: Vermian atrophy,Osmotic demyelination syndrome
-nejm,all,825,image_825.jpg,D: Pyogenic liver abscess,Emphysematous hepatitis
-nejm,all,826,image_826.jpg,B: Lymphogranuloma venereum,Bowenoid papulosis
-nejm,all,827,image_827.jpg,A,IgG and complement deposition at the dermis-epidermis junction
-nejm,all,828,image_828.jpg,C: Trachoma,Sjögren's syndrome
-nejm,all,829,image_829.jpg,A: Anterior uveitis,Herpes simplex virus infection
-nejm,all,830,image_830.jpg,D: Paronychia,Herpetic whitlow
-nejm,all,831,image_831.jpg,D: Anti-Ro antibody,Anticentromere antibody
-nejm,all,832,image_832.jpg,B: Calcinosis,Calcinosis
-nejm,all,833,image_833.jpg,A: Graves' ophthalmopathy,Retinal detachment
-nejm,all,834,image_834.jpg,A: Binocular visual loss,Binocular visual loss
-nejm,all,835,image_835.jpg,A: Androgenic alopecia,Syphilitic alopecia
-nejm,all,836,image_836.jpg,C: Constrictive pericarditis,Constrictive pericarditis
-nejm,all,837,image_837.jpg,D: Coins in the nasal cavity,Button magnets in the nasal cavity
-nejm,all,838,image_838.jpg,E: Testing for herpes simplex virus,Testing for bacterial and viral respiratory pathogens
-nejm,all,839,image_839.jpg,B: Osteopetrosis,Bone marrow hyperplasia
-nejm,all,840,image_840.jpg,C: Molluscum contagiosum,Condyloma acuminatum
-nejm,all,841,image_841.jpg,A: Small bowel obstruction,Emphysematous pyelonephritis
-nejm,all,842,image_842.jpg,B: Involvement of the upper extremity,Delay in surgical intervention >24 hours
-nejm,all,843,image_843.jpg,B: Pheochromocytoma,Pheochromocytoma
-nejm,all,844,image_844.jpg,C: Histoplasma capsulatum,Cryptococcus neoformans
-nejm,all,845,image_845.jpg,E: Rupture of the trapezius muscle,Lipodystrophy
-nejm,all,846,image_846.jpg,B,Transmission is associated with aerosolized contaminated soil exposure.
-nejm,all,847,image_847.jpg,A: Atopic dermatitis,Zinc deficiency
-nejm,all,848,image_848.jpg,A: Chronic paronychia,Psoriasis
-nejm,all,849,image_849.jpg,C: Paronychia,Cutaneous leishmaniasis
-nejm,all,850,image_850.jpg,B: Retinal ischemia,Retinal ischemia
-nejm,all,851,image_851.jpg,C: Leptospirosis,Rat bite fever
-nejm,all,852,image_852.jpg,B: Arterial insufficiency,Arterial insufficiency
-nejm,all,853,image_853.jpg,D: Glaucoma,Ochronosis
-nejm,all,854,image_854.jpg,D: Trauma to eye or surrounding structures,Adverse reaction to systemic antibiotics
-nejm,all,855,image_855.jpg,D: Necrobiosis lipoidica diabeticorum,Necrobiosis lipoidica diabeticorum
-nejm,all,856,image_856.jpg,C: Cutaneous malignant melanoma,Invasive ductal carcinoma
-nejm,all,857,image_857.jpg,A: Dermatofibroma,Reactive perforating collagenosis
-nejm,all,858,image_858.jpg,C: Intraorbital foreign body,Skull fracture
-nejm,all,859,image_859.jpg,A: Aphthous stomatitis,Herpes zoster
-nejm,all,860,image_860.jpg,B: Lichen planus,Lichen planus
+nejm,all,709,image_709.jpg,Dandy-Walker malformation,Basilar artery aneurysm
+nejm,all,710,image_710.jpg,Bismuth poisoning,Lead poisoning
+nejm,all,711,image_711.jpg,Ulnar artery occlusion,Radial artery thrombosis
+nejm,all,712,image_712.jpg,Copper,Gold
+nejm,all,713,image_713.jpg,Quadriceps strains,Quadriceps tendon ruptures
+nejm,all,714,image_714.jpg,Right ureterovesical calculus,Right ureterovesical calculus
+nejm,all,715,image_715.jpg,Congenital toxoplasmosis,Retroperitoneal hemorrhage
+nejm,all,716,image_716.jpg,Benign essential blepharospasm,Myasthenia gravis
+nejm,all,717,image_717.jpg,Pyoderma gangrenosum,Pyoderma gangrenosum
+nejm,all,718,image_718.jpg,Median rhomboid glossitis,Median rhomboid glossitis
+nejm,all,719,image_719.jpg,Dactylitis,Spider bite
+nejm,all,720,image_720.jpg,Bowel infarction,Bowel infarction
+nejm,all,721,image_721.jpg,Retinal vein occlusion,Narrow angle glaucoma
+nejm,all,722,image_722.jpg,Pseudomelanosis duodeni,Pseudomelanosis duodeni
+nejm,all,723,image_723.jpg,Macular degeneration,Ocular myiasis
+nejm,all,724,image_724.jpg,Hypophosphatasia,Colon cancer
+nejm,all,725,image_725.jpg,Monosodium urate,Cholesterol
+nejm,all,726,image_726.jpg,Palmoplantar keratoderma,Tripe palms
+nejm,all,727,image_727.jpg,Fluoroquinolone antibiotic,Fluoroquinolone antibiotic
+nejm,all,728,image_728.jpg,Mitral-valve repair,Mitral-valve repair
+nejm,all,729,image_729.jpg,Non–small-cell lung cancer,Non–small-cell lung cancer
+nejm,all,730,image_730.jpg,Nitrofurantoin,Minocycline
+nejm,all,731,image_731.jpg,Falciform ligament,Falciform ligament
+nejm,all,732,image_732.jpg,Skin biopsy,Chest imaging
+nejm,all,733,image_733.jpg,Lentigo maligna,Lentigo maligna
+nejm,all,734,image_734.jpg,Herpes zoster,Herpes zoster
+nejm,all,735,image_735.jpg,Horner’s syndrome,Tabes dorsalis
+nejm,all,736,image_736.jpg,Therapeutic Phlebotomy,Chelation Therapy
+nejm,all,737,image_737.jpg,Pyloric outlet obstruction,Meckel's diverticulum
+nejm,all,738,image_738.jpg,Gingival melanoma,Gingival melanoma
+nejm,all,739,image_739.jpg,Gout,Gout
+nejm,all,740,image_740.jpg,Mastectomy,Penicillin
+nejm,all,741,image_741.jpg,Meconium ileus,Hirschsprung’s disease
+nejm,all,742,image_742.jpg,Esophageal carcinoma,Diffuse esophageal spasm
+nejm,all,743,image_743.jpg,Esophageal stricture,Diffuse esophageal spasm
+nejm,all,744,image_744.jpg,Cirrhosis,Superior vena caval obstruction
+nejm,all,745,image_745.jpg,Infective endocarditis valvular vegetation,Redundant mitral valve
+nejm,all,746,image_746.jpg,Pneumatosis coli,Bezoar
+nejm,all,747,image_747.jpg,Syphilitic chancre,Squamous-cell carcinoma
+nejm,all,748,image_748.jpg,Intra-abdominal abscess,Bowel ischemia
+nejm,all,749,image_749.jpg,Pericardial hydatid cysts,Pericardial metastases
+nejm,all,750,image_750.jpg,Papular acrodermatitis,Molluscum contagiosum
+nejm,all,751,image_751.jpg,Systemic sclerosis,Scleromyxedema
+nejm,all,752,image_752.jpg,Umbilical hernia,Portal hypertension
+nejm,all,753,image_753.jpg,Proteus syndrome,Neurofibromatosis
+nejm,all,754,image_754.jpg,Paraesophageal hernia,Paraesophageal hernia
+nejm,all,755,image_755.jpg,Cherry hemangioma,Pyogenic granuloma
+nejm,all,756,image_756.jpg,Meningioma,Plasmacytoma
+nejm,all,757,image_757.jpg,Oral candidiasis,Pyostomatitis vegetans
+nejm,all,758,image_758.jpg,Polycystic liver disease,Echinococcosis
+nejm,all,759,image_759.jpg,Psoriasis,Malignancy
+nejm,all,760,image_760.jpg,Subacute cutaneous lupus erythematosus,Blastic plasmacytoid dendritic-cell neoplasm
+nejm,all,761,image_761.jpg,Renal vein thrombosis,Emphysematous pyelonephritis
+nejm,all,762,image_762.jpg,Acne,Syphilis
+nejm,all,763,image_763.jpg,Perianal rhabdomyosarcoma,Congenital syphilis
+nejm,all,764,image_764.jpg,Polyostotic fibrous dysplasia,Marrow hyperplasia
+nejm,all,765,image_765.jpg,Hairy-cell leukemia,Hairy-cell leukemia
+nejm,all,766,image_766.jpg,Left bronchial tree,Right bronchial tree
+nejm,all,767,image_767.jpg,Accessory tooth,Osteonecrosis
+nejm,all,768,image_768.jpg,Thyrohyoid membrane,Killian’s triangle
+nejm,all,769,image_769.jpg,Restrictive Cardiomyopathy,Constrictive Pericarditis
+nejm,all,770,image_770.jpg,Hydralazine,Amiodarone
+nejm,all,771,image_771.jpg,Henoch-Schönlein purpura,Henoch-Schönlein purpura
+nejm,all,772,image_772.jpg,Bladder perforation,Neurogenic megacolon
+nejm,all,773,image_773.jpg,Magnesium hydroxide,Bismuth Salicylate
+nejm,all,774,image_774.jpg,Tungiasis,Bot fly
+nejm,all,775,image_775.jpg,Rhinolith,Tooth
+nejm,all,776,image_776.jpg,Madura foot,Chromoblastomycosis
+nejm,all,777,image_777.jpg,Pancreatitis,Pylephlebitis
+nejm,all,778,image_778.jpg,Propofol,Propofol
+nejm,all,779,image_779.jpg,Brainstem glioma,Central pontine myelinolysis
+nejm,all,780,image_780.jpg,Diverticulitis,Intussusception
+nejm,all,781,image_781.jpg,Telogen effluvium,Alopecia areata
+nejm,all,782,image_782.jpg,Furuncle,Merkel-cell carcinoma
+nejm,all,783,image_783.jpg,Candida albicans infection,Candida albicans infection
+nejm,all,784,image_784.jpg,Pilonidal sinus,Keratoacanthoma
+nejm,all,785,image_785.jpg,Laryngocele,Laryngocele
+nejm,all,786,image_786.jpg,Peutz-Jeghers's syndrome,Peutz-Jeghers's syndrome
+nejm,all,787,image_787.jpg,Pyoderma gangrenosum,Ecthyma gangrenosum
+nejm,all,788,image_788.jpg,Cutaneous small vessel vasculitis,Intravascular lymphoma
+nejm,all,789,image_789.jpg,Crusted scabies,Crusted scabies
+nejm,all,790,image_790.jpg,Eggs hatch in the large intestine,Larvae penetrate the lungs
+nejm,all,791,image_791.jpg,Acanthamoeba keratitis,Autoimmune keratitis
+nejm,all,792,image_792.jpg,Pancreatic pseudocyst,Enteric duplication cyst
+nejm,all,793,image_793.jpg,Ankyloglossia,Hypoglossal nerve palsy
+nejm,all,794,image_794.jpg,Chewing tobacco,Melanoma
+nejm,all,795,image_795.jpg,Heterotopic ossification,Voriconazole-induced periostitis
+nejm,all,796,image_796.jpg,Pancreatic pseudocyst,Emphysematous cholecystitis
+nejm,all,797,image_797.jpg,Bicalutamide,Bicalutamide
+nejm,all,798,image_798.jpg,Neurofibromatosis type 1,Neurofibromatosis type 2
+nejm,all,799,image_799.jpg,Hand foot and mouth disease,Secondary syphilis
+nejm,all,800,image_800.jpg,Peutz-Jeghers syndrome,Cowden syndrome
+nejm,all,801,image_801.jpg,Toxicodendron radicans (poison ivy),Shiitake mushrooms
+nejm,all,802,image_802.jpg,Type 1 diabetes,Graves' disease
+nejm,all,803,image_803.jpg,Diverticulitis,Acute mesenteric ischemia
+nejm,all,804,image_804.jpg,Cadmium toxicity,Arsenic toxicity
+nejm,all,805,image_805.jpg,Ankylosing spondylitis,Pectus excavatum
+nejm,all,806,image_806.jpg,Nocardiosis,Nocardiosis
+nejm,all,807,image_807.jpg,Metastatic melanoma,Laxative use
+nejm,all,808,image_808.jpg,Facial trauma,Dermatomyositis
+nejm,all,809,image_809.jpg,Familial trichomegaly,EGFR inhibition
+nejm,all,810,image_810.jpg,Hidrocystoma,Keratoacanthoma
+nejm,all,811,image_811.jpg,Tinea circinata,Tinea circinata
+nejm,all,812,image_812.jpg,Streptococcal pharyngitis,Diphtheria
+nejm,all,813,image_813.jpg,Oral lichen planus,Pernicious anemia
+nejm,all,814,image_814.jpg,Hepatocellular carcinoma,Cirrhosis
+nejm,all,815,image_815.jpg,Facial palsy,Angioedema
+nejm,all,816,image_816.jpg,Metastatic disease of the nail bed,Chemotherapy
+nejm,all,817,image_817.jpg,Obturator hernia,Obturator hernia
+nejm,all,818,image_818.jpg,Ventricular aneurysm,Takotsubo cardiomyopathy
+nejm,all,819,image_819.jpg,Topical antimicrobial drops,Intravitreal antimicrobial injections
+nejm,all,820,image_820.jpg,Herpes zoster ophthalmicus,Herpes zoster ophthalmicus
+nejm,all,821,image_821.jpg,Nephrogenic fibrosing dermopathy,Nephrogenic fibrosing dermopathy
+nejm,all,822,image_822.jpg,Rosacea,Cutaneous lupus
+nejm,all,823,image_823.jpg,Tinea versicolor,Tinea nigra
+nejm,all,824,image_824.jpg,Cerebral edema,Osmotic demyelination syndrome
+nejm,all,825,image_825.jpg,Cholecystoduodenal fistula,Emphysematous hepatitis
+nejm,all,826,image_826.jpg,Bowenoid papulosis,Bowenoid papulosis
+nejm,all,827,image_827.jpg,Skin wound culture,IgG and complement deposition at the dermis-epidermis junction
+nejm,all,828,image_828.jpg,Behçet's disease,Sjögren's syndrome
+nejm,all,829,image_829.jpg,Anterior uveitis,Herpes simplex virus infection
+nejm,all,830,image_830.jpg,Paronychia,Herpetic whitlow
+nejm,all,831,image_831.jpg,Anti-ribonucleoprotein antibody,Anticentromere antibody
+nejm,all,832,image_832.jpg,Tophaceous gout,Calcinosis
+nejm,all,833,image_833.jpg,Graves' ophthalmopathy,Retinal detachment
+nejm,all,834,image_834.jpg,Binocular visual loss,Binocular visual loss
+nejm,all,835,image_835.jpg,Androgenic alopecia,Syphilitic alopecia
+nejm,all,836,image_836.jpg,Constrictive pericarditis,Constrictive pericarditis
+nejm,all,837,image_837.jpg,Coins in the nasal cavity,Button magnets in the nasal cavity
+nejm,all,838,image_838.jpg,Allergy/immunology consultation,Testing for bacterial and viral respiratory pathogens
+nejm,all,839,image_839.jpg,Paget's disease,Bone marrow hyperplasia
+nejm,all,840,image_840.jpg,Bowenoid papulosis,Condyloma acuminatum
+nejm,all,841,image_841.jpg,Small bowel obstruction,Emphysematous pyelonephritis
+nejm,all,842,image_842.jpg,Involvement of the upper extremity,Delay in surgical intervention >24 hours
+nejm,all,843,image_843.jpg,Pheochromocytoma,Pheochromocytoma
+nejm,all,844,image_844.jpg,Molluscum contagiosum,Cryptococcus neoformans
+nejm,all,845,image_845.jpg,Rupture of the trapezius muscle,Lipodystrophy
+nejm,all,846,image_846.jpg,Infection is typically localized to the site of inoculation.,Transmission is associated with aerosolized contaminated soil exposure.
+nejm,all,847,image_847.jpg,Atopic dermatitis,Zinc deficiency
+nejm,all,848,image_848.jpg,Chronic paronychia,Psoriasis
+nejm,all,849,image_849.jpg,Paronychia,Cutaneous leishmaniasis
+nejm,all,850,image_850.jpg,Retinal ischemia,Retinal ischemia
+nejm,all,851,image_851.jpg,Rat bite fever,Rat bite fever
+nejm,all,852,image_852.jpg,Erysipelas,Arterial insufficiency
+nejm,all,853,image_853.jpg,Glaucoma,Ochronosis
+nejm,all,854,image_854.jpg,Trauma to eye or surrounding structures,Adverse reaction to systemic antibiotics
+nejm,all,855,image_855.jpg,Pyoderma gangrenosus,Necrobiosis lipoidica diabeticorum
+nejm,all,856,image_856.jpg,Invasive ductal carcinoma,Invasive ductal carcinoma
+nejm,all,857,image_857.jpg,Dermatofibroma,Reactive perforating collagenosis
+nejm,all,858,image_858.jpg,Intraorbital foreign body,Skull fracture
+nejm,all,859,image_859.jpg,Fordyce granules,Herpes zoster
+nejm,all,860,image_860.jpg,Psoriasis,Lichen planus
 nejm,all,861,image_861.jpg,Multiple endocrine neoplasia type 2A,Multiple endocrine neoplasia type 1
-nejm,all,862,image_862.jpg,C: Psoriasis,Necrolytic migratory erythema
-nejm,all,863,image_863.jpg,B: Catamenial pneumothorax,Thoracic endometriosis
-nejm,all,864,image_864.jpg,A: Lipoatrophy,Lipoatrophy
-nejm,all,865,image_865.jpg,D: Wound culture,Wound culture
-nejm,all,866,image_866.jpg,C: Hyphema,Necrotizing anterior scleritis
-nejm,all,867,image_867.jpg,B: Cellulitis,Lymphoma
-nejm,all,868,image_868.jpg,D: Periorbital cellulitis,Carotid cavernous fistula
-nejm,all,869,image_869.jpg,B: Henoch-Schönlein purpura,Henoch-Schönlein purpura
-nejm,all,870,image_870.jpg,B: Subungual hematoma,Acral lentiginous melanoma
-nejm,all,871,image_871.jpg,E: Ferrous sulfate,Doxorubicin
-nejm,all,872,image_872.jpg,E: Generalized granuloma annulare,Generalized granuloma annulare
-nejm,all,873,image_873.jpg,B: Brugada Syndrome,Arrhythmogenic right ventricular cardiomyopathy
-nejm,all,874,image_874.jpg,D: Sarcoidosis,Tuberculosis
-nejm,all,875,image_875.jpg,B: Guttate psoriasis,Amoxicillin rash in infectious mononucleosis
-nejm,all,876,image_876.jpg,A: Baker's cyst,Baker's cyst
-nejm,all,877,image_877.jpg,A: Type 1 Chiari malformation,Arachnoid cyst
-nejm,all,878,image_878.jpg,C: Legionella pneumophila,Naegleria fowleri
-nejm,all,879,image_879.jpg,D: Strongyloides stercoralis,Strongyloides stercoralis
-nejm,all,880,image_880.jpg,B: Congenital diaphragmatic hernia,Duodenal atresia
-nejm,all,881,image_881.jpg,C: Suppurative otitis media,Tympanic hyperectasis
-nejm,all,882,image_882.jpg,B: Disseminated varicella infection,Disseminated varicella infection
-nejm,all,883,image_883.jpg,C: Ehlers-Danlos syndrome,Ehlers-Danlos syndrome
-nejm,all,884,image_884.jpg,A: Bedbug bites,Bedbug bites
-nejm,all,885,image_885.jpg,D: Histoplasmosis,Actinomycosis
-nejm,all,886,image_886.jpg,B: Tension hydrothorax,Cardiac tamponade
-nejm,all,887,image_887.jpg,C: Ectopia lentis,Ectopia lentis
-nejm,all,888,image_888.jpg,D: Pulmonary function tests,Polysomnography
-nejm,all,889,image_889.jpg,E: Monosodium urate,Monosodium urate
-nejm,all,890,image_890.jpg,A: Warfarin necrosis,Cholesterol embolization
-nejm,all,891,image_891.jpg,C: Mediastinal Hematoma,Giant Coronary Aneurysm
-nejm,all,892,image_892.jpg,C: Rheumatoid factor,Creatine kinase
-nejm,all,893,image_893.jpg,C: Herpes simplex keratoconjunctivitis,Kaposi’s sarcoma
-nejm,all,894,image_894.jpg,C: Imatinib,Zidovudine
-nejm,all,895,image_895.jpg,B: Cutaneous collagenous vasculopathy,Hemophilia A
-nejm,all,896,image_896.jpg,D: Babesia microti,Capnocytophaga canimorsus
-nejm,all,897,image_897.jpg,D: Idiopathic pulmonary fibrosis,Idiopathic pulmonary fibrosis
-nejm,all,898,image_898.jpg,B: Cardiac tamponade,Superior vena cava syndrome
-nejm,all,899,image_899.jpg,D: Pseudogout,Gout nodulosis
-nejm,all,900,image_900.jpg,B: Unilateral Grave's ophthalmopathy,Orbital metastasis
-nejm,all,901,image_901.jpg,E: Oral candidiasis,Herpetic glossitis
-nejm,all,902,image_902.jpg,D: Otomycosis,Fracture of the temporal bone
-nejm,all,903,image_903.jpg,A: Acute gout,Extrapulmonary manifestation of tuberculosis
-nejm,all,904,image_904.jpg,D: Hypertensive retinopathy,Papilledema
-nejm,all,905,image_905.jpg,B: Bacterial uveitis,Intraocular parasite infection
-nejm,all,906,image_906.jpg,D: Trimethoprim-sulfamethoxazole,Voriconazole
-nejm,all,907,image_907.jpg,D: Porphyria cutanea tarda,Porphyria cutanea tarda
-nejm,all,908,image_908.jpg,E: Plasmodium vivax,Plasmodium vivax
-nejm,all,909,image_909.jpg,E: Left anterior descending artery,Left anterior descending artery
-nejm,all,910,image_910.jpg,A: Acute myelogenous leukemia,Lead poisoning
-nejm,all,911,image_911.jpg,D: Pterygium,Symblepharon
-nejm,all,912,image_912.jpg,B: Hydatidiform mole,Pelvic spleen
-nejm,all,913,image_913.jpg,C: Phenytoin use,COPD
-nejm,all,914,image_914.jpg,A,Granulomatous amebic encephalitis
-nejm,all,915,image_915.jpg,A: Condylomata lata,Tuberous sclerosis
-nejm,all,916,image_916.jpg,B: Familial multiple lipomatosis,Familial multiple lipomatosis
-nejm,all,917,image_917.jpg,C: Hypertrophic cardiomyopathy,Uremic pericarditis
-nejm,all,918,image_918.jpg,C: Cutis marmorata,Cold agglutinin disease
-nejm,all,919,image_919.jpg,C: Calciphylaxis,Calciphylaxis
-nejm,all,920,image_920.jpg,C: Pigmentary mosaicism,Pigmentary mosaicism
-nejm,all,921,image_921.jpg,B: Stevens–Johnson syndrome,Mycoplasma pneumoniae-associated mucositis
-nejm,all,922,image_922.jpg,B: Plantar wart,Malignant melanoma
-nejm,all,923,image_923.jpg,E: Eagle’s syndrome,Cervical spondyloarthropathy
-nejm,all,924,image_924.jpg,E: Pulmonary tuberculosis,Chronic eosinophilic pneumonia
-nejm,all,925,image_925.jpg,B: Onychomycosis,Yellow-nail syndrome
-nejm,all,926,image_926.jpg,B: Streptococcal cellulitis with lymphangitis,Streptococcal cellulitis with lymphangitis
-nejm,all,927,image_927.jpg,A: Cauliflower ear,Lepromatous Leprosy
-nejm,all,928,image_928.jpg,A: Ectopic thyroid,Ectopic thyroid
-nejm,all,929,image_929.jpg,A: Gottron’s papules,Leukemia cutis
-nejm,all,930,image_930.jpg,A: Nasal foreign body,Pituitary tumor
-nejm,all,931,image_931.jpg,C: Gout flare,Coronary angiography
-nejm,all,932,image_932.jpg,D: Pityriasis rosea,Secondary syphilis
-nejm,all,933,image_933.jpg,D: Pneumopericardium,Pneumopericardium
-nejm,all,934,image_934.jpg,E: Subdural hemorrhage,Stroke
-nejm,all,935,image_935.jpg,B: Cushing's syndrome,Porphyria cutanea tarda
-nejm,all,936,image_936.jpg,C: Osteochondritis dissecans,Synovial chondromatosis
-nejm,all,937,image_937.jpg,D: Psoriasis,Endocarditis
-nejm,all,938,image_938.jpg,B: Pilonidal abscess,Bacterial dermatitis
-nejm,all,939,image_939.jpg,A: Androgenic alopecia,Hypothyroidism
-nejm,all,940,image_940.jpg,C: Amiodarone exposure,Diabetes mellitus
-nejm,all,941,image_941.jpg,C: Acute esophageal necrosis,Acute esophageal necrosis
-nejm,all,942,image_942.jpg,D: Manganese repletion,Chelation therapy
-nejm,all,943,image_943.jpg,B: Lung abscess,Diaphragmatic rupture
-nejm,all,944,image_944.jpg,C: Placenta percreta,Placenta increta
-nejm,all,945,image_945.jpg,D: Livedo reticularis,Erythema ab igne
-nejm,all,946,image_946.jpg,B: Erythromelalgia,Erythromelalgia
-nejm,all,947,image_947.jpg,D: Pearly penile papules,Pearly penile papules
+nejm,all,862,image_862.jpg,Psoriasis,Necrolytic migratory erythema
+nejm,all,863,image_863.jpg,Catamenial pneumothorax,Thoracic endometriosis
+nejm,all,864,image_864.jpg,Lipoatrophy,Lipoatrophy
+nejm,all,865,image_865.jpg,Wound culture,Wound culture
+nejm,all,866,image_866.jpg,Necrotizing anterior scleritis,Necrotizing anterior scleritis
+nejm,all,867,image_867.jpg,Graves' disease,Lymphoma
+nejm,all,868,image_868.jpg,Periorbital cellulitis,Carotid cavernous fistula
+nejm,all,869,image_869.jpg,Henoch-Schönlein purpura,Henoch-Schönlein purpura
+nejm,all,870,image_870.jpg,Subungual hematoma,Acral lentiginous melanoma
+nejm,all,871,image_871.jpg,Dexamethasone,Doxorubicin
+nejm,all,872,image_872.jpg,Generalized granuloma annulare,Generalized granuloma annulare
+nejm,all,873,image_873.jpg,Brugada Syndrome,Arrhythmogenic right ventricular cardiomyopathy
+nejm,all,874,image_874.jpg,Sarcoidosis,Tuberculosis
+nejm,all,875,image_875.jpg,Scarlet fever,Amoxicillin rash in infectious mononucleosis
+nejm,all,876,image_876.jpg,Baker's cyst,Baker's cyst
+nejm,all,877,image_877.jpg,Type 1 Chiari malformation,Arachnoid cyst
+nejm,all,878,image_878.jpg,Legionella pneumophila,Naegleria fowleri
+nejm,all,879,image_879.jpg,Ascaris lumbricoides,Strongyloides stercoralis
+nejm,all,880,image_880.jpg,Congenital diaphragmatic hernia,Duodenal atresia
+nejm,all,881,image_881.jpg,Cholesteatoma,Tympanic hyperectasis
+nejm,all,882,image_882.jpg,Disseminated varicella infection,Disseminated varicella infection
+nejm,all,883,image_883.jpg,Ehlers-Danlos syndrome,Ehlers-Danlos syndrome
+nejm,all,884,image_884.jpg,Bedbug bites,Bedbug bites
+nejm,all,885,image_885.jpg,Aspergillosis,Actinomycosis
+nejm,all,886,image_886.jpg,Diaphragmatic eventeration,Cardiac tamponade
+nejm,all,887,image_887.jpg,Ectopia lentis,Ectopia lentis
+nejm,all,888,image_888.jpg,Polysomnography,Polysomnography
+nejm,all,889,image_889.jpg,Calcium pyrophosphate dihydrate,Monosodium urate
+nejm,all,890,image_890.jpg,Cholesterol embolization,Cholesterol embolization
+nejm,all,891,image_891.jpg,Mediastinal Hematoma,Giant Coronary Aneurysm
+nejm,all,892,image_892.jpg,Rheumatoid factor,Creatine kinase
+nejm,all,893,image_893.jpg,Kaposi’s sarcoma,Kaposi’s sarcoma
+nejm,all,894,image_894.jpg,Zidovudine,Zidovudine
+nejm,all,895,image_895.jpg,Cutaneous collagenous vasculopathy,Hemophilia A
+nejm,all,896,image_896.jpg,Babesia microti,Capnocytophaga canimorsus
+nejm,all,897,image_897.jpg,Idiopathic pulmonary fibrosis,Idiopathic pulmonary fibrosis
+nejm,all,898,image_898.jpg,Cardiac tamponade,Superior vena cava syndrome
+nejm,all,899,image_899.jpg,Pseudogout,Gout nodulosis
+nejm,all,900,image_900.jpg,Orbital cellulitis,Orbital metastasis
+nejm,all,901,image_901.jpg,Oral candidiasis,Herpetic glossitis
+nejm,all,902,image_902.jpg,Ochronosis,Fracture of the temporal bone
+nejm,all,903,image_903.jpg,Acute gout,Extrapulmonary manifestation of tuberculosis
+nejm,all,904,image_904.jpg,Central retinal vein occlusion,Papilledema
+nejm,all,905,image_905.jpg,Bacterial uveitis,Intraocular parasite infection
+nejm,all,906,image_906.jpg,Voriconazole,Voriconazole
+nejm,all,907,image_907.jpg,Dermatomyositis,Porphyria cutanea tarda
+nejm,all,908,image_908.jpg,Plasmodium vivax,Plasmodium vivax
+nejm,all,909,image_909.jpg,Left anterior descending artery,Left anterior descending artery
+nejm,all,910,image_910.jpg,Acute myelogenous leukemia,Lead poisoning
+nejm,all,911,image_911.jpg,Pinguecula,Symblepharon
+nejm,all,912,image_912.jpg,Multiple myeloma,Pelvic spleen
+nejm,all,913,image_913.jpg,COPD,COPD
+nejm,all,914,image_914.jpg,Granulomatous amebic encephalitis,Granulomatous amebic encephalitis
+nejm,all,915,image_915.jpg,Condylomata lata,Tuberous sclerosis
+nejm,all,916,image_916.jpg,Familial multiple lipomatosis,Familial multiple lipomatosis
+nejm,all,917,image_917.jpg,Hypertrophic cardiomyopathy,Uremic pericarditis
+nejm,all,918,image_918.jpg,Cutis marmorata,Cold agglutinin disease
+nejm,all,919,image_919.jpg,Osteomyelitis,Calciphylaxis
+nejm,all,920,image_920.jpg,Sarcoidosis,Pigmentary mosaicism
+nejm,all,921,image_921.jpg,Stevens–Johnson syndrome,Mycoplasma pneumoniae-associated mucositis
+nejm,all,922,image_922.jpg,Plantar wart,Malignant melanoma
+nejm,all,923,image_923.jpg,Cervical spondyloarthropathy,Cervical spondyloarthropathy
+nejm,all,924,image_924.jpg,Cryptogenic organizing pneumonia,Chronic eosinophilic pneumonia
+nejm,all,925,image_925.jpg,Onychomycosis,Yellow-nail syndrome
+nejm,all,926,image_926.jpg,Cutaneous lymphangitis carcinomatosa,Streptococcal cellulitis with lymphangitis
+nejm,all,927,image_927.jpg,Cauliflower ear,Lepromatous Leprosy
+nejm,all,928,image_928.jpg,Thyroglossal duct cyst,Ectopic thyroid
+nejm,all,929,image_929.jpg,Gottron’s papules,Leukemia cutis
+nejm,all,930,image_930.jpg,Nasal foreign body,Pituitary tumor
+nejm,all,931,image_931.jpg,Bullous pemphigoid,Coronary angiography
+nejm,all,932,image_932.jpg,Pityriasis rosea,Secondary syphilis
+nejm,all,933,image_933.jpg,Pneumopericardium,Pneumopericardium
+nejm,all,934,image_934.jpg,Subdural hemorrhage,Stroke
+nejm,all,935,image_935.jpg,Cushing's syndrome,Porphyria cutanea tarda
+nejm,all,936,image_936.jpg,Synovial chondromatosis,Synovial chondromatosis
+nejm,all,937,image_937.jpg,Psoriasis,Endocarditis
+nejm,all,938,image_938.jpg,Pilonidal abscess,Bacterial dermatitis
+nejm,all,939,image_939.jpg,Androgenic alopecia,Hypothyroidism
+nejm,all,940,image_940.jpg,Vitamin B12 deficiency,Diabetes mellitus
+nejm,all,941,image_941.jpg,Acute esophageal necrosis,Acute esophageal necrosis
+nejm,all,942,image_942.jpg,Chelation therapy,Chelation therapy
+nejm,all,943,image_943.jpg,Lung abscess,Diaphragmatic rupture
+nejm,all,944,image_944.jpg,Placenta percreta,Placenta increta
+nejm,all,945,image_945.jpg,Livedo reticularis,Erythema ab igne
+nejm,all,946,image_946.jpg,Erythromelalgia,Erythromelalgia
+nejm,all,947,image_947.jpg,Pearly penile papules,Pearly penile papules

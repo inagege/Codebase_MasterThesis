@@ -139,7 +139,8 @@ def get_prompt_for_classification(dataset: str, meld_task: str | None):
     if dataset == "nejm":
         return (
             "The dataset contains medical questions and images. "
-            "Classify the disease by answering with exactly one of the following disease labels (without the prefic letter):"
+            "Classify the disease using the per-sample options. "
+            "Answer with exactly one disease label and no explanation."
         )
     if dataset == "marine":
         return (
@@ -610,6 +611,55 @@ def _parse_nejm_label(answer: str):
     return answer
 
 
+def _clean_nejm_option_label(label: str) -> str:
+    cleaned = re.sub(r"[\r\n]+", " ", label or "")
+    cleaned = cleaned.replace("\\n", " ")
+    cleaned = re.sub(r"\s+", " ", cleaned).strip()
+    cleaned = cleaned.strip("[]{}()")
+    cleaned = cleaned.strip()
+    cleaned = cleaned.strip("'\"")
+    cleaned = cleaned.strip(" ,;")
+    cleaned = cleaned.strip("'\"")
+    cleaned = cleaned.strip(" ,;")
+    return cleaned
+
+
+def _extract_nejm_option_labels(raw_value) -> list[str]:
+    text = _sanitize_value(raw_value)
+    if not text:
+        return []
+
+    marker_matches = list(re.finditer(r"([A-Ea-e])\s*:\s*", text))
+    if not marker_matches:
+        return []
+
+    labels_by_letter = {}
+    for idx, match in enumerate(marker_matches):
+        letter = match.group(1).upper()
+        if letter in labels_by_letter:
+            continue
+        start = match.end()
+        end = marker_matches[idx + 1].start() if idx + 1 < len(marker_matches) else len(text)
+        label = _clean_nejm_option_label(text[start:end])
+        if label:
+            labels_by_letter[letter] = label
+
+    return [labels_by_letter[letter] for letter in "ABCDE" if letter in labels_by_letter]
+
+
+def _extract_nejm_options_for_row(row) -> list[str]:
+    labels = _extract_nejm_option_labels(row.get("options"))
+    if labels:
+        return labels
+    conversation_text = _sanitize_value(row.get("conversations"))
+    if not conversation_text:
+        return []
+
+    for assistant_marker in ("{'from': 'gpt'", '{"from": "gpt"'):
+        conversation_text = conversation_text.split(assistant_marker, 1)[0]
+    return _extract_nejm_option_labels(conversation_text)
+
+
 def _load_nejm_samples(enabled_modalities, noisy_modalities):
     csv_path = Path("data/NEJM/metadata.csv")
     image_root = Path("data/NEJM/images")
@@ -632,6 +682,8 @@ def _load_nejm_samples(enabled_modalities, noisy_modalities):
 
             question = _sanitize_value(row.get("question")).replace("<image>", "").strip()
             label = _parse_nejm_label(_sanitize_value(row.get("answer")))
+            option_labels = _extract_nejm_options_for_row(row)
+            options_text = " | ".join(option_labels) if option_labels else _sanitize_value(row.get("options"))
             samples.append(
                 {
                     "dataset": "nejm",
@@ -639,7 +691,8 @@ def _load_nejm_samples(enabled_modalities, noisy_modalities):
                     "sample_id": image_id,
                     "file": image_path.name,
                     "text": question,
-                    "options": _sanitize_value(row.get("options")),
+                    "options": options_text,
+                    "option_labels": option_labels,
                     "audio": None,
                     "video": None,
                     "image": image_path,
@@ -669,6 +722,8 @@ def _load_nejm_samples(enabled_modalities, noisy_modalities):
 
                 question = _sanitize_value(row.get("question")).replace("<image>", "").strip()
                 label = _parse_nejm_label(_sanitize_value(row.get("answer")))
+                option_labels = _extract_nejm_options_for_row(row)
+                options_text = " | ".join(option_labels) if option_labels else _sanitize_value(row.get("options"))
                 samples.append(
                     {
                         "dataset": "nejm",
@@ -676,7 +731,8 @@ def _load_nejm_samples(enabled_modalities, noisy_modalities):
                         "sample_id": image_id,
                         "file": noisy_image_path.name,
                         "text": question,
-                        "options": _sanitize_value(row.get("options")),
+                        "options": options_text,
+                        "option_labels": option_labels,
                         "audio": None,
                         "video": None,
                         "image": noisy_image_path,
@@ -706,6 +762,8 @@ def _load_nejm_samples(enabled_modalities, noisy_modalities):
                 question = text_map.get(image_id, _sanitize_value(row.get("question")))
                 question = question.replace("<image>", "").strip()
                 label = _parse_nejm_label(_sanitize_value(row.get("answer")))
+                option_labels = _extract_nejm_options_for_row(row)
+                options_text = " | ".join(option_labels) if option_labels else _sanitize_value(row.get("options"))
                 samples.append(
                     {
                         "dataset": "nejm",
@@ -713,7 +771,8 @@ def _load_nejm_samples(enabled_modalities, noisy_modalities):
                         "sample_id": image_id,
                         "file": image_path.name,
                         "text": question,
-                        "options": _sanitize_value(row.get("options")),
+                        "options": options_text,
+                        "option_labels": option_labels,
                         "audio": None,
                         "video": None,
                         "image": image_path,
