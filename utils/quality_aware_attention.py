@@ -1,10 +1,53 @@
 from __future__ import annotations
 
-import math
 import types
 
 import torch
 from transformers.models.qwen2_5_omni import modeling_qwen2_5_omni as qwen_omni_modeling
+
+
+def _align_quality_scores_to_kv_length(
+    quality_scores: torch.Tensor,
+    *,
+    batch_size: int,
+    kv_seq_len: int,
+    device: torch.device,
+    dtype: torch.dtype,
+) -> torch.Tensor:
+    quality_scores = quality_scores.to(device=device, dtype=dtype)
+    if quality_scores.dim() == 1:
+        quality_scores = quality_scores.unsqueeze(0)
+    if quality_scores.dim() != 2:
+        raise ValueError(
+            f"First-layer quality scores must be rank-1 or rank-2, got shape {tuple(quality_scores.shape)}."
+        )
+
+    quality_batch = quality_scores.size(0)
+    if quality_batch != batch_size:
+        if quality_batch == 1:
+            quality_scores = quality_scores.expand(batch_size, -1)
+        elif batch_size % quality_batch == 0:
+            repeat_factor = batch_size // quality_batch
+            quality_scores = quality_scores.repeat_interleave(repeat_factor, dim=0)
+        else:
+            raise ValueError(
+                f"First-layer quality score batch mismatch: got {quality_batch}, expected {batch_size}."
+            )
+
+    quality_len = quality_scores.size(1)
+    if quality_len == kv_seq_len:
+        return quality_scores
+    if quality_len > kv_seq_len:
+        return quality_scores[:, :kv_seq_len]
+    if quality_len == 1:
+        return quality_scores.repeat(1, kv_seq_len)
+
+    pad = torch.ones(
+        (quality_scores.size(0), kv_seq_len - quality_len),
+        device=quality_scores.device,
+        dtype=quality_scores.dtype,
+    )
+    return torch.cat([quality_scores, pad], dim=1)
 
 
 def _quality_aware_forward(
@@ -29,7 +72,7 @@ def _quality_aware_forward(
     value_states = value_states.view(bsz, q_len, -1, self.head_dim).transpose(1, 2)
 
     if position_embeddings is None:
-        raise ValueError("position_embeddings is required for quality-aware attention.")
+        raise ValueError("position_embeddings is required for quality-aware first-layer flash attention.")
     cos, sin = position_embeddings
     query_states, key_states = qwen_omni_modeling.apply_multimodal_rotary_pos_emb(
         query_states, key_states, cos, sin, self.rope_scaling["mrope_section"]
@@ -41,84 +84,104 @@ def _quality_aware_forward(
 
     key_states = qwen_omni_modeling.repeat_kv(key_states, self.num_key_value_groups)
     value_states = qwen_omni_modeling.repeat_kv(value_states, self.num_key_value_groups)
+    dropout_rate = 0.0 if not self.training else self.attention_dropout
 
-    attn_weights = torch.matmul(query_states, key_states.transpose(2, 3)) / math.sqrt(self.head_dim)
-    key_len = key_states.shape[-2]
-    min_dtype = torch.finfo(attn_weights.dtype).min
-
-    # Explicit causal mask is required because this patched path bypasses flash-attn's internal causal handling.
-    past_kv_len = key_len - q_len
-    query_positions = past_kv_len + torch.arange(q_len, device=attn_weights.device)
-    key_positions = torch.arange(key_len, device=attn_weights.device)
-    causal_positions = key_positions.unsqueeze(0) > query_positions.unsqueeze(1)
-    attn_weights = attn_weights.masked_fill(causal_positions.unsqueeze(0).unsqueeze(0), min_dtype)
-
-    if attention_mask is not None:
-        if attention_mask.dim() == 4:
-            causal_mask = attention_mask[:, :, :, :key_len]
-            attn_weights = attn_weights + causal_mask
-        elif attention_mask.dim() == 2:
-            padding_mask = attention_mask[:, :key_len].to(torch.bool)
-            attn_weights = attn_weights.masked_fill(~padding_mask[:, None, None, :], min_dtype)
+    # Mirrors HF Qwen2_5OmniFlashAttention2.forward dtype handling.
+    input_dtype = query_states.dtype
+    if input_dtype == torch.float32:
+        if torch.is_autocast_enabled():
+            target_dtype = torch.get_autocast_gpu_dtype()
+        elif hasattr(self.config, "_pre_quantization_dtype"):
+            target_dtype = self.config._pre_quantization_dtype
         else:
-            raise ValueError(
-                f"Unsupported attention_mask dims={attention_mask.dim()} for first-layer quality attention."
-            )
+            target_dtype = self.q_proj.weight.dtype
 
-    if query_states.dtype == torch.float16:
-        attn_weights = torch.where(torch.isinf(attn_weights), torch.zeros_like(attn_weights), attn_weights)
-
-    attn_weights = torch.nn.functional.softmax(attn_weights, dim=-1, dtype=torch.float32).to(query_states.dtype)
+        qwen_omni_modeling.logger.warning_once(
+            "The input hidden states seems to be silently casted in float32, this might be related to "
+            "upcasted embedding or layer norm layers in float32. Casting back for flash attention."
+        )
+        query_states = query_states.to(target_dtype)
+        key_states = key_states.to(target_dtype)
+        value_states = value_states.to(target_dtype)
 
     quality_scores = getattr(self, "_quality_scores", None)
     if quality_scores is not None:
-        quality_scores = quality_scores.to(device=attn_weights.device, dtype=attn_weights.dtype)
-        if quality_scores.dim() == 1:
-            quality_scores = quality_scores.unsqueeze(0)
-        if quality_scores.size(0) != bsz:
-            if bsz % quality_scores.size(0) == 0:
-                repeat_factor = bsz // quality_scores.size(0)
-                quality_scores = quality_scores.repeat_interleave(repeat_factor, dim=0)
-            else:
-                raise ValueError(
-                    f"First-layer quality score batch mismatch: got {quality_scores.size(0)}, expected {bsz}."
-                )
-
-        key_len = key_states.shape[-2]
-        if quality_scores.size(1) < key_len:
-            pad = torch.ones(
-                (quality_scores.size(0), key_len - quality_scores.size(1)),
-                device=quality_scores.device,
-                dtype=quality_scores.dtype,
-            )
-            quality_scores = torch.cat([quality_scores, pad], dim=1)
-        elif quality_scores.size(1) > key_len:
-            quality_scores = quality_scores[:, :key_len]
-
-        attn_weights = attn_weights * quality_scores[:, None, None, :]
-
-    attn_weights = torch.nn.functional.dropout(attn_weights, p=self.attention_dropout, training=self.training)
-    attn_output = torch.matmul(attn_weights, value_states)
-
-    if attn_output.size() != (bsz, self.num_heads, q_len, self.head_dim):
-        raise ValueError(
-            f"`attn_output` should be of size {(bsz, self.num_heads, q_len, self.head_dim)}, but is {attn_output.size()}"
+        quality_scores = _align_quality_scores_to_kv_length(
+            quality_scores,
+            batch_size=bsz,
+            kv_seq_len=value_states.shape[-2],
+            device=value_states.device,
+            dtype=value_states.dtype,
         )
+        # Per-key quality scaling injected into values before flash-attn aggregation.
+        value_states = value_states * quality_scores[:, None, :, None]
 
-    attn_output = attn_output.transpose(1, 2).contiguous()
-    attn_output = attn_output.reshape(bsz, q_len, -1)
+    # Reashape to the expected shape for Flash Attention.
+    query_states = query_states.transpose(1, 2)
+    key_states = key_states.transpose(1, 2)
+    value_states = value_states.transpose(1, 2)
+
+    if (
+        self.config.use_sliding_window
+        and getattr(self.config, "sliding_window", None) is not None
+        and self.layer_idx >= self.config.max_window_layers
+    ):
+        sliding_window = self.config.sliding_window
+    else:
+        sliding_window = None
+
+    attn_output = qwen_omni_modeling._flash_attention_forward(
+        query_states,
+        key_states,
+        value_states,
+        attention_mask,
+        q_len,
+        dropout=dropout_rate,
+        sliding_window=sliding_window,
+        is_causal=self.is_causal,
+        use_top_left_mask=getattr(self, "_flash_attn_uses_top_left_mask", False),
+    )
+
+    attn_output = attn_output.reshape(bsz, q_len, -1).contiguous()
     attn_output = self.o_proj(attn_output)
-
-    if not output_attentions:
-        attn_weights = None
+    attn_weights = None
 
     return attn_output, attn_weights, past_key_value
 
 
+def _get_first_layer_self_attention(model):
+    try:
+        return model.thinker.model.layers[0].self_attn
+    except Exception as exc:
+        raise RuntimeError("Could not locate model.thinker.model.layers[0].self_attn for patch installation.") from exc
+
+
 def install_quality_aware_first_attention_patch(model):
-    first_attn = model.thinker.model.layers[0].self_attn
+    first_attn = _get_first_layer_self_attention(model)
     if getattr(first_attn, "_quality_patch_installed", False):
         return
+    if not hasattr(qwen_omni_modeling, "_flash_attention_forward"):
+        raise RuntimeError(
+            "Flash attention forward helper is unavailable in transformers runtime; cannot install flash patch."
+        )
+
+    configured_impl = getattr(getattr(model, "config", None), "_attn_implementation", None)
+    if configured_impl is None:
+        configured_impl = getattr(getattr(model.thinker, "config", None), "_attn_implementation", None)
+    if configured_impl is not None and configured_impl != "flash_attention_2":
+        raise RuntimeError(
+            f"Expected attn_implementation='flash_attention_2' for first-layer quality patch, got {configured_impl!r}."
+        )
+
+    expected_flash_cls = getattr(qwen_omni_modeling, "Qwen2_5OmniFlashAttention2", None)
+    if expected_flash_cls is not None and not isinstance(first_attn, expected_flash_cls):
+        raise RuntimeError(
+            "First thinker layer self-attention is not Qwen2_5OmniFlashAttention2; refusing to install flash patch."
+        )
+    if expected_flash_cls is None and "FlashAttention2" not in first_attn.__class__.__name__:
+        raise RuntimeError(
+            "First thinker layer self-attention does not look like FlashAttention2; refusing to install flash patch."
+        )
 
     first_attn._quality_scores = None
     first_attn._quality_patch_installed = True
@@ -127,4 +190,4 @@ def install_quality_aware_first_attention_patch(model):
 
 
 def set_first_layer_quality_scores(model, quality_scores: torch.Tensor | None):
-    model.thinker.model.layers[0].self_attn._quality_scores = quality_scores
+    _get_first_layer_self_attention(model)._quality_scores = quality_scores
