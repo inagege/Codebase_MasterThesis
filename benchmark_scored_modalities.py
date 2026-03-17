@@ -216,9 +216,19 @@ def build_user_content(enabled_modalities, sample, args, err_fieldnames, dataset
 def build_conversation_for_sample(sample, dataset, prompt, enabled_modalities, args, err_fieldnames):
     sample_prompt = prompt
     if dataset == "nejm":
+        option_labels = sample.get("option_labels") or []
         options = (sample.get("options") or "").strip()
-        if options:
-            sample_prompt = f"{prompt} Options: {options}"
+        if option_labels:
+            option_block = "\n".join(f"- {label}" for label in option_labels)
+        else:
+            option_block = options
+        if option_block:
+            sample_prompt = (
+                f"{prompt}\n"
+                "Allowed labels for this specific case:\n"
+                f"{option_block}\n"
+                "Reply with exactly one label from the list above. Do not add explanation."
+            )
 
     system_entry = {
         "role": "system",
