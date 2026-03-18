@@ -24,6 +24,7 @@ DOWNLOAD_AUDIO="${DOWNLOAD_AUDIO:-1}"
 DOWNLOAD_TEXT="${DOWNLOAD_TEXT:-1}"
 DOWNLOAD_VIDEO="${DOWNLOAD_VIDEO:-0}"
 DOWNLOAD_LARGE_AUDIO="${DOWNLOAD_LARGE_AUDIO:-0}" # enables MUSAN
+DOWNLOAD_AUDIOSET="${DOWNLOAD_AUDIOSET:-0}"       # downloads AudioSet clips from YouTube via yt-dlp
 GENERATE_TEXT_NOISE="${GENERATE_TEXT_NOISE:-1}"
 TEXT_NOISE_MODE="${TEXT_NOISE_MODE:-chunked}" # chunked|full_per_severity
 TEXT_NOISE_SEVERITIES="${TEXT_NOISE_SEVERITIES:-1,2,3,4,5}"
@@ -36,6 +37,15 @@ ODAQ_URL="${ODAQ_URL:-https://zenodo.org/records/10405774/files/ODAQ.zip?downloa
 ESC50_URL="${ESC50_URL:-https://github.com/karoldvl/ESC-50/archive/master.zip}"
 MUSAN_URL="${MUSAN_URL:-https://www.openslr.org/resources/17/musan.tar.gz}"
 WIKITEXT_URL="${WIKITEXT_URL:-https://huggingface.co/datasets/mattdangerw/wikitext-103-raw/resolve/main/wikitext-103-raw-v1.zip?download=1}"
+
+AUDIOSET_SPLITS="${AUDIOSET_SPLITS:-balanced,eval}" # balanced|eval|unbalanced (comma-separated)
+AUDIOSET_MAX_CLIPS_PER_SPLIT="${AUDIOSET_MAX_CLIPS_PER_SPLIT:-2000}"
+AUDIOSET_NUM_WORKERS="${AUDIOSET_NUM_WORKERS:-8}"
+AUDIOSET_SAMPLE_SEED="${AUDIOSET_SAMPLE_SEED:-123}"
+AUDIOSET_RETRIES="${AUDIOSET_RETRIES:-2}"
+AUDIOSET_TIMEOUT_SECONDS="${AUDIOSET_TIMEOUT_SECONDS:-180}"
+AUDIOSET_OVERWRITE="${AUDIOSET_OVERWRITE:-0}" # redownload clips even if they already exist
+AUDIOSET_COOKIES_FILE="${AUDIOSET_COOKIES_FILE:-}" # optional cookies.txt for yt-dlp
 
 # Optional video URL (example: UCF101 archive). If empty, video is skipped.
 VIDEO_URL="${VIDEO_URL:-}"
@@ -141,6 +151,31 @@ if [[ "${DOWNLOAD_AUDIO}" == "1" ]]; then
   ensure_valid_zip_archive "${ESC50_URL}" "${SOURCE_ROOT}/archives/esc50_master.zip"
   extract_zip_if_needed "${SOURCE_ROOT}/archives/esc50_master.zip" "${SOURCE_ROOT}/esc50"
   DATASET_ARGS+=(--dataset-path "esc50=${SOURCE_ROOT}/esc50")
+
+  if [[ "${DOWNLOAD_AUDIOSET}" == "1" ]]; then
+    AUDIOSET_ARGS=(
+      --out-root "${SOURCE_ROOT}/audioset"
+      --splits "${AUDIOSET_SPLITS}"
+      --max-clips-per-split "${AUDIOSET_MAX_CLIPS_PER_SPLIT}"
+      --sample-seed "${AUDIOSET_SAMPLE_SEED}"
+      --num-workers "${AUDIOSET_NUM_WORKERS}"
+      --retries "${AUDIOSET_RETRIES}"
+      --download-timeout-seconds "${AUDIOSET_TIMEOUT_SECONDS}"
+    )
+    if [[ "${AUDIOSET_OVERWRITE}" == "1" ]]; then
+      AUDIOSET_ARGS+=(--overwrite-existing)
+    fi
+    if [[ -n "${AUDIOSET_COOKIES_FILE}" ]]; then
+      AUDIOSET_ARGS+=(--cookies "${AUDIOSET_COOKIES_FILE}")
+    fi
+
+    echo "[INFO] Preparing AudioSet clips for calibration"
+    echo "[INFO]   splits=${AUDIOSET_SPLITS}"
+    echo "[INFO]   max_clips_per_split=${AUDIOSET_MAX_CLIPS_PER_SPLIT}"
+    echo "[INFO]   workers=${AUDIOSET_NUM_WORKERS}"
+    pixi run python utils/download_prepare_audioset.py "${AUDIOSET_ARGS[@]}"
+    DATASET_ARGS+=(--dataset-path "audioset=${SOURCE_ROOT}/audioset/clips")
+  fi
 
   if [[ "${DOWNLOAD_LARGE_AUDIO}" == "1" ]]; then
     ensure_valid_targz_archive "${MUSAN_URL}" "${SOURCE_ROOT}/archives/musan.tar.gz"
