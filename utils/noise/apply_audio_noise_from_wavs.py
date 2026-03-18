@@ -7,11 +7,11 @@ import tempfile
 from pathlib import Path
 import sys
 
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from utils.apply_all_audio_noise import (
+from utils.noise.apply_all_audio_noise import (
     AUDIO_CORRUPTIONS,
     apply_audio_corruption,
     extract_audio_only,

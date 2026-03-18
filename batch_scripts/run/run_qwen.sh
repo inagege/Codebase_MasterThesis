@@ -1,8 +1,8 @@
 #!/bin/bash
-#SBATCH --job-name=voxceleb_av   # Job name
+#SBATCH --job-name=vox_v  # Job name
 #SBATCH --output=logs/%x_%j.out           # Stdout log
 #SBATCH --error=logs/%x_%j.err            # Stderr log
-#SBATCH --time=72:00:00                   # Max runtime (hh:mm:ss)
+#SBATCH --time=08:00:00                   # Max runtime (hh:mm:ss)
 #SBATCH --gres=gpu:full:1                 # Request 1 GPU
 #SBATCH --cpus-per-task=8                 # CPU cores
 #SBATCH --mem=10G                        # RAM
@@ -18,9 +18,9 @@ mkdir -p logs
 
 # Run your Python script
 pixi run python benchmark_modalities.py \
-  --dataset voxceleb \
-  --modalities audio,video \
+  --dataset voxceleb2 \
+  --modalities video \
   --batch-size 8 \
-  --out-path out/voxceleb/prediction_av_noise_.csv \
-  --out-error-path out/voxceleb/errors_av_noise_.csv \
-  --start-at-sample 296284
+  --stratified-samples 5000 \
+  --out-path out/voxceleb2/prediction_v_noise_.csv \
+  --out-error-path out/voxceleb2/errors_v_noise_.csv \

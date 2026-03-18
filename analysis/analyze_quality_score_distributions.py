@@ -13,7 +13,7 @@ import matplotlib
 import numpy as np
 import pandas as pd
 
-from quality_calibration import SUPPORTED_MODALITIES, load_percentile_calibration
+from utils.calibration.quality_calibration import SUPPORTED_MODALITIES, load_percentile_calibration
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt

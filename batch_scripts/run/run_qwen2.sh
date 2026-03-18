@@ -1,11 +1,11 @@
 #!/bin/bash
-#SBATCH --job-name=check_audio            # Job name
+#SBATCH --job-name=vox_v_v   # Job name
 #SBATCH --output=logs/%x_%j.out           # Stdout log
 #SBATCH --error=logs/%x_%j.err            # Stderr log
-#SBATCH --time=02:00:00                   # Max runtime (hh:mm:ss)
+#SBATCH --time=10:00:00                   # Max runtime (hh:mm:ss)
 #SBATCH --gres=gpu:full:1                 # Request 1 GPU
 #SBATCH --cpus-per-task=8                 # CPU cores
-#SBATCH --mem=100G                        # RAM
+#SBATCH --mem=10G                        # RAM
 #SBATCH --partition=normal                # Partition name
 
 module load devel/cuda/12.9
@@ -17,4 +17,11 @@ cd /hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterT
 mkdir -p logs
 
 # Run your Python script
-pixi run python utils/check_audio.py /hkfs/work/workspace_haic/scratch/ulrat-masters/MasterThesis/Codebase_MasterThesis/data/MELD.Raw/train_splits
+pixi run python benchmark_modalities.py \
+  --dataset voxceleb2 \
+  --modalities video \
+  --noisy-modalities video \
+  --batch-size 8 \
+  --stratified-samples 5000 \
+  --out-path out/voxceleb2/prediction_v_noise_v.csv \
+  --out-error-path out/voxceleb2/errors_v_noise_v.csv

@@ -8,7 +8,7 @@ import tempfile
 from pathlib import Path
 from typing import Optional
 
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
@@ -312,7 +312,7 @@ def _run_meld(args, modalities: set[str], selection, staging_root: Path):
         if "video" in modalities:
             cmd = [
                 sys.executable,
-                "utils/apply_all_visual_noise.py",
+                "utils/noise/apply_all_visual_noise.py",
                 "--videos_dir",
                 str(videos_dir),
                 "--out_dir",
@@ -326,7 +326,7 @@ def _run_meld(args, modalities: set[str], selection, staging_root: Path):
         if "audio" in modalities:
             cmd = [
                 sys.executable,
-                "utils/apply_all_audio_noise.py",
+                "utils/noise/apply_all_audio_noise.py",
                 "--videos_dir",
                 str(videos_dir),
                 "--out_dir",
@@ -340,7 +340,7 @@ def _run_meld(args, modalities: set[str], selection, staging_root: Path):
         if "text" in modalities:
             cmd = [
                 sys.executable,
-                "utils/apply_all_text_noise.py",
+                "utils/noise/apply_all_text_noise.py",
                 "--input_csv",
                 str(text_csv),
                 "--out_dir",
@@ -390,7 +390,7 @@ def _run_homeprice(args, modalities: set[str], selection, staging_root: Path):
     if "image" in modalities:
         cmd = [
             sys.executable,
-            "utils/apply_all_image_noise.py",
+            "utils/noise/apply_all_image_noise.py",
             "--images_dir",
             str(images_dir),
             "--out_dir",
@@ -404,7 +404,7 @@ def _run_homeprice(args, modalities: set[str], selection, staging_root: Path):
     if "text" in modalities:
         cmd = [
             sys.executable,
-            "utils/apply_all_text_noise.py",
+            "utils/noise/apply_all_text_noise.py",
             "--input_csv",
             str(text_csv),
             "--out_dir",
@@ -447,7 +447,7 @@ def _run_imdb(args, modalities: set[str], selection, staging_root: Path):
     if "image" in modalities:
         cmd = [
             sys.executable,
-            "utils/apply_all_image_noise.py",
+            "utils/noise/apply_all_image_noise.py",
             "--images_dir",
             str(images_dir),
             "--out_dir",
@@ -461,7 +461,7 @@ def _run_imdb(args, modalities: set[str], selection, staging_root: Path):
     if "text" in modalities:
         cmd = [
             sys.executable,
-            "utils/apply_all_text_noise.py",
+            "utils/noise/apply_all_text_noise.py",
             "--input_csv",
             str(text_csv),
             "--out_dir",
@@ -495,7 +495,7 @@ def _run_voxceleb(args, modalities: set[str], selection, staging_root: Path):
     if "video" in modalities:
         cmd = [
             sys.executable,
-            "utils/apply_all_visual_noise.py",
+            "utils/noise/apply_all_visual_noise.py",
             "--videos_dir",
             str(videos_dir),
             "--out_dir",
@@ -511,7 +511,7 @@ def _run_voxceleb(args, modalities: set[str], selection, staging_root: Path):
     if "audio" in modalities:
         cmd = [
             sys.executable,
-            "utils/apply_all_audio_noise.py",
+            "utils/noise/apply_all_audio_noise.py",
             "--videos_dir",
             str(videos_dir),
             "--out_dir",
@@ -551,7 +551,7 @@ def _run_nejm(args, modalities: set[str], selection, staging_root: Path):
     if "image" in modalities:
         cmd = [
             sys.executable,
-            "utils/apply_all_image_noise.py",
+            "utils/noise/apply_all_image_noise.py",
             "--images_dir",
             str(images_dir),
             "--out_dir",
@@ -565,7 +565,7 @@ def _run_nejm(args, modalities: set[str], selection, staging_root: Path):
     if "text" in modalities:
         cmd = [
             sys.executable,
-            "utils/apply_all_text_noise.py",
+            "utils/noise/apply_all_text_noise.py",
             "--input_csv",
             str(text_csv),
             "--out_dir",
@@ -608,7 +608,7 @@ def _run_marine(args, modalities: set[str], selection, staging_root: Path):
     if "image" in modalities:
         cmd = [
             sys.executable,
-            "utils/apply_all_image_noise.py",
+            "utils/noise/apply_all_image_noise.py",
             "--images_dir",
             str(images_dir),
             "--out_dir",
@@ -624,7 +624,7 @@ def _run_marine(args, modalities: set[str], selection, staging_root: Path):
         # wrapping each WAV in a temporary video and extracting the corrupted WAV.
         cmd = [
             sys.executable,
-            "utils/apply_audio_noise_from_wavs.py",
+            "utils/noise/apply_audio_noise_from_wavs.py",
             "--audio_dir",
             str(audio_dir),
             "--out_dir",

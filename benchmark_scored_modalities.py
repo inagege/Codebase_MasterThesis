@@ -20,16 +20,16 @@ from utils.benchmark_data_loading import (
     validate_modalities,
 )
 from utils.parsing_util import extract_assistant_reply
-from utils.quality_calibration import (
+from utils.calibration.quality_calibration import (
     SUPPORTED_MODALITIES,
     apply_percentile_calibration_to_batch,
     load_percentile_calibration,
 )
-from utils.quality_aware_attention import (
+from utils.qaa.quality_aware_attention import (
     install_quality_aware_first_attention_patch,
     set_first_layer_quality_scores,
 )
-from utils.quality_estimation import (
+from utils.qaa.quality_estimation import (
     _build_token_quality_scores,
     _compute_batch_modality_quality_scores,
 )

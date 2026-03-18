@@ -13,13 +13,13 @@ from pathlib import Path
 
 from PIL import Image
 
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-import utils.apply_all_audio_noise as audio_noise
-from utils.apply_all_image_noise import IMAGE_CORRUPTIONS, apply_image_corruption
-from utils.apply_all_text_noise import TEXT_CORRUPTIONS, perturb
+import utils.noise.apply_all_audio_noise as audio_noise
+from utils.noise.apply_all_image_noise import IMAGE_CORRUPTIONS, apply_image_corruption
+from utils.noise.apply_all_text_noise import TEXT_CORRUPTIONS, perturb
 
 
 SUPPORTED_MODALITIES = {"audio", "image", "text"}

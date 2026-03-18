@@ -11,11 +11,11 @@ import torch
 from PIL import Image
 from transformers import Qwen2_5OmniForConditionalGeneration, Qwen2_5OmniProcessor
 
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from utils.quality_estimation import (
+from utils.qaa.quality_estimation import (
     _compute_audio_pam_score,
     _compute_image_brisque_score_from_qwen_image,
     _compute_text_inverse_perplexities,
