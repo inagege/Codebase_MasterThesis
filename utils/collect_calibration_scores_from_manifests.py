@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import random
 import re
 import sys
 from pathlib import Path
@@ -56,6 +57,28 @@ def parse_args():
         type=int,
         default=16,
         help="Batch size for text quality scoring.",
+    )
+    parser.add_argument(
+        "--max-text-chunks",
+        type=int,
+        default=0,
+        help="Maximum text chunks to score. Use 0 to score all text chunks.",
+    )
+    parser.add_argument(
+        "--text-stratify-by",
+        type=str,
+        default="none",
+        choices=["none", "dataset", "perturbation"],
+        help=(
+            "How to stratify text chunk sampling when --max-text-chunks > 0. "
+            "Use perturbation to balance clean/noisy perturbation groups."
+        ),
+    )
+    parser.add_argument(
+        "--text-sampling-seed",
+        type=int,
+        default=123,
+        help="Random seed used for text chunk sampling when --max-text-chunks > 0.",
     )
     parser.add_argument(
         "--out-path",
@@ -160,6 +183,147 @@ def _write_rows(path: Path, rows: list[dict]):
             writer.writerow(row)
 
 
+def _iter_text_chunks(text: str, *, max_chars: int = 1200, min_chars: int = 120):
+    lines = [line.strip() for line in text.splitlines() if line.strip()]
+    if not lines:
+        return
+
+    buffer: list[str] = []
+    current_len = 0
+    emitted = False
+    for line in lines:
+        line_len = len(line)
+        if buffer and current_len + 1 + line_len > max_chars and current_len >= min_chars:
+            emitted = True
+            yield " ".join(buffer)
+            buffer = [line]
+            current_len = line_len
+        else:
+            buffer.append(line)
+            current_len += (1 if current_len > 0 else 0) + line_len
+
+    if buffer and (current_len >= min_chars or not emitted):
+        yield " ".join(buffer)
+
+
+def _text_perturbation_group(dataset_name: str) -> str:
+    normalized = (dataset_name or "").strip().lower()
+    if not normalized:
+        return "unknown"
+    marker = "_t_"
+    severity_marker = "_s_"
+    if marker not in normalized or severity_marker not in normalized:
+        return "clean"
+    perturbation = normalized.split(marker, 1)[1].split(severity_marker, 1)[0].strip("_")
+    return perturbation or "clean"
+
+
+def _text_sampling_stratum(row: dict[str, str], stratify_by: str) -> str:
+    if stratify_by == "none":
+        return "__all__"
+    dataset_name = row.get("dataset", "unknown")
+    if stratify_by == "dataset":
+        return dataset_name
+    if stratify_by == "perturbation":
+        return _text_perturbation_group(dataset_name)
+    raise ValueError(f"Unsupported text stratification mode: {stratify_by}")
+
+
+def _count_text_chunks_by_stratum(
+    rows: list[dict[str, str]],
+    stratify_by: str,
+) -> dict[str, int]:
+    counts: dict[str, int] = {}
+    for row in rows:
+        path = Path(row["absolute_path"])
+        try:
+            text_value = path.read_text(encoding="utf-8", errors="ignore").strip()
+        except Exception:
+            continue
+        if not text_value:
+            continue
+        stratum = _text_sampling_stratum(row, stratify_by)
+        counts.setdefault(stratum, 0)
+        for _ in _iter_text_chunks(text_value):
+            counts[stratum] += 1
+    return counts
+
+
+def _build_text_sampling_quotas(
+    chunk_counts_by_stratum: dict[str, int],
+    target_chunks: int,
+) -> dict[str, int]:
+    valid_counts = {stratum: count for stratum, count in chunk_counts_by_stratum.items() if count > 0}
+    if not valid_counts:
+        return {}
+
+    total_available = sum(valid_counts.values())
+    target = min(max(target_chunks, 0), total_available)
+    if target >= total_available:
+        return dict(valid_counts)
+
+    strata = sorted(valid_counts)
+    quotas = {stratum: 0 for stratum in strata}
+
+    # First allocate an equal base per stratum to preserve perturbation coverage.
+    base = target // len(strata)
+    for stratum in strata:
+        quotas[stratum] = min(base, valid_counts[stratum])
+
+    remaining = target - sum(quotas.values())
+    while remaining > 0:
+        capacities = {
+            stratum: valid_counts[stratum] - quotas[stratum]
+            for stratum in strata
+            if quotas[stratum] < valid_counts[stratum]
+        }
+        if not capacities:
+            break
+
+        total_capacity = sum(capacities.values())
+        allocated = 0
+        remainders: list[tuple[float, str]] = []
+        for stratum in sorted(capacities):
+            capacity = capacities[stratum]
+            exact_add = remaining * (capacity / total_capacity)
+            add = min(capacity, int(exact_add))
+            quotas[stratum] += add
+            allocated += add
+            remainders.append((exact_add - add, stratum))
+        remaining -= allocated
+        if remaining <= 0:
+            break
+
+        for _, stratum in sorted(remainders, key=lambda item: (-item[0], item[1])):
+            if remaining <= 0:
+                break
+            if quotas[stratum] >= valid_counts[stratum]:
+                continue
+            quotas[stratum] += 1
+            remaining -= 1
+
+    return quotas
+
+
+def _build_text_sampling_indices(
+    chunk_counts_by_stratum: dict[str, int],
+    quotas_by_stratum: dict[str, int],
+    sampling_seed: int,
+) -> dict[str, list[int] | None]:
+    rng = random.Random(sampling_seed)
+    selected_indices: dict[str, list[int] | None] = {}
+    for stratum, total_count in sorted(chunk_counts_by_stratum.items()):
+        quota = quotas_by_stratum.get(stratum, 0)
+        if quota <= 0:
+            selected_indices[stratum] = []
+            continue
+        if quota >= total_count:
+            selected_indices[stratum] = None
+            continue
+        selected_indices[stratum] = sorted(rng.sample(range(total_count), quota))
+    return selected_indices
+
+
 def _score_text_rows(
     rows: list[dict[str, str]],
     model,
@@ -167,34 +331,13 @@ def _score_text_rows(
     device,
     batch_size: int,
     max_total_chunks: int | None = None,
+    stratify_by: str = "none",
+    sampling_seed: int = 123,
 ) -> list[dict]:
     scored_rows = []
     batch_texts: list[str] = []
     batch_rows: list[dict[str, str]] = []
     processed_chunks = 0
-
-    def _chunk_text(text: str, *, max_chars: int = 1200, min_chars: int = 120) -> list[str]:
-        lines = [line.strip() for line in text.splitlines() if line.strip()]
-        if not lines:
-            return []
-
-        chunks = []
-        buffer: list[str] = []
-        current_len = 0
-        for line in lines:
-            line_len = len(line)
-            if buffer and current_len + 1 + line_len > max_chars and current_len >= min_chars:
-                chunks.append(" ".join(buffer))
-                buffer = [line]
-                current_len = line_len
-            else:
-                buffer.append(line)
-                current_len += (1 if current_len > 0 else 0) + line_len
-        if buffer and current_len >= min_chars:
-            chunks.append(" ".join(buffer))
-        elif buffer and not chunks:
-            chunks.append(" ".join(buffer))
-        return chunks
 
     def _flush_batch():
         nonlocal batch_texts, batch_rows
@@ -217,9 +360,50 @@ def _score_text_rows(
         batch_texts = []
         batch_rows = []
 
+    chunk_counts_by_stratum = _count_text_chunks_by_stratum(rows, stratify_by=stratify_by)
+    total_available_chunks = sum(chunk_counts_by_stratum.values())
+    if total_available_chunks <= 0:
+        return scored_rows
+
+    target_chunks = total_available_chunks
+    if max_total_chunks is not None and max_total_chunks > 0:
+        target_chunks = min(max_total_chunks, total_available_chunks)
+
+    quotas_by_stratum = _build_text_sampling_quotas(
+        chunk_counts_by_stratum=chunk_counts_by_stratum,
+        target_chunks=target_chunks,
+    )
+    selected_indices_by_stratum = _build_text_sampling_indices(
+        chunk_counts_by_stratum=chunk_counts_by_stratum,
+        quotas_by_stratum=quotas_by_stratum,
+        sampling_seed=sampling_seed,
+    )
+
+    print(
+        "[INFO] Text chunk sampling "
+        f"available={total_available_chunks} target={target_chunks} "
+        f"stratify_by={stratify_by} seed={sampling_seed}",
+        flush=True,
+    )
+    for stratum in sorted(chunk_counts_by_stratum):
+        available = chunk_counts_by_stratum[stratum]
+        selected = quotas_by_stratum.get(stratum, 0)
+        ratio = selected / available if available > 0 else 0.0
+        print(
+            f"[INFO] Text stratum={stratum} available={available} selected={selected} ratio={ratio:.4f}",
+            flush=True,
+        )
+
+    seen_chunks_by_stratum = {stratum: 0 for stratum in chunk_counts_by_stratum}
+    selected_chunks_by_stratum = {stratum: 0 for stratum in chunk_counts_by_stratum}
+    selection_pointer_by_stratum = {stratum: 0 for stratum in chunk_counts_by_stratum}
+
     for row in rows:
-        if max_total_chunks is not None and processed_chunks >= max_total_chunks:
-            break
+        stratum = _text_sampling_stratum(row, stratify_by)
+        stratum_quota = quotas_by_stratum.get(stratum, 0)
+        if stratum_quota <= 0 or selected_chunks_by_stratum.get(stratum, 0) >= stratum_quota:
+            continue
+
         path = Path(row["absolute_path"])
         try:
             text_value = path.read_text(encoding="utf-8", errors="ignore").strip()
@@ -227,20 +411,51 @@ def _score_text_rows(
             continue
         if not text_value:
             continue
-        text_chunks = _chunk_text(text_value)
-        for chunk_idx, chunk_text in enumerate(text_chunks):
+
+        selected_indices = selected_indices_by_stratum.get(stratum, [])
+        seen_index = seen_chunks_by_stratum[stratum]
+        selection_pointer = selection_pointer_by_stratum[stratum]
+
+        for chunk_idx, chunk_text in enumerate(_iter_text_chunks(text_value)):
             if not chunk_text:
                 continue
-            if max_total_chunks is not None and processed_chunks >= max_total_chunks:
-                break
+
+            use_chunk = False
+            if selected_indices is None:
+                use_chunk = True
+            elif selection_pointer < len(selected_indices) and seen_index == selected_indices[selection_pointer]:
+                use_chunk = True
+                selection_pointer += 1
+            seen_index += 1
+            if not use_chunk:
+                continue
+
             chunk_row = dict(row)
             chunk_row["file_index"] = f"{row.get('file_index', '0')}:{chunk_idx}"
             batch_texts.append(chunk_text)
             batch_rows.append(chunk_row)
             processed_chunks += 1
+            selected_chunks_by_stratum[stratum] += 1
             if len(batch_texts) >= batch_size:
                 _flush_batch()
+
+            if selected_chunks_by_stratum[stratum] >= stratum_quota:
+                # Keep counting indices in this stratum only as long as needed.
+                break
+
+        seen_chunks_by_stratum[stratum] = seen_index
+        selection_pointer_by_stratum[stratum] = selection_pointer
+
     _flush_batch()
+
+    expected_chunks = sum(quotas_by_stratum.values())
+    if processed_chunks != expected_chunks:
+        print(
+            f"[WARN] Text sampling selected {processed_chunks} chunks but planned {expected_chunks}. "
+            "Some files may be unreadable or empty.",
+            flush=True,
+        )
+
     return scored_rows
 
 
@@ -402,7 +617,9 @@ def main():
             if model is None or processor is None:
                 print("[WARN] Skipping text scoring because no text model is loaded.", flush=True)
                 continue
-            text_chunk_limit = args.max_files_per_modality if args.max_files_per_modality > 0 else None
+            text_chunk_limit = args.max_text_chunks if args.max_text_chunks > 0 else None
+            if text_chunk_limit is None and args.max_files_per_modality > 0:
+                text_chunk_limit = args.max_files_per_modality
             scored_rows = _score_text_rows(
                 rows,
                 model,
@@ -410,6 +627,8 @@ def main():
                 device,
                 args.batch_size_text,
                 max_total_chunks=text_chunk_limit,
+                stratify_by=args.text_stratify_by,
+                sampling_seed=args.text_sampling_seed,
             )
         elif modality == "audio":
             scored_rows = _score_audio_rows(rows, device)
