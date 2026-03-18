@@ -3,6 +3,7 @@ from __future__ import annotations
 import os
 import sys
 from pathlib import Path
+import math
 
 import numpy as np
 import torch
@@ -93,7 +94,7 @@ def _to_pil_rgb(image_input):
 def _compute_brisque_from_image_rgb(image_rgb) -> float:
     scorer = _get_brisque_scorer()
     raw_score = float(scorer.score(np.asarray(image_rgb.convert("RGB"))))
-    return float(1.0 - raw_score / 100.0)
+    return float(0.0 - raw_score / 100.0)
 
 
 def _compute_image_brisque_score_from_qwen_image(image_input, cache_key: str | None = None) -> float:
@@ -243,8 +244,8 @@ def _compute_text_inverse_perplexities(texts: list[str], model, processor, devic
             reduction="none",
         ).view_as(targets)
         seq_loss = (token_loss * target_mask).sum(dim=1) / target_mask.sum(dim=1).clamp_min(1.0)
-        ppl = torch.exp(seq_loss.clamp(max=50.0))
-        text_quality = 1.0 / (1.0 + ppl)
+        ppl = torch.exp(seq_loss)
+        text_quality = 1.0 / math.log(ppl)
         result = text_quality.clamp(0.0, 1.0).detach().cpu().tolist()
 
         del outputs, logits, targets, target_mask, token_loss, seq_loss, ppl, text_quality
