@@ -12,10 +12,10 @@ set -euo pipefail
 cd /hkfs/work/workspace_haic/scratch/unsvk-multimodal/Codebase_MasterThesis || exit 1
 mkdir -p logs
 
-SCORES_CSV="${SCORES_CSV:-data/calibration_data/scores_imported_datasets.csv}"
-CALIBRATION_JSON="${CALIBRATION_JSON:-data/calibration_data/quality_percentile_calibration.json}"
+SCORES_CSV="${SCORES_CSV:-data/calibration_data/noise_1m/scores_imported_datasets_1m_noise_audio.csv}"
+CALIBRATION_JSON="${CALIBRATION_JSON:-data/calibration_data/noise_1m/quality_percentile_calibration_1m_noise_audio.json}"
 OUT_DIR="${OUT_DIR:-analysis/quality_score_percentile_report}"
-MODALITIES="${MODALITIES:-audio,image,text}"
+MODALITIES="${MODALITIES:-audio}"
 PERCENTILES="${PERCENTILES:-1,5,10,25,50,75,90,95,99}"
 
 CALIBRATION_ARGS=()
@@ -25,7 +25,7 @@ else
   echo "[WARN] Calibration JSON not found at ${CALIBRATION_JSON}; deriving percentiles from input scores."
 fi
 
-pixi run python utils/analyze_quality_score_distributions.py \
+pixi run python analysis/analyze_quality_score_distributions.py \
   --scores-csv "${SCORES_CSV}" \
   --out-dir "${OUT_DIR}" \
   --modalities "${MODALITIES}" \

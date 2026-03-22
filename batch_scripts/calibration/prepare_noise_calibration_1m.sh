@@ -96,7 +96,7 @@ echo "[INFO]   clean=${CLEAN_COUNT} s1=${S1_COUNT} s2=${S2_COUNT} s3=${S3_COUNT}
 echo "[INFO]   audio_source_dir=${AUDIO_SOURCE_DIR}"
 echo "[INFO]   image_source_dir=${IMAGE_SOURCE_DIR}"
 echo "[INFO]   text_source_dir=${TEXT_SOURCE_DIR}"
-pixi run python utils/build_noise_calibration_sets.py "${BUILD_ARGS[@]}"
+pixi run python utils/calibration/build_noise_calibration_sets.py "${BUILD_ARGS[@]}"
 
 declare -a DATASET_ARGS=()
 if [[ ",${MODALITIES}," == *",audio,"* ]]; then
@@ -127,7 +127,7 @@ if [[ "${MANIFEST_MAX_FILES_PER_DATASET}" != "0" ]]; then
 fi
 
 echo "[INFO] Importing generated 1M sets into ${CALIB_ROOT}"
-pixi run python utils/import_calibration_datasets.py "${IMPORT_ARGS[@]}"
+pixi run python utils/calibration/import_calibration_datasets.py "${IMPORT_ARGS[@]}"
 
 echo "[INFO] Done."
 echo "[INFO] calibration_data root: ${CALIB_ROOT}"

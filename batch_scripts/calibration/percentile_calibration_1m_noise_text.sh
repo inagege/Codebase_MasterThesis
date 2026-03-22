@@ -37,7 +37,7 @@ echo "[INFO]   scores_csv=${SCORES_CSV}"
 echo "[INFO]   calib_json=${CALIB_JSON}"
 
 echo "[INFO] Collecting text quality scores (1M noisy sets)"
-pixi run python utils/collect_calibration_scores_from_manifests.py \
+pixi run python utils/calibration/collect_calibration_scores_from_manifests.py \
   --manifest-dir "${MANIFEST_DIR}" \
   --modalities "text" \
   --max-files-per-modality "${MAX_FILES_PER_MODALITY}" \
@@ -47,7 +47,7 @@ pixi run python utils/collect_calibration_scores_from_manifests.py \
   --out-path "${SCORES_CSV}"
 
 echo "[INFO] Building text percentile calibration JSON for 1M noisy sets"
-pixi run python utils/build_quality_percentile_calibration.py \
+pixi run python utils/calibration/build_quality_percentile_calibration.py \
   --input-csv "${SCORES_CSV}" \
   --out-path "${CALIB_JSON}" \
   --modalities "text"
