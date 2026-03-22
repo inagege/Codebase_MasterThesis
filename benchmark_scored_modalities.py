@@ -22,7 +22,6 @@ from utils.benchmark_data_loading import (
 from utils.parsing_util import extract_assistant_reply
 from utils.calibration.quality_calibration import (
     SUPPORTED_MODALITIES,
-    apply_percentile_calibration_to_batch,
     load_percentile_calibration,
 )
 from utils.qaa.quality_aware_attention import (
@@ -54,6 +53,12 @@ def parse_args():
         type=str,
         default=None,
         help="Comma-separated modalities that should use noisy input variants.",
+    )
+    parser.add_argument(
+        "--noise-severity",
+        type=int,
+        default=None,
+        help="Optional noise severity level S. When set with --noisy-modalities, only variants with folder token S=<level> are loaded.",
     )
     parser.add_argument(
         "--split",
@@ -97,10 +102,12 @@ def parse_args():
     parser.add_argument(
         "--quality-calibration-path",
         type=str,
+        action="append",
         default=None,
         help=(
-            "Optional path to a frozen percentile calibration JSON (built from external calibration data). "
-            "If provided, raw modality quality scores are mapped to percentiles before token-level weighting."
+            "Optional path(s) to frozen percentile calibration JSON files (built from external calibration data). "
+            "Can be provided multiple times or as a comma-separated list. "
+            "If provided, matching modality quality scores are mapped to percentiles before token-level weighting."
         ),
     )
     parser.add_argument(
@@ -150,6 +157,41 @@ def append_quality_score_row(
         row[f"{modality}_raw_quality"] = raw_scores.get(modality, "")
         row[f"{modality}_calibrated_quality"] = calibrated_scores.get(modality, "")
     append_csv_row(path, _quality_score_fieldnames(), row)
+
+
+def _flatten_calibration_paths(raw_values: list[str] | None) -> list[str]:
+    if not raw_values:
+        return []
+
+    flattened_paths = []
+    seen = set()
+    for raw_value in raw_values:
+        for maybe_path in raw_value.split(","):
+            path = maybe_path.strip()
+            if not path or path in seen:
+                continue
+            seen.add(path)
+            flattened_paths.append(path)
+    return flattened_paths
+
+
+def _calibrate_scores_with_fallback(
+    raw_scores_per_entry: list[dict[str, float]],
+    quality_calibrators,
+) -> list[dict[str, float]]:
+    if not quality_calibrators:
+        return [{modality: score for modality, score in sample_scores.items()} for sample_scores in raw_scores_per_entry]
+
+    calibrated_scores_per_entry = []
+    for sample_scores in raw_scores_per_entry:
+        calibrated_sample_scores = {}
+        for modality, raw_score in sample_scores.items():
+            calibrator = quality_calibrators.get(modality)
+            calibrated_sample_scores[modality] = (
+                calibrator.calibrate(raw_score) if calibrator is not None else raw_score
+            )
+        calibrated_scores_per_entry.append(calibrated_sample_scores)
+    return calibrated_scores_per_entry
 
 
 def cast_floats_to_dtype(batch, dtype: torch.dtype):
@@ -302,10 +344,10 @@ def run_batch_generation(
             for sample_scores in raw_modality_quality_scores
         ]
     else:
-        modality_quality_scores = apply_percentile_calibration_to_batch(
-        raw_modality_quality_scores,
-        quality_calibrators,
-    )
+        modality_quality_scores = _calibrate_scores_with_fallback(
+            raw_modality_quality_scores,
+            quality_calibrators,
+        )
 
     token_quality_scores = _build_token_quality_scores(
         input_ids=inputs["input_ids"],
@@ -359,6 +401,13 @@ def main():
         raise ValueError("--start-at-sample must be >= 0 when provided.")
     if args.stratified_samples is not None and args.stratified_samples < 1:
         raise ValueError("--stratified-samples must be >= 1 when provided.")
+    if args.noise_severity is not None and args.noise_severity < 0:
+        raise ValueError("--noise-severity must be >= 0 when provided.")
+    if args.noise_severity is not None and args.noisy_modalities is None:
+        print(
+            "[WARN] --noise-severity was provided without --noisy-modalities; it has no effect.",
+            flush=True,
+        )
 
     dataset = normalize_dataset_name(args.dataset)
     enabled_modalities = normalize_modalities(args.modalities)
@@ -381,13 +430,15 @@ def main():
     print(f"[INFO] Dataset: {dataset}", flush=True)
     print(f"[INFO] Modalities enabled: {sorted(enabled_modalities)}", flush=True)
     print(f"[INFO] Noisy modalities: {args.noisy_modalities}", flush=True)
+    print(f"[INFO] noise_severity={args.noise_severity}", flush=True)
     print(f"[INFO] Split: {args.split}", flush=True)
     print(f"[INFO] audio_subdir={args.audio_subdir}", flush=True)
     print(f"[INFO] batch_size={args.batch_size}", flush=True)
     print(f"[INFO] start_at_sample={args.start_at_sample}", flush=True)
     print(f"[INFO] stratified_samples={args.stratified_samples}", flush=True)
     print(f"[INFO] force_quality_scores_one={args.force_quality_scores_one}", flush=True)
-    print(f"[INFO] quality_calibration_path={args.quality_calibration_path}", flush=True)
+    calibration_paths = _flatten_calibration_paths(args.quality_calibration_path)
+    print(f"[INFO] quality_calibration_paths={calibration_paths}", flush=True)
     print(f"[INFO] quality_score_out_path={args.quality_score_out_path}", flush=True)
     if label_column is not None:
         print(f"[INFO] Label column: {label_column}", flush=True)
@@ -401,11 +452,35 @@ def main():
     os.makedirs("out", exist_ok=True)
 
     quality_calibrators = None
-    if args.quality_calibration_path:
-        quality_calibrators = load_percentile_calibration(args.quality_calibration_path)
-        loaded_modalities = sorted(quality_calibrators)
+    if calibration_paths:
+        quality_calibrators = {}
+        for calibration_path in calibration_paths:
+            path_calibrators = load_percentile_calibration(calibration_path)
+            duplicate_modalities = sorted(set(quality_calibrators) & set(path_calibrators))
+            if duplicate_modalities:
+                raise ValueError(
+                    "Duplicate modality calibrators found across quality calibration files "
+                    f"for modalities: {duplicate_modalities}. "
+                    "Please keep one calibration source per modality."
+                )
+            quality_calibrators.update(path_calibrators)
+            loaded_modalities = sorted(path_calibrators)
+            print(
+                "[INFO] Loaded percentile quality calibration file "
+                f"{calibration_path} for modalities: {loaded_modalities}",
+                flush=True,
+            )
+
+        if "video" in enabled_modalities and "video" not in quality_calibrators and "image" in quality_calibrators:
+            quality_calibrators["video"] = quality_calibrators["image"]
+            print(
+                "[INFO] Reusing image percentile calibration for video modality.",
+                flush=True,
+            )
+
         print(
-            f"[INFO] Loaded percentile quality calibration for modalities: {loaded_modalities}",
+            "[INFO] Combined percentile quality calibration modalities: "
+            f"{sorted(quality_calibrators)}",
             flush=True,
         )
         missing_enabled_modalities = sorted(enabled_modalities - set(quality_calibrators))

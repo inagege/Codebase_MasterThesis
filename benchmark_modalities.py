@@ -43,6 +43,12 @@ def parse_args():
         help="Comma-separated modalities that should use noisy input variants.",
     )
     parser.add_argument(
+        "--noise-severity",
+        type=int,
+        default=None,
+        help="Optional noise severity level S. When set with --noisy-modalities, only variants with folder token S=<level> are loaded.",
+    )
+    parser.add_argument(
         "--split",
         type=str,
         default="test",
@@ -243,6 +249,13 @@ def main():
         raise ValueError("--start-at-sample must be >= 0 when provided.")
     if args.stratified_samples is not None and args.stratified_samples < 1:
         raise ValueError("--stratified-samples must be >= 1 when provided.")
+    if args.noise_severity is not None and args.noise_severity < 0:
+        raise ValueError("--noise-severity must be >= 0 when provided.")
+    if args.noise_severity is not None and args.noisy_modalities is None:
+        print(
+            "[WARN] --noise-severity was provided without --noisy-modalities; it has no effect.",
+            flush=True,
+        )
 
     dataset = normalize_dataset_name(args.dataset)
     enabled_modalities = normalize_modalities(args.modalities)
@@ -265,6 +278,7 @@ def main():
     print(f"[INFO] Dataset: {dataset}", flush=True)
     print(f"[INFO] Modalities enabled: {sorted(enabled_modalities)}", flush=True)
     print(f"[INFO] Noisy modalities: {args.noisy_modalities}", flush=True)
+    print(f"[INFO] noise_severity={args.noise_severity}", flush=True)
     print(f"[INFO] Split: {args.split}", flush=True)
     print(f"[INFO] audio_subdir={args.audio_subdir}", flush=True)
     print(f"[INFO] batch_size={args.batch_size}", flush=True)
