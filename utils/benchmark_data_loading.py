@@ -175,18 +175,26 @@ def validate_modalities(dataset: str, enabled_modalities, noisy_modalities):
 
 
 def load_samples(dataset, args, enabled_modalities, noisy_modalities, label_column):
+    noise_severity = getattr(args, "noise_severity", None)
+
     if dataset == "meld":
         return _load_meld_samples(args, noisy_modalities, label_column)
     if dataset == "homeprice":
-        return _load_homeprice_samples(enabled_modalities, noisy_modalities)
+        return _load_homeprice_samples(enabled_modalities, noisy_modalities, noise_severity=noise_severity)
     if dataset == "imdb":
-        return _load_imdb_samples(enabled_modalities, noisy_modalities)
+        return _load_imdb_samples(enabled_modalities, noisy_modalities, noise_severity=noise_severity)
     if dataset == "voxceleb":
-        return _load_voxceleb_samples(args, enabled_modalities, noisy_modalities, label_column)
+        return _load_voxceleb_samples(
+            args,
+            enabled_modalities,
+            noisy_modalities,
+            label_column,
+            noise_severity=noise_severity,
+        )
     if dataset == "nejm":
-        return _load_nejm_samples(enabled_modalities, noisy_modalities)
+        return _load_nejm_samples(enabled_modalities, noisy_modalities, noise_severity=noise_severity)
     if dataset == "marine":
-        return _load_marine_samples(enabled_modalities, noisy_modalities)
+        return _load_marine_samples(enabled_modalities, noisy_modalities, noise_severity=noise_severity)
     raise ValueError(f"Unsupported dataset {dataset}")
 
 
@@ -295,12 +303,33 @@ def _resolve_media_path_with_fallback(base_path: Path):
     return None
 
 
-def _iter_noise_variants(noise_root: Path, modality: str):
+def _variant_matches_noise_severity(variant_name: str, noise_severity: int) -> bool:
+    return re.search(
+        rf"(?:^|[_-])S={re.escape(str(noise_severity))}(?:[_-]|$)",
+        variant_name,
+    ) is not None
+
+
+def _iter_noise_variants(noise_root: Path, modality: str, noise_severity: int | None = None):
     modality_root = noise_root / modality
     if not modality_root.exists():
         print(f"[WARN] No noisy root found for modality {modality}: {modality_root}", flush=True)
         return []
-    return sorted(path for path in modality_root.iterdir() if path.is_dir())
+
+    variants = sorted(path for path in modality_root.iterdir() if path.is_dir())
+    if noise_severity is None:
+        return variants
+
+    filtered_variants = [
+        path for path in variants if _variant_matches_noise_severity(path.name, noise_severity)
+    ]
+    if not filtered_variants:
+        print(
+            "[WARN] No noisy variants found for modality "
+            f"{modality} at severity S={noise_severity} under {modality_root}",
+            flush=True,
+        )
+    return filtered_variants
 
 
 def _load_text_variant_map(csv_path: Path, key_column: str, text_column: str):
@@ -329,7 +358,7 @@ def _requested_meld_splits(split_arg: str):
     return sorted(mapped)
 
 
-def _get_meld_split_configs(split: str, noisy_modalities):
+def _get_meld_split_configs(split: str, noisy_modalities, noise_severity: int | None = None):
     root = MELD_SPLIT_ROOT[split]
     meta_csv = os.path.join(root, MELD_SPLIT_META[split])
     configs = []
@@ -345,34 +374,24 @@ def _get_meld_split_configs(split: str, noisy_modalities):
         return configs
 
     for modality in noisy_modalities - {"text"}:
-        noisy_root = Path(root) / modality
-        if not noisy_root.exists():
-            print(f"[WARN] No noisy root found for modality {modality}: {noisy_root}", flush=True)
-            continue
-        for variant in sorted(noisy_root.iterdir()):
-            if variant.is_dir():
-                configs.append(
-                    {
-                        "media_dir": variant,
-                        "meta_csv": Path(meta_csv),
-                        "variant": f"{split}_{variant.name}",
-                    }
-                )
+        for variant in _iter_noise_variants(Path(root), modality, noise_severity):
+            configs.append(
+                {
+                    "media_dir": variant,
+                    "meta_csv": Path(meta_csv),
+                    "variant": f"{split}_{variant.name}",
+                }
+            )
 
     if "text" in noisy_modalities:
-        text_root = Path(root) / "text"
-        if not text_root.exists():
-            print(f"[WARN] No noisy text root found: {text_root}", flush=True)
-        else:
-            for variant in sorted(text_root.iterdir()):
-                if variant.is_dir():
-                    configs.append(
-                        {
-                            "media_dir": Path(root) / "unmodified",
-                            "meta_csv": variant / "metadata.csv",
-                            "variant": f"{split}_{variant.name}",
-                        }
-                    )
+        for variant in _iter_noise_variants(Path(root), "text", noise_severity):
+            configs.append(
+                {
+                    "media_dir": Path(root) / "unmodified",
+                    "meta_csv": variant / "metadata.csv",
+                    "variant": f"{split}_{variant.name}",
+                }
+            )
 
     return configs
 
@@ -380,7 +399,11 @@ def _get_meld_split_configs(split: str, noisy_modalities):
 def _load_meld_samples(args, noisy_modalities, label_column):
     samples = []
     for split in _requested_meld_splits(args.split):
-        split_configs = _get_meld_split_configs(split, noisy_modalities)
+        split_configs = _get_meld_split_configs(
+            split,
+            noisy_modalities,
+            noise_severity=getattr(args, "noise_severity", None),
+        )
         if not split_configs:
             print(f"[WARN] No MELD configs found for split {split}", flush=True)
             continue
@@ -445,7 +468,7 @@ def _resolve_homeprice_csv_path():
     )
 
 
-def _load_homeprice_samples(enabled_modalities, noisy_modalities):
+def _load_homeprice_samples(enabled_modalities, noisy_modalities, noise_severity: int | None = None):
     csv_path = _resolve_homeprice_csv_path()
     image_dir = Path("data/HomePrice/homeImages")
     noise_root = Path("data/HomePrice/noise")
@@ -476,7 +499,7 @@ def _load_homeprice_samples(enabled_modalities, noisy_modalities):
     base_rows = [row for _, row in df.iterrows()]
 
     if "image" in noisy_modalities:
-        for variant in _iter_noise_variants(noise_root, "image"):
+        for variant in _iter_noise_variants(noise_root, "image", noise_severity):
             for row in base_rows:
                 image_name = _sanitize_value(row.get("homeImage"))
                 if not image_name:
@@ -496,7 +519,7 @@ def _load_homeprice_samples(enabled_modalities, noisy_modalities):
                 )
 
     if "text" in noisy_modalities:
-        for variant in _iter_noise_variants(noise_root, "text"):
+        for variant in _iter_noise_variants(noise_root, "text", noise_severity):
             text_map = _load_text_variant_map(
                 csv_path=variant / csv_path.name,
                 key_column="homeImage",
@@ -523,7 +546,7 @@ def _load_homeprice_samples(enabled_modalities, noisy_modalities):
     return samples
 
 
-def _load_imdb_samples(enabled_modalities, noisy_modalities):
+def _load_imdb_samples(enabled_modalities, noisy_modalities, noise_severity: int | None = None):
     csv_path = Path("data/IMDB/IMDB_four_genre_larger_plot_description.csv")
     image_dir = Path("data/IMDB/IMDB_four_genre_posters")
     noise_root = Path("data/IMDB/noise")
@@ -555,7 +578,7 @@ def _load_imdb_samples(enabled_modalities, noisy_modalities):
     base_rows = [row for _, row in df.iterrows()]
 
     if "image" in noisy_modalities:
-        for variant in _iter_noise_variants(noise_root, "image"):
+        for variant in _iter_noise_variants(noise_root, "image", noise_severity):
             for row in base_rows:
                 movie_id = _sanitize_value(row.get("movie_id"))
                 if not movie_id:
@@ -576,7 +599,7 @@ def _load_imdb_samples(enabled_modalities, noisy_modalities):
                 )
 
     if "text" in noisy_modalities:
-        for variant in _iter_noise_variants(noise_root, "text"):
+        for variant in _iter_noise_variants(noise_root, "text", noise_severity):
             text_map = _load_text_variant_map(
                 csv_path=variant / csv_path.name,
                 key_column="movie_id",
@@ -660,7 +683,7 @@ def _extract_nejm_options_for_row(row) -> list[str]:
     return _extract_nejm_option_labels(conversation_text)
 
 
-def _load_nejm_samples(enabled_modalities, noisy_modalities):
+def _load_nejm_samples(enabled_modalities, noisy_modalities, noise_severity: int | None = None):
     csv_path = Path("data/NEJM/metadata.csv")
     image_root = Path("data/NEJM/images")
     noise_root = Path("data/NEJM/noise")
@@ -705,7 +728,7 @@ def _load_nejm_samples(enabled_modalities, noisy_modalities):
     samples = []
 
     if "image" in noisy_modalities:
-        for variant in _iter_noise_variants(noise_root, "image"):
+        for variant in _iter_noise_variants(noise_root, "image", noise_severity):
             for row in base_rows:
                 image_id = _sanitize_value(row.get("image_id"))
                 raw_image_path = _sanitize_value(row.get("image_path"))
@@ -741,7 +764,7 @@ def _load_nejm_samples(enabled_modalities, noisy_modalities):
                 )
 
     if "text" in noisy_modalities:
-        for variant in _iter_noise_variants(noise_root, "text"):
+        for variant in _iter_noise_variants(noise_root, "text", noise_severity):
             text_map = _load_text_variant_map(
                 csv_path=variant / "metadata.csv",
                 key_column="image_id",
@@ -834,7 +857,7 @@ def _build_voxceleb_samples_for_roots(
     return samples
 
 
-def _load_voxceleb_samples(args, enabled_modalities, noisy_modalities, label_column):
+def _load_voxceleb_samples(args, enabled_modalities, noisy_modalities, label_column, noise_severity: int | None = None):
     base_video_root = Path("data/VoxCeleb2/dev/mp4")
     base_audio_root = base_video_root / args.audio_subdir
     noise_root = Path("data/VoxCeleb2/dev/noise")
@@ -865,7 +888,7 @@ def _load_voxceleb_samples(args, enabled_modalities, noisy_modalities, label_col
 
     samples = []
     if "video" in noisy_modalities:
-        for variant in _iter_noise_variants(noise_root, "video"):
+        for variant in _iter_noise_variants(noise_root, "video", noise_severity):
             samples.extend(
                 _build_voxceleb_samples_for_roots(
                     args=args,
@@ -877,7 +900,7 @@ def _load_voxceleb_samples(args, enabled_modalities, noisy_modalities, label_col
                 )
             )
     if "audio" in noisy_modalities:
-        for variant in _iter_noise_variants(noise_root, "audio"):
+        for variant in _iter_noise_variants(noise_root, "audio", noise_severity):
             samples.extend(
                 _build_voxceleb_samples_for_roots(
                     args=args,
@@ -983,7 +1006,7 @@ def _build_marine_samples_for_dirs(enabled_modalities, split_name: str, image_di
     return samples
 
 
-def _load_marine_samples(enabled_modalities, noisy_modalities):
+def _load_marine_samples(enabled_modalities, noisy_modalities, noise_severity: int | None = None):
     base_image_dir = Path("data/Marine/images")
     base_audio_dir = Path("data/Marine/audio")
     noise_root = Path("data/Marine/noise")
@@ -998,7 +1021,7 @@ def _load_marine_samples(enabled_modalities, noisy_modalities):
 
     samples = []
     if "image" in noisy_modalities:
-        for variant in _iter_noise_variants(noise_root, "image"):
+        for variant in _iter_noise_variants(noise_root, "image", noise_severity):
             samples.extend(
                 _build_marine_samples_for_dirs(
                     enabled_modalities=enabled_modalities,
@@ -1008,7 +1031,7 @@ def _load_marine_samples(enabled_modalities, noisy_modalities):
                 )
             )
     if "audio" in noisy_modalities:
-        for variant in _iter_noise_variants(noise_root, "audio"):
+        for variant in _iter_noise_variants(noise_root, "audio", noise_severity):
             samples.extend(
                 _build_marine_samples_for_dirs(
                     enabled_modalities=enabled_modalities,
