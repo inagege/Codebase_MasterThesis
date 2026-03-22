@@ -5,6 +5,7 @@ idea/# pixi environments
 data/
 logs/
 analysis/out/
+analysis/quality_score_percentile_report/
 .idea/
 .pynb_checkpoints/
 .DS_Store

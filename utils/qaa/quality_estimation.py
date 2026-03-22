@@ -3,7 +3,6 @@ from __future__ import annotations
 import os
 import sys
 from pathlib import Path
-import math
 
 import numpy as np
 import torch
@@ -16,7 +15,7 @@ _VIDEO_QUALITY_CACHE: dict[str, float] = {}
 
 _BRISQUE_SCORER = None
 _PAM_SCORER = None
-_PAM_REPO_ROOT = Path(__file__).resolve().parent.parent / "PAM"
+_PAM_REPO_ROOT = Path(__file__).resolve().parent.parent.parent / "PAM"
 
 _PAM_RESAMPLE_RATE = 44100
 _PAM_AUDIO_DURATION_SECONDS = 7
@@ -243,10 +242,10 @@ def _compute_text_inverse_perplexities(texts: list[str], model, processor, devic
             targets.reshape(-1),
             reduction="none",
         ).view_as(targets)
-        seq_loss = (token_loss * target_mask).sum(dim=1) / target_mask.sum(dim=1).clamp_min(1.0)
+        seq_loss = (token_loss * target_mask).sum(dim=1) / target_mask.sum(dim=1)
         ppl = torch.exp(seq_loss)
-        text_quality = 1.0 / math.log(ppl)
-        result = text_quality.clamp(0.0, 1.0).detach().cpu().tolist()
+        text_quality = torch.reciprocal(torch.log(ppl))
+        result = text_quality.detach().cpu().tolist()
 
         del outputs, logits, targets, target_mask, token_loss, seq_loss, ppl, text_quality
         del input_ids, attention_mask, encoded

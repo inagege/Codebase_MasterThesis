@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import os
 from pathlib import Path
+import sys
 
 if "MPLCONFIGDIR" not in os.environ:
     mpl_config_dir = Path("/tmp") / f"mplconfig_{os.getuid()}"
@@ -12,6 +13,10 @@ if "MPLCONFIGDIR" not in os.environ:
 import matplotlib
 import numpy as np
 import pandas as pd
+
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
 
 from utils.calibration.quality_calibration import SUPPORTED_MODALITIES, load_percentile_calibration
 
