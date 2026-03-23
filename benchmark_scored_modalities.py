@@ -32,6 +32,20 @@ from utils.qaa.quality_estimation import (
     _build_token_quality_scores,
     _compute_batch_modality_quality_scores,
 )
+from utils.qaa.quality_scoring_qwen import compute_batch_modality_quality_scores_with_qwen
+
+MODALITY_FILENAME_TOKENS = {
+    "audio": "a",
+    "image": "i",
+    "text": "t",
+    "video": "v",
+}
+
+DEFAULT_QUALITY_CALIBRATION_PATHS = [
+    "ecdf_manifest/quality_percentile_calibration_1m_noise_audio.json",
+    "ecdf_manifest/quality_percentile_calibration_1m_noise_text.json",
+    "ecdf_manifest/quality_percentile_calibration_1m_noise_image.json",
+]
 
 
 def parse_args():
@@ -100,14 +114,30 @@ def parse_args():
         ),
     )
     parser.add_argument(
+        "--quality-calibration",
+        action="store_true",
+        help=(
+            "Enable frozen percentile calibration of modality quality scores. "
+            "When set, default calibration manifests are loaded automatically."
+        ),
+    )
+    parser.add_argument(
+        "--qwen-quality",
+        action="store_true",
+        help=(
+            "Use Qwen2.5-Omni to estimate modality quality scores in [0,1]. "
+            "Cannot be combined with --quality-calibration."
+        ),
+    )
+    parser.add_argument(
         "--quality-calibration-path",
         type=str,
         action="append",
         default=None,
         help=(
-            "Optional path(s) to frozen percentile calibration JSON files (built from external calibration data). "
-            "Can be provided multiple times or as a comma-separated list. "
-            "If provided, matching modality quality scores are mapped to percentiles before token-level weighting."
+            "Optional override path(s) to percentile calibration JSON files. "
+            "Can be provided multiple times or as comma-separated list. "
+            "When omitted and --quality-calibration is set, defaults are loaded from ecdf_manifest/."
         ),
     )
     parser.add_argument(
@@ -115,12 +145,22 @@ def parse_args():
         type=str,
         default=None,
         help=(
-            "Optional CSV path to store per-sample raw/calibrated modality quality scores. "
-            "Useful for calibration diagnostics and for building frozen calibration mappings."
+            "Optional override CSV path to store per-sample raw/calibrated modality quality scores. "
+            "If omitted, it is generated automatically from dataset/modality/noise/task."
         ),
     )
-    parser.add_argument("--out-path", type=str, default="out/prediction_noise.csv")
-    parser.add_argument("--out-error-path", type=str, default="out/error_prediction_noise.csv")
+    parser.add_argument(
+        "--out-path",
+        type=str,
+        default=None,
+        help="Optional override output CSV path for predictions. Auto-generated when omitted.",
+    )
+    parser.add_argument(
+        "--out-error-path",
+        type=str,
+        default=None,
+        help="Optional override output CSV path for error rows. Auto-generated when omitted.",
+    )
     return parser.parse_args()
 
 def append_csv_row(path: str, fieldnames: list[str], row: dict):
@@ -173,6 +213,38 @@ def _flatten_calibration_paths(raw_values: list[str] | None) -> list[str]:
             seen.add(path)
             flattened_paths.append(path)
     return flattened_paths
+
+
+def _modalities_to_path_token(modalities: set[str] | None) -> str:
+    if not modalities:
+        return ""
+    return "".join(MODALITY_FILENAME_TOKENS[modality] for modality in sorted(modalities))
+
+
+def _build_auto_output_paths(
+    dataset: str,
+    enabled_modalities: set[str],
+    noisy_modalities: set[str] | None,
+    quality_calibration_enabled: bool,
+    qwen_quality_enabled: bool,
+    meld_task: str | None,
+) -> tuple[str, str, str]:
+    modality_token = _modalities_to_path_token(enabled_modalities)
+    noisy_token = _modalities_to_path_token(noisy_modalities)
+
+    if qwen_quality_enabled:
+        base_dir = Path("qwen_scored") / dataset
+    elif quality_calibration_enabled:
+        base_dir = Path("out") / "calibration" / dataset
+    else:
+        base_dir = Path("scored") / dataset
+    if dataset == "meld" and meld_task:
+        base_dir = base_dir / meld_task
+
+    quality_score_path = base_dir / f"quality_scores_{modality_token}_noise_{noisy_token}.csv"
+    prediction_path = base_dir / f"prediction_{modality_token}_noise_{noisy_token}.csv"
+    error_path = base_dir / f"error_{modality_token}_noise_{noisy_token}.csv"
+    return str(quality_score_path), str(prediction_path), str(error_path)
 
 
 def _calibrate_scores_with_fallback(
@@ -299,6 +371,7 @@ def run_batch_generation(
     dtype,
     force_quality_scores_one=False,
     quality_calibrators=None,
+    qwen_quality=False,
 ):
     conversations = [entry["conversation"] for entry in entries]
     text_prompt = processor.apply_chat_template(conversations, add_generation_prompt=True, tokenize=False)
@@ -329,15 +402,25 @@ def run_batch_generation(
     inputs = processor(**proc_kwargs).to(device)
     inputs = cast_floats_to_dtype(inputs, dtype)
 
-    raw_modality_quality_scores = _compute_batch_modality_quality_scores(
-        entries=entries,
-        enabled_modalities=enabled_modalities,
-        model=model,
-        processor=processor,
-        device=device,
-        qwen_images=images,
-        qwen_videos=videos,
-    )
+    if qwen_quality:
+        raw_modality_quality_scores = compute_batch_modality_quality_scores_with_qwen(
+            entries=entries,
+            enabled_modalities=enabled_modalities,
+            model=model,
+            processor=processor,
+            device=device,
+            dtype=dtype,
+        )
+    else:
+        raw_modality_quality_scores = _compute_batch_modality_quality_scores(
+            entries=entries,
+            enabled_modalities=enabled_modalities,
+            model=model,
+            processor=processor,
+            device=device,
+            qwen_images=images,
+            qwen_videos=videos,
+        )
     if force_quality_scores_one:
         modality_quality_scores = [
             {modality: 1.0 for modality in sample_scores}
@@ -408,6 +491,8 @@ def main():
             "[WARN] --noise-severity was provided without --noisy-modalities; it has no effect.",
             flush=True,
         )
+    if args.qwen_quality and args.quality_calibration:
+        raise ValueError("--qwen-quality cannot be combined with --quality-calibration.")
 
     dataset = normalize_dataset_name(args.dataset)
     enabled_modalities = normalize_modalities(args.modalities)
@@ -426,6 +511,45 @@ def main():
 
     prompt = get_prompt_for_classification(dataset, meld_task)
 
+    calibration_paths = []
+    if args.quality_calibration:
+        calibration_paths = _flatten_calibration_paths(args.quality_calibration_path)
+        if not calibration_paths:
+            calibration_paths = list(DEFAULT_QUALITY_CALIBRATION_PATHS)
+    elif args.quality_calibration_path:
+        print(
+            "[WARN] Ignoring --quality-calibration-path because --quality-calibration is not enabled.",
+            flush=True,
+        )
+
+    missing_calibration_files = [
+        calibration_path for calibration_path in calibration_paths if not Path(calibration_path).exists()
+    ]
+    if missing_calibration_files:
+        raise FileNotFoundError(
+            "Calibration manifest file(s) not found: "
+            f"{missing_calibration_files}"
+        )
+
+    (
+        auto_quality_score_out_path,
+        auto_out_path,
+        auto_out_error_path,
+    ) = _build_auto_output_paths(
+        dataset=dataset,
+        enabled_modalities=enabled_modalities,
+        noisy_modalities=noisy_modalities,
+        quality_calibration_enabled=args.quality_calibration,
+        qwen_quality_enabled=args.qwen_quality,
+        meld_task=meld_task,
+    )
+    if args.quality_score_out_path is None:
+        args.quality_score_out_path = auto_quality_score_out_path
+    if args.out_path is None:
+        args.out_path = auto_out_path
+    if args.out_error_path is None:
+        args.out_error_path = auto_out_error_path
+
     print(f"[INFO] CWD: {os.getcwd()}", flush=True)
     print(f"[INFO] Dataset: {dataset}", flush=True)
     print(f"[INFO] Modalities enabled: {sorted(enabled_modalities)}", flush=True)
@@ -437,7 +561,8 @@ def main():
     print(f"[INFO] start_at_sample={args.start_at_sample}", flush=True)
     print(f"[INFO] stratified_samples={args.stratified_samples}", flush=True)
     print(f"[INFO] force_quality_scores_one={args.force_quality_scores_one}", flush=True)
-    calibration_paths = _flatten_calibration_paths(args.quality_calibration_path)
+    print(f"[INFO] quality_calibration_enabled={args.quality_calibration}", flush=True)
+    print(f"[INFO] qwen_quality={args.qwen_quality}", flush=True)
     print(f"[INFO] quality_calibration_paths={calibration_paths}", flush=True)
     print(f"[INFO] quality_score_out_path={args.quality_score_out_path}", flush=True)
     if label_column is not None:
@@ -449,7 +574,6 @@ def main():
     os.makedirs(os.path.dirname(args.out_error_path) or ".", exist_ok=True)
     if args.quality_score_out_path:
         os.makedirs(os.path.dirname(args.quality_score_out_path) or ".", exist_ok=True)
-    os.makedirs("out", exist_ok=True)
 
     quality_calibrators = None
     if calibration_paths:
@@ -612,6 +736,7 @@ def main():
                 dtype=dtype,
                 force_quality_scores_one=args.force_quality_scores_one,
                 quality_calibrators=quality_calibrators,
+                qwen_quality=args.qwen_quality,
             )
         except Exception:
             print(
@@ -630,6 +755,7 @@ def main():
                         dtype=dtype,
                         force_quality_scores_one=args.force_quality_scores_one,
                         quality_calibrators=quality_calibrators,
+                        qwen_quality=args.qwen_quality,
                     )
                     reply = replies[0]
                     append_csv_row(
