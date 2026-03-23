@@ -42,6 +42,7 @@ transformers = { git = "https://github.com/huggingface/transformers", tag = "v4.
 soundfile = "*"
 brisque = "*"
 opencv-python-headless = "*"
+torchlibrosa = "*"
 
 [target.osx-64]
 [target.osx-64.dependencies]
