@@ -11,3 +11,4 @@ analysis/quality_score_percentile_report/
 .DS_Store
 __pycache__/
 *.pyc
+out/
