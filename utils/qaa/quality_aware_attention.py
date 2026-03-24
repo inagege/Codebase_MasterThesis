@@ -109,11 +109,18 @@ def _quality_aware_forward(
         quality_scores = _align_quality_scores_to_kv_length(
             quality_scores,
             batch_size=bsz,
+            #kv_seq_len=key_states.shape[-2],
+            #device=key_states.device,
+            #dtype=key_states.dtype,
+
             kv_seq_len=value_states.shape[-2],
             device=value_states.device,
             dtype=value_states.dtype,
         )
-        # Per-key quality scaling injected into values before flash-attn aggregation.
+
+        # Per-key quality scaling on keys, i.e. before softmax in attention logits.
+        # key_states = key_states * quality_scores[:, None, :, None]
+        # Per-key quality scaling on values (after softmax weighting).
         value_states = value_states * quality_scores[:, None, :, None]
 
     # Reashape to the expected shape for Flash Attention.
