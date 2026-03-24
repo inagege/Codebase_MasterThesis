@@ -21,13 +21,13 @@ _SYSTEM_PROMPT = "You are a quality evaluator."
 
 _QUALITY_EVALUATION_TASK = (
     "Your task is to score how much usable information an input retains,\n"
-    "from 0 (no usable information) to 1 (perfect quality).\n\n"
+    "between 0 (no usable information) to 1 (perfect quality). Never score exactly 0 or 1.\n\n"
     "Guidelines:\n"
-    "- 1.0: Perfect, no errors, fully usable\n"
+    "- 0.9: Nearly perfect, almost no errors, fully usable\n"
     "- 0.75: Minor issues, still easy to use\n"
     "- 0.5: Noticeable degradation, but usable with effort\n"
     "- 0.25: Hard to use, partial information only\n"
-    "- 0.0: Unusable\n\n"
+    "- 0.1: Almost unusable\n\n"
     "Evaluate across these dimensions:\n"
     "- Legibility\n"
     "- Completeness\n"
@@ -36,13 +36,8 @@ _QUALITY_EVALUATION_TASK = (
     "Rules:\n"
     "- Use continuous values, not just fixed steps\n"
     "- Final score = average of the four dimensions\n"
-    "- Apply the SAME standards regardless of modality\n"
-    "- The task is: {task}\n"
-    "- Use task context only as a secondary reference\n"
-    "- Prioritize intrinsic quality (legibility/completeness/noise) over task-specific clues\n"
-    "- Do not heavily downscore clear, readable content only because task prediction is uncertain\n"
-    "- Use task context only as a light adjustment\n\n"
-    "Return only the final numeric score higher than 0 and lower than 1."
+    "- Apply the SAME standards regardless of modality\n\n"
+    "Return only the final numeric score between 0 and 1."
 )
 
 
@@ -75,29 +70,7 @@ def _cache_key_for_sample(modality: str, sample) -> str:
     return str(path_value) if path_value else ""
 
 
-def _extract_task_from_entry(entry) -> str:
-    conversation = entry.get("conversation") if isinstance(entry, dict) else None
-    if not isinstance(conversation, list):
-        return "unknown"
-
-    for message in conversation:
-        if not isinstance(message, dict) or message.get("role") != "system":
-            continue
-        content = message.get("content")
-        if not isinstance(content, list):
-            continue
-        for item in content:
-            if not isinstance(item, dict):
-                continue
-            text_value = item.get("text")
-            if isinstance(text_value, str) and text_value.strip():
-                return text_value.strip()
-    return "unknown"
-
-
-def _build_quality_conversation(modality: str, entry):
-    sample = entry.get("sample", {}) if isinstance(entry, dict) else {}
-    task = _extract_task_from_entry(entry)
+def _build_quality_conversation(modality: str, sample):
     user_content = []
 
     if modality == "text":
@@ -123,7 +96,7 @@ def _build_quality_conversation(modality: str, entry):
     else:
         raise ValueError(f"Unsupported modality for Qwen quality scoring: {modality}")
 
-    user_content.append({"type": "text", "text": _QUALITY_EVALUATION_TASK.replace("{task}", task)})
+    user_content.append({"type": "text", "text": _QUALITY_EVALUATION_TASK})
 
     return [
         {
@@ -239,7 +212,7 @@ def compute_batch_modality_quality_scores_with_qwen(
 
         for entry_idx, entry in enumerate(entries):
             sample = entry["sample"]
-            conversation = _build_quality_conversation(modality, entry)
+            conversation = _build_quality_conversation(modality, sample)
             if conversation is None:
                 continue
 
