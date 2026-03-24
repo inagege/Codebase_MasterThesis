@@ -17,29 +17,28 @@ _QWEN_MODALITY_CACHE: dict[str, dict[str, float]] = {
 
 _SCORE_PATTERN = re.compile(r"[-+]?(?:\d+\.\d*|\.\d+|\d+)(?:[eE][-+]?\d+)?")
 
-_SYSTEM_PROMPT = (
-    "You are an objective multimodal quality assessor. "
-    "Return only one number between 0 and 1 where 1 means best quality."
-)
+_SYSTEM_PROMPT = "You are a quality evaluator."
 
-_MODALITY_INSTRUCTION = {
-    "text": (
-        "Rate the quality of this text input from 0 to 1, where 1 is best quality. "
-        "Output only the numeric score."
-    ),
-    "audio": (
-        "Rate the perceptual quality of this audio from 0 to 1, where 1 is best quality. "
-        "Output only the numeric score."
-    ),
-    "image": (
-        "Rate the perceptual quality of this image from 0 to 1, where 1 is best quality. "
-        "Output only the numeric score."
-    ),
-    "video": (
-        "Rate the perceptual quality of this video from 0 to 1, where 1 is best quality. "
-        "Output only the numeric score."
-    ),
-}
+_QUALITY_EVALUATION_TASK = (
+    "Your task is to score how much usable information an input retains,\n"
+    "between 0 (no usable information) to 1 (perfect quality). Never score exactly 0 or 1.\n\n"
+    "Guidelines:\n"
+    "- 0.9: Nearly perfect, almost no errors, fully usable\n"
+    "- 0.75: Minor issues, still easy to use\n"
+    "- 0.5: Noticeable degradation, but usable with effort\n"
+    "- 0.25: Hard to use, partial information only\n"
+    "- 0.1: Almost unusable\n\n"
+    "Evaluate across these dimensions:\n"
+    "- Legibility\n"
+    "- Completeness\n"
+    "- Noise/Corruption\n"
+    "- Usefulness\n\n"
+    "Rules:\n"
+    "- Use continuous values, not just fixed steps\n"
+    "- Final score = average of the four dimensions\n"
+    "- Apply the SAME standards regardless of modality\n\n"
+    "Return only the final numeric score between 0 and 1."
+)
 
 
 def _cast_floats_to_dtype(batch, dtype: torch.dtype):
@@ -97,7 +96,7 @@ def _build_quality_conversation(modality: str, sample):
     else:
         raise ValueError(f"Unsupported modality for Qwen quality scoring: {modality}")
 
-    user_content.append({"type": "text", "text": _MODALITY_INSTRUCTION[modality]})
+    user_content.append({"type": "text", "text": _QUALITY_EVALUATION_TASK})
 
     return [
         {
