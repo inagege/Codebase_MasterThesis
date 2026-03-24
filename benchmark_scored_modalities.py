@@ -233,11 +233,11 @@ def _build_auto_output_paths(
     noisy_token = _modalities_to_path_token(noisy_modalities)
 
     if qwen_quality_enabled:
-        base_dir = Path("qwen_scored") / dataset
+        base_dir = Path("out") / "qwen_scored" / dataset
     elif quality_calibration_enabled:
         base_dir = Path("out") / "calibration" / dataset
     else:
-        base_dir = Path("scored") / dataset
+        base_dir = Path("out") / "scored" / dataset
     if dataset == "meld" and meld_task:
         base_dir = base_dir / meld_task
 
@@ -432,11 +432,29 @@ def run_batch_generation(
             quality_calibrators,
         )
 
+    text_token_ids_per_entry = None
+    if "text" in enabled_modalities:
+        text_token_ids_per_entry = []
+        for entry in entries:
+            dataset_text = (entry["sample"].get("text") or "").strip()
+            if not dataset_text:
+                text_token_ids_per_entry.append([])
+                continue
+            encoded = processor.tokenizer(
+                dataset_text,
+                add_special_tokens=False,
+                return_attention_mask=False,
+            )["input_ids"]
+            if encoded and isinstance(encoded[0], list):
+                encoded = encoded[0]
+            text_token_ids_per_entry.append([int(token_id) for token_id in encoded])
+
     token_quality_scores = _build_token_quality_scores(
         input_ids=inputs["input_ids"],
         attention_mask=inputs.get("attention_mask"),
         modality_scores_per_entry=modality_quality_scores,
         thinker_config=model.thinker.config,
+        text_token_ids_per_entry=text_token_ids_per_entry,
     )
 
     set_first_layer_quality_scores(model, token_quality_scores)
