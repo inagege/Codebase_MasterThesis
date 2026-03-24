@@ -109,17 +109,11 @@ def _quality_aware_forward(
         quality_scores = _align_quality_scores_to_kv_length(
             quality_scores,
             batch_size=bsz,
-            #kv_seq_len=key_states.shape[-2],
-            #device=key_states.device,
-            #dtype=key_states.dtype,
-
             kv_seq_len=value_states.shape[-2],
             device=value_states.device,
             dtype=value_states.dtype,
         )
 
-        # Per-key quality scaling on keys, i.e. before softmax in attention logits.
-        # key_states = key_states * quality_scores[:, None, :, None]
         # Per-key quality scaling on values (after softmax weighting).
         value_states = value_states * quality_scores[:, None, :, None]
 
@@ -148,6 +142,30 @@ def _quality_aware_forward(
         is_causal=self.is_causal,
         use_top_left_mask=getattr(self, "_flash_attn_uses_top_left_mask", False),
     )
+
+    if quality_scores is not None:
+        # Normalize p*q by dividing through sum(p*q), where p=softmax attention weights.
+        value_states.zero_()
+        value_states[..., 0] = quality_scores[:, :, None]
+        quality_denominator = qwen_omni_modeling._flash_attention_forward(
+            query_states,
+            key_states,
+            value_states,
+            attention_mask,
+            q_len,
+            dropout=0.0,
+            sliding_window=sliding_window,
+            is_causal=self.is_causal,
+            use_top_left_mask=getattr(self, "_flash_attn_uses_top_left_mask", False),
+        )[..., :1]
+
+        denominator_epsilon = torch.finfo(quality_denominator.dtype).tiny
+        quality_denominator = torch.where(
+            quality_denominator.abs() < denominator_epsilon,
+            torch.full_like(quality_denominator, denominator_epsilon),
+            quality_denominator,
+        )
+        attn_output = attn_output / quality_denominator
 
     attn_output = attn_output.reshape(bsz, q_len, -1).contiguous()
     attn_output = self.o_proj(attn_output)
