@@ -378,11 +378,31 @@ def _compute_batch_modality_quality_scores(
     return modality_scores_per_entry
 
 
-def _build_token_quality_scores(input_ids, attention_mask, modality_scores_per_entry, thinker_config):
+def _find_last_subsequence_start(sequence: list[int], subsequence: list[int]) -> int | None:
+    if not subsequence or len(subsequence) > len(sequence):
+        return None
+    target_len = len(subsequence)
+    for start in range(len(sequence) - target_len, -1, -1):
+        if sequence[start : start + target_len] == subsequence:
+            return start
+    return None
+
+
+def _build_token_quality_scores(
+    input_ids,
+    attention_mask,
+    modality_scores_per_entry,
+    thinker_config,
+    text_token_ids_per_entry=None,
+):
     batch_size, seq_len = input_ids.shape
     if batch_size != len(modality_scores_per_entry):
         raise ValueError(
             f"Quality-score batch mismatch: token batch={batch_size}, quality batch={len(modality_scores_per_entry)}"
+        )
+    if text_token_ids_per_entry is not None and batch_size != len(text_token_ids_per_entry):
+        raise ValueError(
+            f"Text-token batch mismatch: token batch={batch_size}, text-token batch={len(text_token_ids_per_entry)}"
         )
 
     quality_scores = torch.ones((batch_size, seq_len), dtype=torch.float32, device=input_ids.device)
@@ -393,8 +413,25 @@ def _build_token_quality_scores(input_ids, attention_mask, modality_scores_per_e
     }
 
     for row, sample_scores in enumerate(modality_scores_per_entry):
-        text_quality = float(sample_scores.get("text", 1.0))
-        quality_scores[row].fill_(text_quality)
+        if attention_mask is not None:
+            valid_positions = torch.nonzero(attention_mask[row], as_tuple=False).flatten()
+        else:
+            valid_positions = torch.arange(seq_len, device=input_ids.device)
+
+        if "text" in sample_scores and text_token_ids_per_entry is not None:
+            text_quality = float(sample_scores["text"])
+            text_token_ids = list(text_token_ids_per_entry[row] or [])
+            if text_token_ids:
+                valid_token_ids = input_ids[row, valid_positions].tolist()
+                start_idx = _find_last_subsequence_start(valid_token_ids, text_token_ids)
+                if start_idx is None and len(text_token_ids) > 1:
+                    # Fallback for tokenizer boundary effects at segment start.
+                    start_idx = _find_last_subsequence_start(valid_token_ids, text_token_ids[1:])
+                    if start_idx is not None:
+                        text_token_ids = text_token_ids[1:]
+                if start_idx is not None and text_token_ids:
+                    span = valid_positions[start_idx : start_idx + len(text_token_ids)]
+                    quality_scores[row, span] = text_quality
 
         if "audio" in sample_scores:
             audio_quality = float(sample_scores["audio"])
