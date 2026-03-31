@@ -21,6 +21,13 @@ from utils.benchmark_data_loading import (
 )
 from utils.parsing_util import extract_assistant_reply
 
+MODALITY_FILENAME_TOKENS = {
+    "audio": "a",
+    "image": "i",
+    "text": "t",
+    "video": "v",
+}
+
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -80,8 +87,18 @@ def parse_args():
         default=4,
         help="Number of samples per generation batch. Reduce if you hit CUDA OOM.",
     )
-    parser.add_argument("--out-path", type=str, default="out/prediction_noise.csv")
-    parser.add_argument("--out-error-path", type=str, default="out/error_prediction_noise.csv")
+    parser.add_argument(
+        "--out-path",
+        type=str,
+        default=None,
+        help="Optional override output CSV path for predictions. Auto-generated when omitted.",
+    )
+    parser.add_argument(
+        "--out-error-path",
+        type=str,
+        default=None,
+        help="Optional override output CSV path for error rows. Auto-generated when omitted.",
+    )
     return parser.parse_args()
 
 
@@ -92,6 +109,30 @@ def append_csv_row(path: str, fieldnames: list[str], row: dict):
         if write_header:
             writer.writeheader()
         writer.writerow(row)
+
+
+def _modalities_to_path_token(modalities: set[str] | None) -> str:
+    if not modalities:
+        return ""
+    return "".join(MODALITY_FILENAME_TOKENS[modality] for modality in sorted(modalities))
+
+
+def _build_auto_output_paths(
+    dataset: str,
+    enabled_modalities: set[str],
+    noisy_modalities: set[str] | None,
+    meld_task: str | None,
+) -> tuple[str, str]:
+    modality_token = _modalities_to_path_token(enabled_modalities)
+    noisy_token = _modalities_to_path_token(noisy_modalities)
+
+    base_dir = Path("out") / dataset
+    if dataset == "meld" and meld_task:
+        base_dir = base_dir / meld_task
+
+    prediction_path = base_dir / f"prediction_{modality_token}_noise_{noisy_token}.csv"
+    error_path = base_dir / f"error_{modality_token}_noise_{noisy_token}.csv"
+    return str(prediction_path), str(error_path)
 
 
 def cast_floats_to_dtype(batch, dtype: torch.dtype):
@@ -273,6 +314,17 @@ def main():
         label_column = "nationality_wiki"
 
     prompt = get_prompt_for_classification(dataset, meld_task)
+
+    auto_out_path, auto_out_error_path = _build_auto_output_paths(
+        dataset=dataset,
+        enabled_modalities=enabled_modalities,
+        noisy_modalities=noisy_modalities,
+        meld_task=meld_task,
+    )
+    if args.out_path is None:
+        args.out_path = auto_out_path
+    if args.out_error_path is None:
+        args.out_error_path = auto_out_error_path
 
     print(f"[INFO] CWD: {os.getcwd()}", flush=True)
     print(f"[INFO] Dataset: {dataset}", flush=True)
