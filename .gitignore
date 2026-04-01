@@ -12,5 +12,3 @@ analysis/quality_score_percentile_report/
 __pycache__/
 *.pyc
 out/
-/out/
-*.csv
