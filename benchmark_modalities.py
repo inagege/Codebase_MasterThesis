@@ -1,6 +1,7 @@
 import argparse
 import csv
 import os
+import re
 import traceback
 from pathlib import Path
 
@@ -27,6 +28,7 @@ MODALITY_FILENAME_TOKENS = {
     "text": "t",
     "video": "v",
 }
+DEFAULT_QWEN_MODEL_ID = "Qwen/Qwen2.5-Omni-7B"
 
 
 def parse_args():
@@ -88,6 +90,12 @@ def parse_args():
         help="Number of samples per generation batch. Reduce if you hit CUDA OOM.",
     )
     parser.add_argument(
+        "--qwen-model-id",
+        type=str,
+        default=DEFAULT_QWEN_MODEL_ID,
+        help="Hugging Face model ID for Qwen2.5-Omni generation.",
+    )
+    parser.add_argument(
         "--out-path",
         type=str,
         default=None,
@@ -117,16 +125,31 @@ def _modalities_to_path_token(modalities: set[str] | None) -> str:
     return "".join(MODALITY_FILENAME_TOKENS[modality] for modality in sorted(modalities))
 
 
+def _model_id_to_path_token(model_id: str) -> str:
+    normalized_model_id = model_id.strip().lower()
+
+    # Preferred concise token for Qwen2.5-Omni checkpoints, e.g. Qwen_7B / Qwen_3B.
+    size_match = re.search(r"qwen2(?:\.5)?-omni-(\d+(?:\.\d+)?)b", normalized_model_id)
+    if size_match:
+        size_token = size_match.group(1).replace(".", "p")
+        return f"Qwen_{size_token}B"
+
+    # Fallback for other model IDs: keep path-safe token and avoid dots.
+    return re.sub(r"[^A-Za-z0-9_-]+", "_", model_id.strip()) or "unknown_model"
+
+
 def _build_auto_output_paths(
     dataset: str,
     enabled_modalities: set[str],
     noisy_modalities: set[str] | None,
     meld_task: str | None,
+    qwen_model_id: str,
 ) -> tuple[str, str]:
     modality_token = _modalities_to_path_token(enabled_modalities)
     noisy_token = _modalities_to_path_token(noisy_modalities)
+    model_token = _model_id_to_path_token(qwen_model_id)
 
-    base_dir = Path("out") / dataset
+    base_dir = Path("out") / model_token / dataset
     if dataset == "meld" and meld_task:
         base_dir = base_dir / meld_task
 
@@ -297,6 +320,9 @@ def main():
             "[WARN] --noise-severity was provided without --noisy-modalities; it has no effect.",
             flush=True,
         )
+    if not args.qwen_model_id or not args.qwen_model_id.strip():
+        raise ValueError("--qwen-model-id must be a non-empty string.")
+    args.qwen_model_id = args.qwen_model_id.strip()
 
     dataset = normalize_dataset_name(args.dataset)
     enabled_modalities = normalize_modalities(args.modalities)
@@ -320,6 +346,7 @@ def main():
         enabled_modalities=enabled_modalities,
         noisy_modalities=noisy_modalities,
         meld_task=meld_task,
+        qwen_model_id=args.qwen_model_id,
     )
     if args.out_path is None:
         args.out_path = auto_out_path
@@ -334,6 +361,7 @@ def main():
     print(f"[INFO] Split: {args.split}", flush=True)
     print(f"[INFO] audio_subdir={args.audio_subdir}", flush=True)
     print(f"[INFO] batch_size={args.batch_size}", flush=True)
+    print(f"[INFO] qwen_model_id={args.qwen_model_id}", flush=True)
     print(f"[INFO] start_at_sample={args.start_at_sample}", flush=True)
     print(f"[INFO] stratified_samples={args.stratified_samples}", flush=True)
     print(f"[INFO] total_samples={args.total_samples}", flush=True)
@@ -403,14 +431,14 @@ def main():
 
     print("[INFO] Loading model...", flush=True)
     model = Qwen2_5OmniForConditionalGeneration.from_pretrained(
-        "Qwen/Qwen2.5-Omni-7B",
+        args.qwen_model_id,
         torch_dtype=torch.bfloat16,
         device_map="auto",
         attn_implementation="flash_attention_2",
         enable_audio_output=False,
     )
     model.disable_talker()
-    processor = Qwen2_5OmniProcessor.from_pretrained("Qwen/Qwen2.5-Omni-7B")
+    processor = Qwen2_5OmniProcessor.from_pretrained(args.qwen_model_id)
     print("[INFO] Model loaded.", flush=True)
 
     device = next(model.parameters()).device

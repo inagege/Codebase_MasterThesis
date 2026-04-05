@@ -1,6 +1,7 @@
 import argparse
 import csv
 import os
+import re
 import traceback
 from pathlib import Path
 
@@ -46,6 +47,7 @@ DEFAULT_QUALITY_CALIBRATION_PATHS = [
     "ecdf_manifest/quality_percentile_calibration_1m_noise_text.json",
     "ecdf_manifest/quality_percentile_calibration_1m_noise_image.json",
 ]
+DEFAULT_QWEN_MODEL_ID = "Qwen/Qwen2.5-Omni-7B"
 
 
 def parse_args():
@@ -127,6 +129,15 @@ def parse_args():
         help=(
             "Use Qwen2.5-Omni to estimate modality quality scores in [0,1]. "
             "Cannot be combined with --quality-calibration."
+        ),
+    )
+    parser.add_argument(
+        "--qwen-model-id",
+        type=str,
+        default=DEFAULT_QWEN_MODEL_ID,
+        help=(
+            "Hugging Face model ID for Qwen2.5-Omni (used for generation and, with --qwen-quality, "
+            "for modality quality scoring)."
         ),
     )
     parser.add_argument(
@@ -221,6 +232,19 @@ def _modalities_to_path_token(modalities: set[str] | None) -> str:
     return "".join(MODALITY_FILENAME_TOKENS[modality] for modality in sorted(modalities))
 
 
+def _model_id_to_path_token(model_id: str) -> str:
+    normalized_model_id = model_id.strip().lower()
+
+    # Preferred concise token for Qwen2.5-Omni checkpoints, e.g. Qwen_7B / Qwen_3B.
+    size_match = re.search(r"qwen2(?:\.5)?-omni-(\d+(?:\.\d+)?)b", normalized_model_id)
+    if size_match:
+        size_token = size_match.group(1).replace(".", "p")
+        return f"Qwen_{size_token}B"
+
+    # Fallback for other model IDs: keep path-safe token and avoid dots.
+    return re.sub(r"[^A-Za-z0-9_-]+", "_", model_id.strip()) or "unknown_model"
+
+
 def _build_auto_output_paths(
     dataset: str,
     enabled_modalities: set[str],
@@ -228,16 +252,18 @@ def _build_auto_output_paths(
     quality_calibration_enabled: bool,
     qwen_quality_enabled: bool,
     meld_task: str | None,
+    qwen_model_id: str,
 ) -> tuple[str, str, str]:
     modality_token = _modalities_to_path_token(enabled_modalities)
     noisy_token = _modalities_to_path_token(noisy_modalities)
+    model_token = _model_id_to_path_token(qwen_model_id)
 
     if qwen_quality_enabled:
-        base_dir = Path("out") / "qwen_scored" / dataset
+        base_dir = Path("out") / "qwen_scored" / model_token / dataset
     elif quality_calibration_enabled:
-        base_dir = Path("out") / "calibration" / dataset
+        base_dir = Path("out") / "calibration" / model_token / dataset
     else:
-        base_dir = Path("out") / "scored" / dataset
+        base_dir = Path("out") / "scored" / model_token / dataset
     if dataset == "meld" and meld_task:
         base_dir = base_dir / meld_task
 
@@ -511,6 +537,9 @@ def main():
         )
     if args.qwen_quality and args.quality_calibration:
         raise ValueError("--qwen-quality cannot be combined with --quality-calibration.")
+    if not args.qwen_model_id or not args.qwen_model_id.strip():
+        raise ValueError("--qwen-model-id must be a non-empty string.")
+    args.qwen_model_id = args.qwen_model_id.strip()
 
     dataset = normalize_dataset_name(args.dataset)
     enabled_modalities = normalize_modalities(args.modalities)
@@ -560,6 +589,7 @@ def main():
         quality_calibration_enabled=args.quality_calibration,
         qwen_quality_enabled=args.qwen_quality,
         meld_task=meld_task,
+        qwen_model_id=args.qwen_model_id,
     )
     if args.quality_score_out_path is None:
         args.quality_score_out_path = auto_quality_score_out_path
@@ -581,6 +611,7 @@ def main():
     print(f"[INFO] force_quality_scores_one={args.force_quality_scores_one}", flush=True)
     print(f"[INFO] quality_calibration_enabled={args.quality_calibration}", flush=True)
     print(f"[INFO] qwen_quality={args.qwen_quality}", flush=True)
+    print(f"[INFO] qwen_model_id={args.qwen_model_id}", flush=True)
     print(f"[INFO] quality_calibration_paths={calibration_paths}", flush=True)
     print(f"[INFO] quality_score_out_path={args.quality_score_out_path}", flush=True)
     if label_column is not None:
@@ -688,7 +719,7 @@ def main():
 
     print("[INFO] Loading model...", flush=True)
     model = Qwen2_5OmniForConditionalGeneration.from_pretrained(
-        "Qwen/Qwen2.5-Omni-7B",
+        args.qwen_model_id,
         torch_dtype=torch.bfloat16,
         device_map="auto",
         attn_implementation="flash_attention_2",
@@ -696,7 +727,7 @@ def main():
     )
     model.disable_talker()
     install_quality_aware_first_attention_patch(model)
-    processor = Qwen2_5OmniProcessor.from_pretrained("Qwen/Qwen2.5-Omni-7B")
+    processor = Qwen2_5OmniProcessor.from_pretrained(args.qwen_model_id)
     print("[INFO] Model loaded.", flush=True)
     print("[INFO] Quality-aware first attention layer patch enabled.", flush=True)
     if args.force_quality_scores_one:
