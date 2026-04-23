@@ -28,6 +28,8 @@ from utils.calibration.quality_calibration import (
     load_percentile_calibration,
 )
 from utils.qaa.quality_aware_attention import (
+    QAA_NORMALIZATION_EXCLUDE_UNSCALED,
+    QAA_NORMALIZATION_GLOBAL,
     install_quality_aware_first_attention_patch,
     set_first_layer_quality_scores,
 )
@@ -154,6 +156,18 @@ def parse_args():
         help=(
             "Hugging Face model ID for Qwen2.5-Omni (used for generation and, with --qwen-quality, "
             "for modality quality scoring)."
+        ),
+    )
+    parser.add_argument(
+        "--qaa-normalization-mode",
+        type=str,
+        choices=(QAA_NORMALIZATION_GLOBAL, QAA_NORMALIZATION_EXCLUDE_UNSCALED),
+        default=QAA_NORMALIZATION_GLOBAL,
+        help=(
+            "Quality-aware normalization mode in first-layer attention. "
+            "'global' keeps the original p*q/sum(p*q) behavior across all tokens. "
+            "'exclude_unscaled' only renormalizes tokens that were marked as quality-scaled "
+            "(for example modality spans), and keeps the attention mass on unscaled tokens unchanged."
         ),
     )
     parser.add_argument(
@@ -482,6 +496,7 @@ def run_batch_generation(
     qwen_quality=False,
     quality_placebo_random=False,
     quality_placebo_random_seed=0,
+    qaa_normalization_mode=QAA_NORMALIZATION_GLOBAL,
 ):
     conversations = [entry["conversation"] for entry in entries]
     text_prompt = processor.apply_chat_template(conversations, add_generation_prompt=True, tokenize=False)
@@ -580,15 +595,21 @@ def run_batch_generation(
                 encoded = encoded[0]
             text_token_ids_per_entry.append([int(token_id) for token_id in encoded])
 
-    token_quality_scores = _build_token_quality_scores(
+    token_quality_scores, scaled_token_mask = _build_token_quality_scores(
         input_ids=inputs["input_ids"],
         attention_mask=inputs.get("attention_mask"),
         modality_scores_per_entry=modality_quality_scores,
         thinker_config=model.thinker.config,
         text_token_ids_per_entry=text_token_ids_per_entry,
+        return_scaled_token_mask=True,
     )
 
-    set_first_layer_quality_scores(model, token_quality_scores)
+    set_first_layer_quality_scores(
+        model,
+        token_quality_scores,
+        quality_scaled_token_mask=scaled_token_mask,
+        quality_normalization_mode=qaa_normalization_mode,
+    )
     try:
         gen_output = model.generate(
             **inputs,
@@ -731,6 +752,7 @@ def main():
     print(f"[INFO] quality_placebo_random={args.quality_placebo_random}", flush=True)
     print(f"[INFO] quality_placebo_random_seed={args.quality_placebo_random_seed}", flush=True)
     print(f"[INFO] quality_calibration_enabled={args.quality_calibration}", flush=True)
+    print(f"[INFO] qaa_normalization_mode={args.qaa_normalization_mode}", flush=True)
     print(f"[INFO] qwen_quality={args.qwen_quality}", flush=True)
     print(f"[INFO] qwen_model_id={args.qwen_model_id}", flush=True)
     print(f"[INFO] quality_calibration_paths={calibration_paths}", flush=True)
@@ -915,6 +937,7 @@ def main():
                 qwen_quality=args.qwen_quality,
                 quality_placebo_random=args.quality_placebo_random,
                 quality_placebo_random_seed=args.quality_placebo_random_seed,
+                qaa_normalization_mode=args.qaa_normalization_mode,
             )
         except Exception:
             print(
@@ -936,6 +959,7 @@ def main():
                         qwen_quality=args.qwen_quality,
                         quality_placebo_random=args.quality_placebo_random,
                         quality_placebo_random_seed=args.quality_placebo_random_seed,
+                        qaa_normalization_mode=args.qaa_normalization_mode,
                     )
                     reply = replies[0]
                     append_csv_row(

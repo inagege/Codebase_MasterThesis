@@ -394,6 +394,7 @@ def _build_token_quality_scores(
     modality_scores_per_entry,
     thinker_config,
     text_token_ids_per_entry=None,
+    return_scaled_token_mask: bool = False,
 ):
     batch_size, seq_len = input_ids.shape
     if batch_size != len(modality_scores_per_entry):
@@ -406,11 +407,9 @@ def _build_token_quality_scores(
         )
 
     quality_scores = torch.ones((batch_size, seq_len), dtype=torch.float32, device=input_ids.device)
-    audio_marker_token_ids = {
-        thinker_config.audio_token_index,
-        thinker_config.audio_start_token_id,
-        thinker_config.audio_end_token_id,
-    }
+    scaled_token_mask = torch.zeros((batch_size, seq_len), dtype=torch.bool, device=input_ids.device)
+    # Keep structural boundary tokens (audio start/end) unscaled; only scale audio payload markers.
+    audio_scaled_token_ids = {thinker_config.audio_token_index}
 
     for row, sample_scores in enumerate(modality_scores_per_entry):
         if attention_mask is not None:
@@ -432,17 +431,27 @@ def _build_token_quality_scores(
                 if start_idx is not None and text_token_ids:
                     span = valid_positions[start_idx : start_idx + len(text_token_ids)]
                     quality_scores[row, span] = text_quality
+                    scaled_token_mask[row, span] = True
 
         if "audio" in sample_scores:
             audio_quality = float(sample_scores["audio"])
-            for token_id in audio_marker_token_ids:
-                quality_scores[row][input_ids[row] == token_id] = audio_quality
+            for token_id in audio_scaled_token_ids:
+                audio_token_mask = input_ids[row] == token_id
+                quality_scores[row][audio_token_mask] = audio_quality
+                scaled_token_mask[row][audio_token_mask] = True
         if "image" in sample_scores:
-            quality_scores[row][input_ids[row] == thinker_config.image_token_index] = float(sample_scores["image"])
+            image_token_mask = input_ids[row] == thinker_config.image_token_index
+            quality_scores[row][image_token_mask] = float(sample_scores["image"])
+            scaled_token_mask[row][image_token_mask] = True
         if "video" in sample_scores:
-            quality_scores[row][input_ids[row] == thinker_config.video_token_index] = float(sample_scores["video"])
+            video_token_mask = input_ids[row] == thinker_config.video_token_index
+            quality_scores[row][video_token_mask] = float(sample_scores["video"])
+            scaled_token_mask[row][video_token_mask] = True
 
         if attention_mask is not None:
             quality_scores[row][attention_mask[row] == 0] = 1.0
+            scaled_token_mask[row][attention_mask[row] == 0] = False
 
+    if return_scaled_token_mask:
+        return quality_scores, scaled_token_mask
     return quality_scores
