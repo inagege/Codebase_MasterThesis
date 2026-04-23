@@ -1,6 +1,8 @@
 import argparse
 import csv
+import hashlib
 import os
+import random
 import re
 import traceback
 from pathlib import Path
@@ -114,6 +116,20 @@ def parse_args():
             "Run the normal scored-modalities path, but override all computed modality quality scores to 1.0 "
             "before token-level quality weighting."
         ),
+    )
+    parser.add_argument(
+        "--quality-placebo-random",
+        action="store_true",
+        help=(
+            "Enable placebo/sham baseline for quality-aware attention by replacing modality quality scores "
+            "with deterministic per-sample/per-modality pseudo-random values in (0,1)."
+        ),
+    )
+    parser.add_argument(
+        "--quality-placebo-random-seed",
+        type=int,
+        default=0,
+        help="Seed used for deterministic pseudo-random scores when --quality-placebo-random is enabled.",
     )
     parser.add_argument(
         "--quality-calibration",
@@ -245,20 +261,37 @@ def _model_id_to_path_token(model_id: str) -> str:
     return re.sub(r"[^A-Za-z0-9_-]+", "_", model_id.strip()) or "unknown_model"
 
 
+def _placebo_path_suffix(
+    quality_placebo_random: bool,
+    quality_placebo_random_seed: int,
+) -> str:
+    if not quality_placebo_random:
+        return ""
+    return f"_placebo_rand_seed_{quality_placebo_random_seed}"
+
+
 def _build_auto_output_paths(
     dataset: str,
     enabled_modalities: set[str],
     noisy_modalities: set[str] | None,
     quality_calibration_enabled: bool,
     qwen_quality_enabled: bool,
+    quality_placebo_random: bool,
+    quality_placebo_random_seed: int,
     meld_task: str | None,
     qwen_model_id: str,
 ) -> tuple[str, str, str]:
     modality_token = _modalities_to_path_token(enabled_modalities)
     noisy_token = _modalities_to_path_token(noisy_modalities)
     model_token = _model_id_to_path_token(qwen_model_id)
+    placebo_suffix = _placebo_path_suffix(
+        quality_placebo_random=quality_placebo_random,
+        quality_placebo_random_seed=quality_placebo_random_seed,
+    )
 
-    if qwen_quality_enabled:
+    if quality_placebo_random:
+        base_dir = Path("out") / "placebo" / "random" / model_token / dataset
+    elif qwen_quality_enabled:
         base_dir = Path("out") / "qwen_scored" / model_token / dataset
     elif quality_calibration_enabled:
         base_dir = Path("out") / "calibration" / model_token / dataset
@@ -267,9 +300,9 @@ def _build_auto_output_paths(
     if dataset == "meld" and meld_task:
         base_dir = base_dir / meld_task
 
-    quality_score_path = base_dir / f"quality_scores_{modality_token}_noise_{noisy_token}.csv"
-    prediction_path = base_dir / f"prediction_{modality_token}_noise_{noisy_token}.csv"
-    error_path = base_dir / f"error_{modality_token}_noise_{noisy_token}.csv"
+    quality_score_path = base_dir / f"quality_scores_{modality_token}_noise_{noisy_token}{placebo_suffix}.csv"
+    prediction_path = base_dir / f"prediction_{modality_token}_noise_{noisy_token}{placebo_suffix}.csv"
+    error_path = base_dir / f"error_{modality_token}_noise_{noisy_token}{placebo_suffix}.csv"
     return str(quality_score_path), str(prediction_path), str(error_path)
 
 
@@ -290,6 +323,55 @@ def _calibrate_scores_with_fallback(
             )
         calibrated_scores_per_entry.append(calibrated_sample_scores)
     return calibrated_scores_per_entry
+
+
+def _deterministic_unit_interval_score(
+    *,
+    random_seed: int,
+    split: str,
+    sample_id,
+    file_name: str,
+    modality: str,
+) -> float:
+    seed_payload = f"{random_seed}|{split}|{sample_id}|{file_name}|{modality}".encode("utf-8")
+    digest = hashlib.sha256(seed_payload).digest()
+    derived_seed = int.from_bytes(digest[:8], byteorder="big", signed=False)
+    rng = random.Random(derived_seed)
+    sampled_int = rng.randint(1, 999_999)
+    return sampled_int / 1_000_000.0
+
+
+def _build_placebo_modality_scores(
+    *,
+    entries,
+    modality_scores_per_entry: list[dict[str, float]],
+    quality_placebo_random: bool,
+    quality_placebo_random_seed: int,
+) -> list[dict[str, float]]:
+    if not quality_placebo_random:
+        return [{modality: score for modality, score in sample_scores.items()} for sample_scores in modality_scores_per_entry]
+
+    if len(entries) != len(modality_scores_per_entry):
+        raise ValueError(
+            "Placebo score batch mismatch: "
+            f"entries={len(entries)}, scores={len(modality_scores_per_entry)}"
+        )
+    placebo_scores = []
+    for entry, sample_scores in zip(entries, modality_scores_per_entry):
+        sample = entry["sample"]
+        placebo_scores.append(
+            {
+                modality: _deterministic_unit_interval_score(
+                    random_seed=quality_placebo_random_seed,
+                    split=str(sample.get("split", "")),
+                    sample_id=sample.get("sample_id", ""),
+                    file_name=str(sample.get("file", "")),
+                    modality=modality,
+                )
+                for modality in sample_scores
+            }
+        )
+    return placebo_scores
 
 
 def cast_floats_to_dtype(batch, dtype: torch.dtype):
@@ -398,6 +480,8 @@ def run_batch_generation(
     force_quality_scores_one=False,
     quality_calibrators=None,
     qwen_quality=False,
+    quality_placebo_random=False,
+    quality_placebo_random_seed=0,
 ):
     conversations = [entry["conversation"] for entry in entries]
     text_prompt = processor.apply_chat_template(conversations, add_generation_prompt=True, tokenize=False)
@@ -428,35 +512,56 @@ def run_batch_generation(
     inputs = processor(**proc_kwargs).to(device)
     inputs = cast_floats_to_dtype(inputs, dtype)
 
-    if qwen_quality:
-        raw_modality_quality_scores = compute_batch_modality_quality_scores_with_qwen(
+    if quality_placebo_random:
+        placeholder_scores = [
+            {modality: 1.0 for modality in enabled_modalities}
+            for _ in entries
+        ]
+        placebo_scores = _build_placebo_modality_scores(
             entries=entries,
-            enabled_modalities=enabled_modalities,
-            model=model,
-            processor=processor,
-            device=device,
-            dtype=dtype,
+            modality_scores_per_entry=placeholder_scores,
+            quality_placebo_random=True,
+            quality_placebo_random_seed=quality_placebo_random_seed,
         )
-    else:
-        raw_modality_quality_scores = _compute_batch_modality_quality_scores(
-            entries=entries,
-            enabled_modalities=enabled_modalities,
-            model=model,
-            processor=processor,
-            device=device,
-            qwen_images=images,
-            qwen_videos=videos,
-        )
-    if force_quality_scores_one:
+        # In placebo mode, the placebo itself is both the recorded "raw" and effective score.
+        raw_modality_quality_scores = [
+            {modality: score for modality, score in sample_scores.items()}
+            for sample_scores in placebo_scores
+        ]
         modality_quality_scores = [
-            {modality: 1.0 for modality in sample_scores}
-            for sample_scores in raw_modality_quality_scores
+            {modality: score for modality, score in sample_scores.items()}
+            for sample_scores in placebo_scores
         ]
     else:
-        modality_quality_scores = _calibrate_scores_with_fallback(
-            raw_modality_quality_scores,
-            quality_calibrators,
-        )
+        if qwen_quality:
+            raw_modality_quality_scores = compute_batch_modality_quality_scores_with_qwen(
+                entries=entries,
+                enabled_modalities=enabled_modalities,
+                model=model,
+                processor=processor,
+                device=device,
+                dtype=dtype,
+            )
+        else:
+            raw_modality_quality_scores = _compute_batch_modality_quality_scores(
+                entries=entries,
+                enabled_modalities=enabled_modalities,
+                model=model,
+                processor=processor,
+                device=device,
+                qwen_images=images,
+                qwen_videos=videos,
+            )
+        if force_quality_scores_one:
+            modality_quality_scores = [
+                {modality: 1.0 for modality in sample_scores}
+                for sample_scores in raw_modality_quality_scores
+            ]
+        else:
+            modality_quality_scores = _calibrate_scores_with_fallback(
+                raw_modality_quality_scores,
+                quality_calibrators,
+            )
 
     text_token_ids_per_entry = None
     if "text" in enabled_modalities:
@@ -535,8 +640,20 @@ def main():
             "[WARN] --noise-severity was provided without --noisy-modalities; it has no effect.",
             flush=True,
         )
+    if args.force_quality_scores_one and args.quality_placebo_random:
+        raise ValueError("--force-quality-scores-one cannot be combined with --quality-placebo-random.")
     if args.qwen_quality and args.quality_calibration:
         raise ValueError("--qwen-quality cannot be combined with --quality-calibration.")
+    if args.quality_placebo_random and args.qwen_quality:
+        print(
+            "[WARN] --qwen-quality is enabled, but placebo mode bypasses Qwen quality estimation.",
+            flush=True,
+        )
+    if args.quality_placebo_random and args.quality_calibration:
+        print(
+            "[WARN] --quality-calibration is enabled, but placebo mode bypasses calibration and uses placebo scores.",
+            flush=True,
+        )
     if not args.qwen_model_id or not args.qwen_model_id.strip():
         raise ValueError("--qwen-model-id must be a non-empty string.")
     args.qwen_model_id = args.qwen_model_id.strip()
@@ -588,6 +705,8 @@ def main():
         noisy_modalities=noisy_modalities,
         quality_calibration_enabled=args.quality_calibration,
         qwen_quality_enabled=args.qwen_quality,
+        quality_placebo_random=args.quality_placebo_random,
+        quality_placebo_random_seed=args.quality_placebo_random_seed,
         meld_task=meld_task,
         qwen_model_id=args.qwen_model_id,
     )
@@ -609,6 +728,8 @@ def main():
     print(f"[INFO] start_at_sample={args.start_at_sample}", flush=True)
     print(f"[INFO] stratified_samples={args.stratified_samples}", flush=True)
     print(f"[INFO] force_quality_scores_one={args.force_quality_scores_one}", flush=True)
+    print(f"[INFO] quality_placebo_random={args.quality_placebo_random}", flush=True)
+    print(f"[INFO] quality_placebo_random_seed={args.quality_placebo_random_seed}", flush=True)
     print(f"[INFO] quality_calibration_enabled={args.quality_calibration}", flush=True)
     print(f"[INFO] qwen_quality={args.qwen_quality}", flush=True)
     print(f"[INFO] qwen_model_id={args.qwen_model_id}", flush=True)
@@ -732,6 +853,12 @@ def main():
     print("[INFO] Quality-aware first attention layer patch enabled.", flush=True)
     if args.force_quality_scores_one:
         print("[INFO] Overriding computed modality quality scores to 1.0 for this run.", flush=True)
+    elif args.quality_placebo_random:
+        print(
+            "[INFO] Placebo mode active: overriding modality quality scores with deterministic pseudo-random values "
+            f"(seed={args.quality_placebo_random_seed}).",
+            flush=True,
+        )
 
     device = next(model.parameters()).device
     dtype = next(model.parameters()).dtype
@@ -786,6 +913,8 @@ def main():
                 force_quality_scores_one=args.force_quality_scores_one,
                 quality_calibrators=quality_calibrators,
                 qwen_quality=args.qwen_quality,
+                quality_placebo_random=args.quality_placebo_random,
+                quality_placebo_random_seed=args.quality_placebo_random_seed,
             )
         except Exception:
             print(
@@ -805,6 +934,8 @@ def main():
                         force_quality_scores_one=args.force_quality_scores_one,
                         quality_calibrators=quality_calibrators,
                         qwen_quality=args.qwen_quality,
+                        quality_placebo_random=args.quality_placebo_random,
+                        quality_placebo_random_seed=args.quality_placebo_random_seed,
                     )
                     reply = replies[0]
                     append_csv_row(
