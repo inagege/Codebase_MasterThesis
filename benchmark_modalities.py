@@ -79,7 +79,7 @@ def parse_args():
         "--stratified-samples",
         type=int,
         default=None,
-        help="Non-MELD only: deterministically select this many samples, stratified by label.",
+        help="Deterministically select this many samples, stratified by label.",
     )
     parser.add_argument("--total-samples", type=int, default=None, help="Limit total files across all splits")
     parser.add_argument("--audio-subdir", type=str, default="audio_only", help="Subdir for WAV files")
@@ -376,50 +376,44 @@ def main():
 
     samples = load_samples(dataset, args, enabled_modalities, noisy_modalities, label_column)
     if args.stratified_samples is not None:
-        if dataset == "meld":
-            print(
-                "[INFO] Ignoring --stratified-samples for MELD (explicit train/val/test splits are already defined).",
-                flush=True,
-            )
-        else:
-            if noisy_modalities is None:
-                before_count = len(samples)
-                if args.stratified_samples >= before_count:
-                    print(
-                        "[INFO] --stratified-samples is >= available samples; selecting all samples.",
-                        flush=True,
-                    )
-                else:
-                    samples = select_stratified_samples(samples, args.stratified_samples)
-                    print(
-                        f"[INFO] Applied deterministic stratified sampling: {before_count} -> {len(samples)} samples",
-                        flush=True,
-                    )
-            else:
-                base_samples = load_samples(dataset, args, enabled_modalities, None, label_column)
-                base_before_count = len(base_samples)
-                if args.stratified_samples >= base_before_count:
-                    selected_base_samples = base_samples
-                    print(
-                        "[INFO] --stratified-samples is >= available unmodified samples; selecting all base samples.",
-                        flush=True,
-                    )
-                else:
-                    selected_base_samples = select_stratified_samples(base_samples, args.stratified_samples)
-                    print(
-                        "[INFO] Applied deterministic stratified sampling on unmodified data: "
-                        f"{base_before_count} -> {len(selected_base_samples)} base samples",
-                        flush=True,
-                    )
-
-                selected_base_ids = {sample.get("sample_id") for sample in selected_base_samples}
-                noisy_before_count = len(samples)
-                samples = filter_samples_by_sample_id(samples, selected_base_ids)
+        if noisy_modalities is None:
+            before_count = len(samples)
+            if args.stratified_samples >= before_count:
                 print(
-                    "[INFO] Expanded selected base samples across noisy variants: "
-                    f"{noisy_before_count} -> {len(samples)} noisy samples",
+                    "[INFO] --stratified-samples is >= available samples; selecting all samples.",
                     flush=True,
                 )
+            else:
+                samples = select_stratified_samples(samples, args.stratified_samples)
+                print(
+                    f"[INFO] Applied deterministic stratified sampling: {before_count} -> {len(samples)} samples",
+                    flush=True,
+                )
+        else:
+            base_samples = load_samples(dataset, args, enabled_modalities, None, label_column)
+            base_before_count = len(base_samples)
+            if args.stratified_samples >= base_before_count:
+                selected_base_samples = base_samples
+                print(
+                    "[INFO] --stratified-samples is >= available unmodified samples; selecting all base samples.",
+                    flush=True,
+                )
+            else:
+                selected_base_samples = select_stratified_samples(base_samples, args.stratified_samples)
+                print(
+                    "[INFO] Applied deterministic stratified sampling on unmodified data: "
+                    f"{base_before_count} -> {len(selected_base_samples)} base samples",
+                    flush=True,
+                )
+
+            selected_base_ids = {sample.get("sample_id") for sample in selected_base_samples}
+            noisy_before_count = len(samples)
+            samples = filter_samples_by_sample_id(samples, selected_base_ids)
+            print(
+                "[INFO] Expanded selected base samples across noisy variants: "
+                f"{noisy_before_count} -> {len(samples)} noisy samples",
+                flush=True,
+            )
     if args.start_at_sample is not None:
         samples = samples[args.start_at_sample :]
     if args.total_samples is not None:

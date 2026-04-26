@@ -102,7 +102,7 @@ def parse_args():
         "--stratified-samples",
         type=int,
         default=None,
-        help="Non-MELD only: deterministically select this many samples, stratified by label.",
+        help="Deterministically select this many samples, stratified by label.",
     )
     parser.add_argument("--audio-subdir", type=str, default="audio_only", help="Subdir for WAV files")
     parser.add_argument(
@@ -117,6 +117,15 @@ def parse_args():
         help=(
             "Run the normal scored-modalities path, but override all computed modality quality scores to 1.0 "
             "before token-level quality weighting."
+        ),
+    )
+    parser.add_argument(
+        "--force-modality-quality-scores",
+        type=str,
+        default=None,
+        help=(
+            "Optional per-modality score override in 'modality=score' format (comma-separated), "
+            "for example: text=0.2,audio=0.9. Scores must be in [0,1]."
         ),
     )
     parser.add_argument(
@@ -162,7 +171,7 @@ def parse_args():
         "--qaa-normalization-mode",
         type=str,
         choices=(QAA_NORMALIZATION_GLOBAL, QAA_NORMALIZATION_EXCLUDE_UNSCALED),
-        default=QAA_NORMALIZATION_GLOBAL,
+        default=QAA_NORMALIZATION_EXCLUDE_UNSCALED,
         help=(
             "Quality-aware normalization mode in first-layer attention. "
             "'global' keeps the original p*q/sum(p*q) behavior across all tokens. "
@@ -290,6 +299,7 @@ def _build_auto_output_paths(
     noisy_modalities: set[str] | None,
     quality_calibration_enabled: bool,
     qwen_quality_enabled: bool,
+    qaa_normalization_mode: str,
     quality_placebo_random: bool,
     quality_placebo_random_seed: int,
     meld_task: str | None,
@@ -306,7 +316,10 @@ def _build_auto_output_paths(
     if quality_placebo_random:
         base_dir = Path("out") / "placebo" / "random" / model_token / dataset
     elif qwen_quality_enabled:
-        base_dir = Path("out") / "qwen_scored" / model_token / dataset
+        if qaa_normalization_mode == QAA_NORMALIZATION_EXCLUDE_UNSCALED:
+            base_dir = Path("out") / "qwen_scored_rescaled" / model_token / dataset
+        else:
+            base_dir = Path("out") / "qwen_scored" / model_token / dataset
     elif quality_calibration_enabled:
         base_dir = Path("out") / "calibration" / model_token / dataset
     else:
@@ -353,6 +366,53 @@ def _deterministic_unit_interval_score(
     rng = random.Random(derived_seed)
     sampled_int = rng.randint(1, 999_999)
     return sampled_int / 1_000_000.0
+
+
+def _parse_forced_modality_quality_scores(raw_value: str | None) -> dict[str, float]:
+    if raw_value is None:
+        return {}
+
+    forced_scores = {}
+    for part in raw_value.split(","):
+        entry = part.strip()
+        if not entry:
+            continue
+        if "=" not in entry:
+            raise ValueError(
+                "Invalid --force-modality-quality-scores entry. "
+                f"Expected modality=score, got: '{entry}'"
+            )
+        modality_raw, score_raw = entry.split("=", 1)
+        modality = modality_raw.strip().lower()
+        if modality not in SUPPORTED_MODALITIES:
+            raise ValueError(
+                "Unsupported modality in --force-modality-quality-scores: "
+                f"'{modality}'. Supported modalities: {sorted(SUPPORTED_MODALITIES)}"
+            )
+        if modality in forced_scores:
+            raise ValueError(
+                "Duplicate modality in --force-modality-quality-scores: "
+                f"'{modality}'"
+            )
+        try:
+            score = float(score_raw.strip())
+        except ValueError as exc:
+            raise ValueError(
+                "Invalid score in --force-modality-quality-scores for modality "
+                f"'{modality}': '{score_raw}'. Expected a float in [0,1]."
+            ) from exc
+        if not 0.0 <= score <= 1.0:
+            raise ValueError(
+                "Out-of-range score in --force-modality-quality-scores for modality "
+                f"'{modality}': {score}. Expected [0,1]."
+            )
+        forced_scores[modality] = score
+
+    if raw_value.strip() and not forced_scores:
+        raise ValueError(
+            "--force-modality-quality-scores was provided but no valid entries were found."
+        )
+    return forced_scores
 
 
 def _build_placebo_modality_scores(
@@ -492,12 +552,16 @@ def run_batch_generation(
     device,
     dtype,
     force_quality_scores_one=False,
+    force_modality_quality_scores=None,
     quality_calibrators=None,
     qwen_quality=False,
     quality_placebo_random=False,
     quality_placebo_random_seed=0,
-    qaa_normalization_mode=QAA_NORMALIZATION_GLOBAL,
+    qaa_normalization_mode=QAA_NORMALIZATION_EXCLUDE_UNSCALED,
 ):
+    if force_modality_quality_scores is None:
+        force_modality_quality_scores = {}
+
     conversations = [entry["conversation"] for entry in entries]
     text_prompt = processor.apply_chat_template(conversations, add_generation_prompt=True, tokenize=False)
     return_video_metadata = "video" in enabled_modalities
@@ -577,6 +641,14 @@ def run_batch_generation(
                 raw_modality_quality_scores,
                 quality_calibrators,
             )
+        if force_modality_quality_scores:
+            modality_quality_scores = [
+                {
+                    modality: force_modality_quality_scores.get(modality, score)
+                    for modality, score in sample_scores.items()
+                }
+                for sample_scores in modality_quality_scores
+            ]
 
     text_token_ids_per_entry = None
     if "text" in enabled_modalities:
@@ -648,6 +720,9 @@ def run_batch_generation(
 
 def main():
     args = parse_args()
+    forced_modality_quality_scores = _parse_forced_modality_quality_scores(
+        args.force_modality_quality_scores
+    )
     if args.batch_size < 1:
         raise ValueError("--batch-size must be >= 1.")
     if args.start_at_sample is not None and args.start_at_sample < 0:
@@ -663,6 +738,14 @@ def main():
         )
     if args.force_quality_scores_one and args.quality_placebo_random:
         raise ValueError("--force-quality-scores-one cannot be combined with --quality-placebo-random.")
+    if args.force_quality_scores_one and forced_modality_quality_scores:
+        raise ValueError(
+            "--force-quality-scores-one cannot be combined with --force-modality-quality-scores."
+        )
+    if args.quality_placebo_random and forced_modality_quality_scores:
+        raise ValueError(
+            "--force-modality-quality-scores cannot be combined with --quality-placebo-random."
+        )
     if args.qwen_quality and args.quality_calibration:
         raise ValueError("--qwen-quality cannot be combined with --quality-calibration.")
     if args.quality_placebo_random and args.qwen_quality:
@@ -686,6 +769,12 @@ def main():
 
     noisy_modalities = normalize_modalities(args.noisy_modalities)
     validate_modalities(dataset, enabled_modalities, noisy_modalities)
+    unsupported_forced_modalities = sorted(set(forced_modality_quality_scores) - enabled_modalities)
+    if unsupported_forced_modalities:
+        raise ValueError(
+            "Forced modality score(s) provided for disabled/unavailable modality(ies): "
+            f"{unsupported_forced_modalities}. Enabled modalities: {sorted(enabled_modalities)}."
+        )
 
     meld_task = None
     label_column = None
@@ -726,6 +815,7 @@ def main():
         noisy_modalities=noisy_modalities,
         quality_calibration_enabled=args.quality_calibration,
         qwen_quality_enabled=args.qwen_quality,
+        qaa_normalization_mode=args.qaa_normalization_mode,
         quality_placebo_random=args.quality_placebo_random,
         quality_placebo_random_seed=args.quality_placebo_random_seed,
         meld_task=meld_task,
@@ -749,6 +839,7 @@ def main():
     print(f"[INFO] start_at_sample={args.start_at_sample}", flush=True)
     print(f"[INFO] stratified_samples={args.stratified_samples}", flush=True)
     print(f"[INFO] force_quality_scores_one={args.force_quality_scores_one}", flush=True)
+    print(f"[INFO] force_modality_quality_scores={forced_modality_quality_scores}", flush=True)
     print(f"[INFO] quality_placebo_random={args.quality_placebo_random}", flush=True)
     print(f"[INFO] quality_placebo_random_seed={args.quality_placebo_random_seed}", flush=True)
     print(f"[INFO] quality_calibration_enabled={args.quality_calibration}", flush=True)
@@ -809,50 +900,44 @@ def main():
 
     samples = load_samples(dataset, args, enabled_modalities, noisy_modalities, label_column)
     if args.stratified_samples is not None:
-        if dataset == "meld":
-            print(
-                "[INFO] Ignoring --stratified-samples for MELD (explicit train/val/test splits are already defined).",
-                flush=True,
-            )
-        else:
-            if noisy_modalities is None:
-                before_count = len(samples)
-                if args.stratified_samples >= before_count:
-                    print(
-                        "[INFO] --stratified-samples is >= available samples; selecting all samples.",
-                        flush=True,
-                    )
-                else:
-                    samples = select_stratified_samples(samples, args.stratified_samples)
-                    print(
-                        f"[INFO] Applied deterministic stratified sampling: {before_count} -> {len(samples)} samples",
-                        flush=True,
-                    )
-            else:
-                base_samples = load_samples(dataset, args, enabled_modalities, None, label_column)
-                base_before_count = len(base_samples)
-                if args.stratified_samples >= base_before_count:
-                    selected_base_samples = base_samples
-                    print(
-                        "[INFO] --stratified-samples is >= available unmodified samples; selecting all base samples.",
-                        flush=True,
-                    )
-                else:
-                    selected_base_samples = select_stratified_samples(base_samples, args.stratified_samples)
-                    print(
-                        "[INFO] Applied deterministic stratified sampling on unmodified data: "
-                        f"{base_before_count} -> {len(selected_base_samples)} base samples",
-                        flush=True,
-                    )
-
-                selected_base_ids = {sample.get("sample_id") for sample in selected_base_samples}
-                noisy_before_count = len(samples)
-                samples = filter_samples_by_sample_id(samples, selected_base_ids)
+        if noisy_modalities is None:
+            before_count = len(samples)
+            if args.stratified_samples >= before_count:
                 print(
-                    "[INFO] Expanded selected base samples across noisy variants: "
-                    f"{noisy_before_count} -> {len(samples)} noisy samples",
+                    "[INFO] --stratified-samples is >= available samples; selecting all samples.",
                     flush=True,
                 )
+            else:
+                samples = select_stratified_samples(samples, args.stratified_samples)
+                print(
+                    f"[INFO] Applied deterministic stratified sampling: {before_count} -> {len(samples)} samples",
+                    flush=True,
+                )
+        else:
+            base_samples = load_samples(dataset, args, enabled_modalities, None, label_column)
+            base_before_count = len(base_samples)
+            if args.stratified_samples >= base_before_count:
+                selected_base_samples = base_samples
+                print(
+                    "[INFO] --stratified-samples is >= available unmodified samples; selecting all base samples.",
+                    flush=True,
+                )
+            else:
+                selected_base_samples = select_stratified_samples(base_samples, args.stratified_samples)
+                print(
+                    "[INFO] Applied deterministic stratified sampling on unmodified data: "
+                    f"{base_before_count} -> {len(selected_base_samples)} base samples",
+                    flush=True,
+                )
+
+            selected_base_ids = {sample.get("sample_id") for sample in selected_base_samples}
+            noisy_before_count = len(samples)
+            samples = filter_samples_by_sample_id(samples, selected_base_ids)
+            print(
+                "[INFO] Expanded selected base samples across noisy variants: "
+                f"{noisy_before_count} -> {len(samples)} noisy samples",
+                flush=True,
+            )
     if args.start_at_sample is not None:
         samples = samples[args.start_at_sample :]
 
@@ -875,6 +960,12 @@ def main():
     print("[INFO] Quality-aware first attention layer patch enabled.", flush=True)
     if args.force_quality_scores_one:
         print("[INFO] Overriding computed modality quality scores to 1.0 for this run.", flush=True)
+    elif forced_modality_quality_scores:
+        print(
+            "[INFO] Overriding final modality quality scores with fixed values: "
+            f"{forced_modality_quality_scores}",
+            flush=True,
+        )
     elif args.quality_placebo_random:
         print(
             "[INFO] Placebo mode active: overriding modality quality scores with deterministic pseudo-random values "
@@ -933,6 +1024,7 @@ def main():
                 device=device,
                 dtype=dtype,
                 force_quality_scores_one=args.force_quality_scores_one,
+                force_modality_quality_scores=forced_modality_quality_scores,
                 quality_calibrators=quality_calibrators,
                 qwen_quality=args.qwen_quality,
                 quality_placebo_random=args.quality_placebo_random,
@@ -955,6 +1047,7 @@ def main():
                         device=device,
                         dtype=dtype,
                         force_quality_scores_one=args.force_quality_scores_one,
+                        force_modality_quality_scores=forced_modality_quality_scores,
                         quality_calibrators=quality_calibrators,
                         qwen_quality=args.qwen_quality,
                         quality_placebo_random=args.quality_placebo_random,
