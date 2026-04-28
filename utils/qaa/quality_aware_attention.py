@@ -150,6 +150,76 @@ def _flash_scalar_weight_sum(
     )[..., :1]
 
 
+def compute_quality_adjusted_attention_weights(
+    attention_weights: torch.Tensor,
+    quality_scores: torch.Tensor,
+    *,
+    quality_scaled_token_mask: torch.Tensor | None = None,
+    quality_normalization_mode: str = QAA_NORMALIZATION_GLOBAL,
+) -> torch.Tensor:
+    """Apply the same QAA normalization formulas to an explicit attention tensor.
+
+    Expected shape for ``attention_weights`` is ``(batch, heads, query_len, key_len)``.
+    This helper is intended for diagnostics/analysis runs where explicit attention
+    probabilities are available (for example eager attention with ``output_attentions=True``).
+    """
+
+    if attention_weights.dim() != 4:
+        raise ValueError(
+            "Attention weights must be rank-4 with shape (batch, heads, query_len, key_len), "
+            f"got shape {tuple(attention_weights.shape)}."
+        )
+    if quality_normalization_mode not in QAA_NORMALIZATION_MODES:
+        raise ValueError(
+            f"Unsupported first-layer quality normalization mode {quality_normalization_mode!r}. "
+            f"Expected one of {sorted(QAA_NORMALIZATION_MODES)}."
+        )
+
+    batch_size, _, _, kv_seq_len = attention_weights.shape
+    quality_scores = _align_quality_scores_to_kv_length(
+        quality_scores,
+        batch_size=batch_size,
+        kv_seq_len=kv_seq_len,
+        device=attention_weights.device,
+        dtype=attention_weights.dtype,
+    )
+    quality_scores = quality_scores[:, None, None, :]
+
+    if quality_normalization_mode == QAA_NORMALIZATION_GLOBAL:
+        weighted = attention_weights * quality_scores
+        denominator = weighted.sum(dim=-1, keepdim=True)
+        denominator_epsilon = torch.finfo(denominator.dtype).tiny
+        denominator = torch.where(
+            denominator.abs() < denominator_epsilon,
+            torch.full_like(denominator, denominator_epsilon),
+            denominator,
+        )
+        return weighted / denominator
+
+    if quality_scaled_token_mask is None:
+        raise ValueError("First-layer quality mode 'exclude_unscaled' requires a per-token scaled-token mask.")
+    quality_scaled_token_mask = _align_quality_mask_to_kv_length(
+        quality_scaled_token_mask,
+        batch_size=batch_size,
+        kv_seq_len=kv_seq_len,
+        device=attention_weights.device,
+    )
+    mask_scaled = quality_scaled_token_mask[:, None, None, :].to(dtype=attention_weights.dtype)
+    mask_unscaled = (~quality_scaled_token_mask)[:, None, None, :].to(dtype=attention_weights.dtype)
+    scaled_quality_scores = quality_scores * mask_scaled
+
+    scaled_attention_mass = (attention_weights * mask_scaled).sum(dim=-1, keepdim=True)
+    scaled_quality_mass = (attention_weights * scaled_quality_scores).sum(dim=-1, keepdim=True)
+    denominator_epsilon = torch.finfo(scaled_quality_mass.dtype).tiny
+    safe_scaled_quality_mass = torch.where(
+        scaled_quality_mass.abs() < denominator_epsilon,
+        torch.full_like(scaled_quality_mass, denominator_epsilon),
+        scaled_quality_mass,
+    )
+    scaled_rescale = scaled_attention_mass / safe_scaled_quality_mass
+    return (attention_weights * mask_unscaled) + (attention_weights * scaled_quality_scores * scaled_rescale)
+
+
 def _quality_aware_forward(
     self,
     hidden_states: torch.Tensor,
