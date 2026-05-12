@@ -9,6 +9,7 @@ import pandas as pd
 import pytest
 
 from utils.parsing_util import get_label_for_file, get_ids_for_file
+from analysis.result_plot_parsing import parse_modalities_from_prediction_filename, parse_split_metadata
 
 
 @pytest.fixture(scope="module")
@@ -216,3 +217,26 @@ def test_get_label_for_files(meta_data, top_level_files, tmp_path):
 
     # successful run writes CSV for manual inspection
     print(f"Labels CSV written to: {out_csv}")
+
+
+def test_parse_modalities_from_filename_helper():
+    parsed = parse_modalities_from_prediction_filename(Path("prediction_av_noise_a.csv"))
+    assert parsed["modalities"] == "av"
+    assert parsed["noise_modalities"] == "a"
+
+
+def test_parse_split_metadata_helpers():
+    split_a = parse_split_metadata("test_unmodified")
+    assert split_a["is_unmodified"] is True
+    assert split_a["perturbation_method"] == "unmodified"
+
+    split_b = parse_split_metadata("test_A=snr_white_S=3")
+    assert split_b["is_unmodified"] is False
+    assert split_b["perturbation_method"] == "snr_white"
+    assert split_b["severity"] == 3
+
+    split_c = parse_split_metadata("all_I=gaussian_noise_S=5")
+    assert split_c["perturbation_method"] == "gaussian_noise"
+    assert split_c["perturbation_target"] == "i"
+    assert split_c["severity"] == 5
+

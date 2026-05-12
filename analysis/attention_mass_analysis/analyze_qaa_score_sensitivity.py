@@ -103,7 +103,7 @@ def parse_args():
 def _expand_globs(globs: list[str]) -> list[Path]:
     paths = []
     for pattern in globs:
-        paths.extend(Path(".").glob(pattern))
+        paths.extend(Path("..").glob(pattern))
     deduped = sorted({p.resolve() for p in paths if p.is_file()})
     return [Path(p) for p in deduped]
 

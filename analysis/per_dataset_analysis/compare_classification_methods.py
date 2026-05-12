@@ -22,6 +22,7 @@ from matplotlib.patches import Patch
 
 JOIN_COLUMN_PRIORITY = ["dataset", "split", "sample_id", "file"]
 PREDICTION_GLOB = "prediction_*.csv"
+SEVERITY_RE = re.compile(r"(?:^|_)s=(\d+)(?:_|$)", re.IGNORECASE)
 LOW_CLASS_THRESHOLD = 10
 HIGH_CLASS_THRESHOLD = 150
 TOP_CLASS_COUNT = 9
@@ -65,6 +66,7 @@ MODALITY_COLORS = {
 class PairComparisonResult:
     pair_id: str
     dataset: str
+    severity_level: str
     configuration: str
     join_key: str
     n_baseline: int
@@ -121,6 +123,15 @@ def parse_args() -> argparse.Namespace:
         type=str,
         default="out/qwen_scored",
         help="Root directory for candidate prediction CSVs.",
+    )
+    parser.add_argument(
+        "--model",
+        type=str,
+        default=None,
+        help=(
+            "Optional model folder under out/. When set and roots are left as defaults, "
+            "uses out/<model>/ and out/<model>/qwen_scored/. Supports out/<model>/(task/)<dataset>."
+        ),
     )
     parser.add_argument(
         "--output-dir",
@@ -233,6 +244,15 @@ def normalize_text(value: object) -> str:
     return normalized.strip().casefold()
 
 
+def normalize_split_for_join(value: object) -> str:
+    split = normalize_text(value)
+    if split == "test_all":
+        return "all"
+    if split.startswith("test_"):
+        return split[len("test_") :]
+    return split
+
+
 def discover_prediction_files(root: Path) -> dict[str, Path]:
     files = {}
     if not root.exists():
@@ -244,10 +264,16 @@ def discover_prediction_files(root: Path) -> dict[str, Path]:
 
 
 def extract_dataset_from_relpath(relpath: str) -> str:
-    parts = relpath.split("/")
+    path = Path(relpath)
+    parent_name = path.parent.name.strip().lower()
+    if parent_name:
+        return parent_name
+    parts = path.parts
     if not parts:
         return "unknown"
-    return parts[0]
+    if str(parts[0]).startswith("prediction_"):
+        return "unknown"
+    return str(parts[0]).lower()
 
 
 def parse_csv_list(raw_value: str | None) -> list[str]:
@@ -298,7 +324,10 @@ def determine_join_columns(df_baseline: pd.DataFrame, df_candidate: pd.DataFrame
 def preprocess_frame(df: pd.DataFrame, join_columns: list[str]) -> pd.DataFrame:
     frame = df.copy()
     for col in join_columns:
-        frame[col] = frame[col].map(normalize_text)
+        if col == "split":
+            frame[col] = frame[col].map(normalize_split_for_join)
+        else:
+            frame[col] = frame[col].map(normalize_text)
     frame["label"] = frame["label"].map(normalize_text)
     frame["prediction"] = frame["prediction"].map(normalize_text)
     frame = frame[(frame["label"] != "") & (frame["prediction"] != "")]
@@ -310,6 +339,52 @@ def deduplicate_by_join_key(frame: pd.DataFrame, join_columns: list[str]) -> pd.
         frame = frame.reset_index(drop=False).rename(columns={"index": "_row_id"})
         return frame
     return frame.drop_duplicates(subset=join_columns, keep="first")
+
+
+def split_severity_key(split_value: object) -> str:
+    split_text = str(split_value or "").strip().lower()
+    match = SEVERITY_RE.search(split_text)
+    if match:
+        return f"S={int(match.group(1))}"
+    return "__NO_SEVERITY__"
+
+
+def filter_to_shared_severity_rows(
+    baseline: pd.DataFrame,
+    candidate: pd.DataFrame,
+) -> tuple[pd.DataFrame, pd.DataFrame]:
+    if "split" not in baseline.columns or "split" not in candidate.columns:
+        return baseline, candidate
+
+    baseline = baseline.copy()
+    candidate = candidate.copy()
+    baseline["__severity_key"] = baseline["split"].map(split_severity_key)
+    candidate["__severity_key"] = candidate["split"].map(split_severity_key)
+
+    shared_severities = set(baseline["__severity_key"].unique()).intersection(set(candidate["__severity_key"].unique()))
+    if not shared_severities:
+        return baseline.iloc[0:0].copy(), candidate.iloc[0:0].copy()
+
+    baseline = baseline[baseline["__severity_key"].isin(shared_severities)].copy()
+    candidate = candidate[candidate["__severity_key"].isin(shared_severities)].copy()
+    return baseline, candidate
+
+
+def filter_splits_to_shared_severities(
+    baseline_values: dict[str, float],
+    candidate_values: dict[str, float],
+) -> list[str]:
+    all_splits = sorted(set(baseline_values).union(set(candidate_values)))
+    if not all_splits:
+        return []
+
+    baseline_severities = {split_severity_key(split) for split in baseline_values}
+    candidate_severities = {split_severity_key(split) for split in candidate_values}
+    shared_severities = baseline_severities.intersection(candidate_severities)
+    if not shared_severities:
+        return []
+
+    return [split for split in all_splits if split_severity_key(split) in shared_severities]
 
 
 def safe_metric(metric_fn, y_true: np.ndarray, y_pred: np.ndarray) -> float:
@@ -354,24 +429,27 @@ def compare_single_pair(
     bootstrap_iterations: int,
     rng: np.random.Generator,
     min_paired: int,
-) -> PairComparisonResult | None:
+) -> list[PairComparisonResult]:
     baseline = pd.read_csv(baseline_path)
     candidate = pd.read_csv(candidate_path)
     required = {"prediction", "label"}
     if not required.issubset(baseline.columns) or not required.issubset(candidate.columns):
-        return None
+        return []
 
     configuration = extract_configuration_from_filename(baseline_path)
-    # Compare only predictions configured with more than one modality.
-    if not configuration_is_multi_modality(configuration):
-        return None
 
     join_columns = determine_join_columns(baseline, candidate)
     if not join_columns:
-        return None
+        return []
 
     baseline = preprocess_frame(baseline, join_columns)
     candidate = preprocess_frame(candidate, join_columns)
+    baseline, candidate = filter_to_shared_severity_rows(baseline, candidate)
+    if baseline.empty or candidate.empty:
+        return []
+
+    if "__severity_key" in baseline.columns and "__severity_key" in candidate.columns and "__severity_key" not in join_columns:
+        join_columns = [*join_columns, "__severity_key"]
 
     baseline = deduplicate_by_join_key(baseline, join_columns)
     candidate = deduplicate_by_join_key(candidate, join_columns)
@@ -382,99 +460,122 @@ def compare_single_pair(
         how="inner",
         suffixes=("_baseline", "_candidate"),
     )
-    if len(paired) < min_paired:
-        return None
-
-    y_true_baseline = paired["label_baseline"].to_numpy()
-    y_true_candidate = paired["label_candidate"].to_numpy()
-    y_pred_baseline = paired["prediction_baseline"].to_numpy()
-    y_pred_candidate = paired["prediction_candidate"].to_numpy()
-
-    label_mismatch = int((y_true_baseline != y_true_candidate).sum())
-    y_true = y_true_baseline
-
-    correct_baseline = (y_pred_baseline == y_true)
-    correct_candidate = (y_pred_candidate == y_true)
-
-    accuracy_baseline = float(correct_baseline.mean())
-    accuracy_candidate = float(correct_candidate.mean())
-    delta_accuracy = accuracy_candidate - accuracy_baseline
-
-    delta_per_sample = correct_candidate.astype(np.int8) - correct_baseline.astype(np.int8)
-    delta_ci_low, delta_ci_high = bootstrap_delta_accuracy(delta_per_sample, bootstrap_iterations, rng)
-
-    f1_macro_baseline = safe_metric(lambda yt, yp: f1_score(yt, yp, average="macro"), y_true, y_pred_baseline)
-    f1_macro_candidate = safe_metric(lambda yt, yp: f1_score(yt, yp, average="macro"), y_true, y_pred_candidate)
-    f1_weighted_baseline = safe_metric(lambda yt, yp: f1_score(yt, yp, average="weighted"), y_true, y_pred_baseline)
-    f1_weighted_candidate = safe_metric(lambda yt, yp: f1_score(yt, yp, average="weighted"), y_true, y_pred_candidate)
-    precision_weighted_baseline = safe_metric(
-        lambda yt, yp: precision_score(yt, yp, average="weighted", zero_division=0),
-        y_true,
-        y_pred_baseline,
-    )
-    precision_weighted_candidate = safe_metric(
-        lambda yt, yp: precision_score(yt, yp, average="weighted", zero_division=0),
-        y_true,
-        y_pred_candidate,
-    )
-    recall_weighted_baseline = safe_metric(
-        lambda yt, yp: recall_score(yt, yp, average="weighted", zero_division=0),
-        y_true,
-        y_pred_baseline,
-    )
-    recall_weighted_candidate = safe_metric(
-        lambda yt, yp: recall_score(yt, yp, average="weighted", zero_division=0),
-        y_true,
-        y_pred_candidate,
-    )
-    mcc_baseline = safe_metric(matthews_corrcoef, y_true, y_pred_baseline)
-    mcc_candidate = safe_metric(matthews_corrcoef, y_true, y_pred_candidate)
-
-    wins_candidate = int((~correct_baseline & correct_candidate).sum())
-    wins_baseline = int((correct_baseline & ~correct_candidate).sum())
-    ties = int((correct_baseline == correct_candidate).sum())
-    mcnemar_p = mcnemar_exact_pvalue(wins_candidate, wins_baseline)
+    if paired.empty:
+        return []
 
     join_key = ",".join(join_columns)
     dataset = extract_dataset_from_relpath(relpath)
+    severity_keys = sorted(paired["__severity_key"].astype(str).unique().tolist())
+    results: list[PairComparisonResult] = []
 
-    return PairComparisonResult(
-        pair_id=relpath,
-        dataset=dataset,
-        configuration=configuration,
-        join_key=join_key,
-        n_baseline=len(baseline),
-        n_candidate=len(candidate),
-        n_paired=len(paired),
-        coverage_baseline=len(paired) / len(baseline) if len(baseline) > 0 else 0.0,
-        coverage_candidate=len(paired) / len(candidate) if len(candidate) > 0 else 0.0,
-        accuracy_baseline=accuracy_baseline,
-        accuracy_candidate=accuracy_candidate,
-        delta_accuracy=delta_accuracy,
-        delta_ci_low=delta_ci_low,
-        delta_ci_high=delta_ci_high,
-        f1_macro_baseline=f1_macro_baseline,
-        f1_macro_candidate=f1_macro_candidate,
-        delta_f1_macro=f1_macro_candidate - f1_macro_baseline,
-        f1_weighted_baseline=f1_weighted_baseline,
-        f1_weighted_candidate=f1_weighted_candidate,
-        delta_f1_weighted=f1_weighted_candidate - f1_weighted_baseline,
-        precision_weighted_baseline=precision_weighted_baseline,
-        precision_weighted_candidate=precision_weighted_candidate,
-        delta_precision_weighted=precision_weighted_candidate - precision_weighted_baseline,
-        recall_weighted_baseline=recall_weighted_baseline,
-        recall_weighted_candidate=recall_weighted_candidate,
-        delta_recall_weighted=recall_weighted_candidate - recall_weighted_baseline,
-        mcc_baseline=mcc_baseline,
-        mcc_candidate=mcc_candidate,
-        delta_mcc=mcc_candidate - mcc_baseline,
-        wins_candidate=wins_candidate,
-        wins_baseline=wins_baseline,
-        ties=ties,
-        mcnemar_pvalue=mcnemar_p,
-        mcnemar_discordant=wins_candidate + wins_baseline,
-        label_mismatch_count=label_mismatch,
-    )
+    for severity_key in severity_keys:
+        paired_severity = paired[paired["__severity_key"].astype(str) == severity_key].copy()
+        if len(paired_severity) < min_paired:
+            continue
+
+        baseline_severity = baseline[baseline["__severity_key"].astype(str) == severity_key]
+        candidate_severity = candidate[candidate["__severity_key"].astype(str) == severity_key]
+        n_baseline_severity = int(len(baseline_severity))
+        n_candidate_severity = int(len(candidate_severity))
+        if n_baseline_severity == 0 or n_candidate_severity == 0:
+            continue
+
+        y_true_baseline = paired_severity["label_baseline"].to_numpy()
+        y_true_candidate = paired_severity["label_candidate"].to_numpy()
+        y_pred_baseline = paired_severity["prediction_baseline"].to_numpy()
+        y_pred_candidate = paired_severity["prediction_candidate"].to_numpy()
+
+        label_mismatch = int((y_true_baseline != y_true_candidate).sum())
+        y_true = y_true_baseline
+
+        correct_baseline = (y_pred_baseline == y_true)
+        correct_candidate = (y_pred_candidate == y_true)
+
+        accuracy_baseline = float(correct_baseline.mean())
+        accuracy_candidate = float(correct_candidate.mean())
+        delta_accuracy = accuracy_candidate - accuracy_baseline
+
+        delta_per_sample = correct_candidate.astype(np.int8) - correct_baseline.astype(np.int8)
+        delta_ci_low, delta_ci_high = bootstrap_delta_accuracy(delta_per_sample, bootstrap_iterations, rng)
+
+        f1_macro_baseline = safe_metric(lambda yt, yp: f1_score(yt, yp, average="macro"), y_true, y_pred_baseline)
+        f1_macro_candidate = safe_metric(lambda yt, yp: f1_score(yt, yp, average="macro"), y_true, y_pred_candidate)
+        f1_weighted_baseline = safe_metric(
+            lambda yt, yp: f1_score(yt, yp, average="weighted"), y_true, y_pred_baseline
+        )
+        f1_weighted_candidate = safe_metric(
+            lambda yt, yp: f1_score(yt, yp, average="weighted"), y_true, y_pred_candidate
+        )
+        precision_weighted_baseline = safe_metric(
+            lambda yt, yp: precision_score(yt, yp, average="weighted", zero_division=0),
+            y_true,
+            y_pred_baseline,
+        )
+        precision_weighted_candidate = safe_metric(
+            lambda yt, yp: precision_score(yt, yp, average="weighted", zero_division=0),
+            y_true,
+            y_pred_candidate,
+        )
+        recall_weighted_baseline = safe_metric(
+            lambda yt, yp: recall_score(yt, yp, average="weighted", zero_division=0),
+            y_true,
+            y_pred_baseline,
+        )
+        recall_weighted_candidate = safe_metric(
+            lambda yt, yp: recall_score(yt, yp, average="weighted", zero_division=0),
+            y_true,
+            y_pred_candidate,
+        )
+        mcc_baseline = safe_metric(matthews_corrcoef, y_true, y_pred_baseline)
+        mcc_candidate = safe_metric(matthews_corrcoef, y_true, y_pred_candidate)
+
+        wins_candidate = int((~correct_baseline & correct_candidate).sum())
+        wins_baseline = int((correct_baseline & ~correct_candidate).sum())
+        ties = int((correct_baseline == correct_candidate).sum())
+        mcnemar_p = mcnemar_exact_pvalue(wins_candidate, wins_baseline)
+
+        results.append(
+            PairComparisonResult(
+                pair_id=f"{relpath}::{severity_key}",
+                dataset=dataset,
+                severity_level=severity_key,
+                configuration=configuration,
+                join_key=join_key,
+                n_baseline=n_baseline_severity,
+                n_candidate=n_candidate_severity,
+                n_paired=len(paired_severity),
+                coverage_baseline=len(paired_severity) / n_baseline_severity,
+                coverage_candidate=len(paired_severity) / n_candidate_severity,
+                accuracy_baseline=accuracy_baseline,
+                accuracy_candidate=accuracy_candidate,
+                delta_accuracy=delta_accuracy,
+                delta_ci_low=delta_ci_low,
+                delta_ci_high=delta_ci_high,
+                f1_macro_baseline=f1_macro_baseline,
+                f1_macro_candidate=f1_macro_candidate,
+                delta_f1_macro=f1_macro_candidate - f1_macro_baseline,
+                f1_weighted_baseline=f1_weighted_baseline,
+                f1_weighted_candidate=f1_weighted_candidate,
+                delta_f1_weighted=f1_weighted_candidate - f1_weighted_baseline,
+                precision_weighted_baseline=precision_weighted_baseline,
+                precision_weighted_candidate=precision_weighted_candidate,
+                delta_precision_weighted=precision_weighted_candidate - precision_weighted_baseline,
+                recall_weighted_baseline=recall_weighted_baseline,
+                recall_weighted_candidate=recall_weighted_candidate,
+                delta_recall_weighted=recall_weighted_candidate - recall_weighted_baseline,
+                mcc_baseline=mcc_baseline,
+                mcc_candidate=mcc_candidate,
+                delta_mcc=mcc_candidate - mcc_baseline,
+                wins_candidate=wins_candidate,
+                wins_baseline=wins_baseline,
+                ties=ties,
+                mcnemar_pvalue=mcnemar_p,
+                mcnemar_discordant=wins_candidate + wins_baseline,
+                label_mismatch_count=label_mismatch,
+            )
+        )
+
+    return results
 
 
 def build_dataset_summary(df: pd.DataFrame) -> pd.DataFrame:
@@ -511,6 +612,15 @@ def build_dataset_summary(df: pd.DataFrame) -> pd.DataFrame:
             }
         )
     return pd.DataFrame(rows).sort_values(by="weighted_delta_accuracy", ascending=False)
+
+
+def severity_output_dirname(severity_level: str) -> str:
+    level = str(severity_level or "").strip()
+    if not level:
+        return "__NO_SEVERITY__"
+    if level == "__NO_SEVERITY__":
+        return level
+    return level.replace("/", "_")
 
 
 def parse_dataset_selection(raw_value: str | None, available_datasets: list[str]) -> list[str]:
@@ -814,7 +924,12 @@ def plot_accuracy_comparison_for_config(
 
     baseline_map = {str(row["split"]): float(row["accuracy"]) for _, row in baseline_accuracy.iterrows()}
     candidate_map = {str(row["split"]): float(row["accuracy"]) for _, row in candidate_accuracy.iterrows()}
-    all_splits = sorted(set(baseline_map).union(set(candidate_map)))
+    all_splits = filter_splits_to_shared_severities(
+        baseline_values=baseline_map,
+        candidate_values=candidate_map,
+    )
+    if not all_splits:
+        return
     bar_splits = [split for split in all_splits if not is_reference_split(split)]
 
     fig, ax = plt.subplots(figsize=(max(6, 1.2 * len(bar_splits)), 5))
@@ -902,7 +1017,14 @@ def plot_metric_comparison_for_config(
     if class_count > HIGH_CLASS_THRESHOLD or not classes_to_plot:
         return
 
-    split_names = sorted(set(baseline_prepared["split"].astype(str)).union(set(candidate_prepared["split"].astype(str))))
+    baseline_split_names = baseline_prepared["split"].astype(str).tolist()
+    candidate_split_names = candidate_prepared["split"].astype(str).tolist()
+    split_names = filter_splits_to_shared_severities(
+        baseline_values={split: 1.0 for split in baseline_split_names},
+        candidate_values={split: 1.0 for split in candidate_split_names},
+    )
+    if not split_names:
+        return
     bar_splits = [split for split in split_names if not is_reference_split(split)]
     if not bar_splits:
         return
@@ -1014,12 +1136,16 @@ def run_plotting_util_style_comparison(
     candidate_label: str,
     baseline_palette: str,
     candidate_palette: str,
+    model: str | None = None,
 ):
     metrics = ["mcc", "f1", "recall", "precision"]
     for dataset in datasets:
         dataset = dataset.lower()
         baseline_task = dataset
         candidate_task = f"qwen_scored/{dataset}"
+        if model:
+            baseline_task = f"{model}/{baseline_task}"
+            candidate_task = f"{model}/{candidate_task}"
         baseline_prepared_dir = Path("analysis") / "out" / baseline_task / "prepared_data"
         candidate_prepared_dir = Path("analysis") / "out" / candidate_task / "prepared_data"
         if not baseline_prepared_dir.exists() or not candidate_prepared_dir.exists():
@@ -1071,7 +1197,15 @@ def main():
 
     baseline_root = Path(args.baseline_root)
     candidate_root = Path(args.candidate_root)
+    if args.model:
+        if baseline_root == Path("../out"):
+            baseline_root = Path("../out") / args.model
+        if candidate_root == Path("out/qwen_scored"):
+            candidate_root = Path("../out") / args.model / "qwen_scored"
+
     output_dir = Path(args.output_dir)
+    if args.model and output_dir == Path("analysis/out/method_comparison"):
+        output_dir = Path("analysis") / "out" / args.model / "method_comparison"
     output_dir.mkdir(parents=True, exist_ok=True)
 
     baseline_files = discover_prediction_files(baseline_root)
@@ -1096,7 +1230,7 @@ def main():
     results = []
     skipped = 0
     for relpath in shared_relpaths:
-        result = compare_single_pair(
+        pair_results = compare_single_pair(
             relpath=relpath,
             baseline_path=baseline_files[relpath],
             candidate_path=candidate_files[relpath],
@@ -1104,10 +1238,10 @@ def main():
             rng=rng,
             min_paired=args.min_paired,
         )
-        if result is None:
+        if not pair_results:
             skipped += 1
             continue
-        results.append(result.to_dict())
+        results.extend([result.to_dict() for result in pair_results])
 
     result_df = pd.DataFrame(results)
     if result_df.empty:
@@ -1115,13 +1249,23 @@ def main():
         print(f"Matched files: {len(shared_relpaths)}, skipped: {skipped}")
         return
 
-    result_df = result_df.sort_values(by=["dataset", "delta_accuracy"], ascending=[True, False])
+    result_df = result_df.sort_values(by=["severity_level", "dataset", "delta_accuracy"], ascending=[True, True, False])
     dataset_summary = build_dataset_summary(result_df)
 
     pair_out_path = output_dir / "pairwise_comparison.csv"
     dataset_out_path = output_dir / "dataset_summary.csv"
     result_df.to_csv(pair_out_path, index=False)
     dataset_summary.to_csv(dataset_out_path, index=False)
+
+    severity_dirs = []
+    for severity_level, severity_df in result_df.groupby("severity_level", sort=True):
+        severity_dir = output_dir / severity_output_dirname(str(severity_level))
+        severity_dir.mkdir(parents=True, exist_ok=True)
+        severity_pairwise = severity_df.sort_values(by=["dataset", "delta_accuracy"], ascending=[True, False])
+        severity_summary = build_dataset_summary(severity_pairwise)
+        severity_pairwise.to_csv(severity_dir / "pairwise_comparison.csv", index=False)
+        severity_summary.to_csv(severity_dir / "dataset_summary.csv", index=False)
+        severity_dirs.append(severity_dir)
 
     available_datasets = sorted(result_df["dataset"].astype(str).str.lower().unique().tolist())
     selected_datasets = parse_dataset_selection(args.plot_datasets, available_datasets)
@@ -1147,20 +1291,33 @@ def main():
             candidate_label=args.candidate_label,
             baseline_palette=args.baseline_bar_palette,
             candidate_palette=args.candidate_bar_palette,
+            model=args.model,
         )
 
     print(f"Wrote pairwise results: {pair_out_path}")
     print(f"Wrote dataset summary: {dataset_out_path}")
+    if severity_dirs:
+        print("Wrote per-severity summaries:")
+        for severity_dir in severity_dirs:
+            print(f"  - {severity_dir}")
     print(f"Wrote plots under: {plots_dir}")
     if args.plotting_util_style_compare:
         print(f"Wrote plotting_util-style comparison plots under: {plotting_util_style_out_dir}")
     print(f"Matched files: {len(shared_relpaths)} | compared: {len(result_df)} | skipped: {skipped}")
     print()
     print("Top 10 improvements by delta accuracy:")
-    print(result_df.nlargest(10, "delta_accuracy")[["pair_id", "n_paired", "delta_accuracy", "mcnemar_pvalue"]].to_string(index=False))
+    print(
+        result_df.nlargest(10, "delta_accuracy")[
+            ["severity_level", "pair_id", "n_paired", "delta_accuracy", "mcnemar_pvalue"]
+        ].to_string(index=False)
+    )
     print()
     print("Top 10 degradations by delta accuracy:")
-    print(result_df.nsmallest(10, "delta_accuracy")[["pair_id", "n_paired", "delta_accuracy", "mcnemar_pvalue"]].to_string(index=False))
+    print(
+        result_df.nsmallest(10, "delta_accuracy")[
+            ["severity_level", "pair_id", "n_paired", "delta_accuracy", "mcnemar_pvalue"]
+        ].to_string(index=False)
+    )
 
 
 if __name__ == "__main__":
