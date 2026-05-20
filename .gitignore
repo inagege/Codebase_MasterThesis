@@ -4,7 +4,10 @@ idea/# pixi environments
 !.pixi/config.toml
 data/
 logs/
-analysis/out/
+analysis/out/csv
+analysis/out/method_comparison
+analysis/out/quality_consistency
+analysis/out/tables
 analysis/quality_score_percentile_report/
 .idea/
 .pynb_checkpoints/
